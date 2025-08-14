@@ -32,7 +32,7 @@ jobs:
         run: sed -i 's|<base href="/">|<base href="./">|' build/web/index.html
 
       - name: Add CNAME for custom domain
-        run: echo 'gymm.ai' > build/web/CNAME
+        run: echo "gymm.ai" > build/web/CNAME
 
       - name: Disable Jekyll
         run: touch build/web/.nojekyll
