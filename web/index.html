@@ -34,8 +34,46 @@
 
   <title>Gymm AI</title>
   <link rel="manifest" href="manifest.json">
+  
+  <!-- Keep the background black until Flutter loads -->
+  <meta name="theme-color" content="#000000" />
+  
+  <!-- Font smoothing and antialiasing CSS -->
+  <style>
+    * {
+      -webkit-font-smoothing: antialiased; /* For WebKit browsers (Chrome, Safari) */
+      -moz-osx-font-smoothing: grayscale;  /* For Firefox on macOS */
+      text-rendering: optimizeLegibility; /* Optimize text rendering */
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    
+    html, body {
+      background-color: #000;
+      margin: 0;
+      height: 100%;
+    }
+    /* Hide overflow until Flutter paints */
+    #splash {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: #000;
+      z-index: 9999;
+    }
+  </style>
 </head>
 <body>
+  <!-- simple black overlay -->
+  <div id="splash"></div>
+
   <script src="flutter_bootstrap.js" async></script>
-</body>
+  <script>
+    window.addEventListener('flutter-first-frame', () => {
+      const s = document.getElementById('splash');
+      if (s) s.remove();
+    });
+  </script>
 </html>

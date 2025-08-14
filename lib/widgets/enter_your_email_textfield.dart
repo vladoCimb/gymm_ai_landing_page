@@ -127,12 +127,7 @@ class _EnterEmailState extends State<EnterEmail> {
                     ],
                   ),
                   child: Padding(
-                    padding: EdgeInsetsGeometry.only(
-                      left: 17,
-                      right: 17,
-                      top: 15,
-                      bottom: 15,
-                    ),
+                    padding: EdgeInsetsGeometry.only(),
                     child: TextField(
                       controller: widget.emailController,
                       keyboardType: TextInputType.emailAddress,
@@ -160,8 +155,11 @@ class _EnterEmailState extends State<EnterEmail> {
                           height: 20 / 15,
                           letterSpacing: 0,
                         ),
-                        contentPadding:
-                            EdgeInsets.zero, // use our outer padding
+                        contentPadding: EdgeInsets.only(
+                          left: 17,
+                          right: 17,
+                          top: 19,
+                        ),
                       ),
                     ),
                   ),

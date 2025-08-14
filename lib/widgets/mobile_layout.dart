@@ -73,91 +73,96 @@ class _MobileLayoutState extends State<MobileLayout> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        if (_mobileVideoController != null &&
-            _mobileVideoController!.value.isInitialized &&
-            MediaQuery.of(context).size.height > 670)
-          Positioned.fill(
-            child: FractionallySizedBox(
-              heightFactor: MediaQuery.of(context).size.height < 850 ? 0.95 : 1,
-              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: VideoPlayer(_mobileVideoController!),
-              ),
+        // if (_mobileVideoController != null &&
+        //     _mobileVideoController!.value.isInitialized &&
+        //     MediaQuery.of(context).size.height > 670)
+        Positioned.fill(
+          child: FractionallySizedBox(
+            heightFactor: MediaQuery.of(context).size.height < 850 ? 0.95 : 1,
+            alignment: Alignment.bottomCenter,
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: VideoPlayer(_mobileVideoController!),
             ),
           ),
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 22),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Logo
-              SizedBox(
-                height: 30 + 30,
-              ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Logo
+                SizedBox(
+                  height: 30 + 30,
+                ),
 
-              // Mobile-optimized main text
-              _buildMobileMainText(context),
+                // Mobile-optimized main text
+                _buildMobileMainText(context),
 
-              const SizedBox(height: 16),
+                const SizedBox(height: 16),
 
-              // Mobile-optimized form section
-              _buildMobileFormSection(
-                context,
-                onEmailValidationChanged: widget.onEmailValidationChanged,
-                emailController: widget.emailController,
-                isEmailValid: widget.isEmailValid,
-                onRequestAccess: widget.onRequestAccess,
-              ),
+                // Mobile-optimized form section
+                _buildMobileFormSection(
+                  context,
+                  onEmailValidationChanged: widget.onEmailValidationChanged,
+                  emailController: widget.emailController,
+                  isEmailValid: widget.isEmailValid,
+                  onRequestAccess: widget.onRequestAccess,
+                ),
 
-              const SizedBox(height: 14),
-              Center(
-                child: Text(
-                  'Available on Android and iOS',
+                const SizedBox(height: 14),
+                Center(
+                  child: Text(
+                    'Available on Android and iOS',
+                    style: TextStyle(
+                      color: Color(0xffACACAC).withOpacity(0.5),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Inter',
+                      letterSpacing: 0,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        if (MediaQuery.of(context).viewInsets.bottom > 0)
+          SizedBox.shrink()
+        else
+          Positioned(
+            bottom: 22,
+            left: 26,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '© Gymm AI 2025',
                   style: TextStyle(
-                    color: Color(0xffACACAC).withOpacity(0.5),
-                    fontSize: 12,
+                    color: Color(0xff848484),
+                    fontSize: 13,
                     fontWeight: FontWeight.w500,
                     fontFamily: 'Inter',
                     letterSpacing: 0,
+                    height: 20 / 13,
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        Positioned(
-          bottom: 22,
-          left: 26,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '© Gymm AI 2025',
-                style: TextStyle(
-                  color: Color(0xff848484),
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Inter',
-                  letterSpacing: 0,
-                  height: 20 / 13,
-                ),
-              ),
-              Text(
-                'Term of Use  ·  Privacy Policy  ·  Contact us',
-                style: TextStyle(
-                  color: Color(0xffBBBBBB),
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Inter',
-                  letterSpacing: 0,
-                  height: 20 / 13,
-                ),
-              )
-            ],
-          ),
-        )
+                Text(
+                  'Term of Use  ·  Privacy Policy  ·  Contact us',
+                  style: TextStyle(
+                    color: Color(0xffBBBBBB),
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: 'Inter',
+                    letterSpacing: 0,
+                    height: 20 / 13,
+                  ),
+                )
+              ],
+            ),
+          )
       ],
     );
   }

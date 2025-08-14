@@ -75,13 +75,6 @@ class _RequestAccessButtonState extends State<RequestAccessButton> {
                           inset: false,
                         ),
                         BoxShadow(
-                          color: Color.fromRGBO(255, 255, 255, 1),
-                          offset: Offset(0, -1),
-                          blurRadius: 4,
-                          spreadRadius: 0,
-                          inset: true,
-                        ),
-                        BoxShadow(
                           color: Color.fromRGBO(63, 89, 255, 1),
                           offset: Offset(0, 0),
                           blurRadius: 15.96,
@@ -101,6 +94,13 @@ class _RequestAccessButtonState extends State<RequestAccessButton> {
                           blurRadius: 84.37,
                           spreadRadius: 0,
                           inset: false,
+                        ),
+                        BoxShadow(
+                          color: Color.fromRGBO(255, 255, 255, 1),
+                          offset: Offset(0, -1),
+                          blurRadius: 4,
+                          spreadRadius: 0,
+                          inset: true,
                         ),
                       ],
                     ),

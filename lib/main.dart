@@ -6,6 +6,7 @@ import 'package:gymm_ai_landing_page/widgets/enter_your_email_textfield.dart';
 import 'package:gymm_ai_landing_page/widgets/falling_particles_text.dart';
 import 'package:gymm_ai_landing_page/widgets/request_access_button.dart';
 import 'package:gymm_ai_landing_page/widgets/mobile_layout.dart';
+import 'package:gymm_ai_landing_page/widgets/measure_size.dart';
 import 'package:video_player/video_player.dart';
 
 // Enum for device types
@@ -60,6 +61,7 @@ class _LandingPageState extends State<LandingPage> {
   bool _wasEmailSubmitted = false;
   final TextEditingController _emailController = TextEditingController();
   VideoPlayerController? _videoController;
+  double _buttonWidth = 150; // Default width, will be updated when measured
 
   @override
   void initState() {
@@ -127,6 +129,7 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
@@ -138,7 +141,7 @@ class _LandingPageState extends State<LandingPage> {
                 top: MediaQuery.of(context).size.height * 0.5,
                 child: SizedBox(
                   child: FractionallySizedBox(
-                    heightFactor: 2,
+                    heightFactor: 1.5,
                     child: _buildVideoPlayer(context),
                   ),
                 ),
@@ -188,8 +191,8 @@ class _LandingPageState extends State<LandingPage> {
               top: 22,
               child: Image.asset(
                 'assets/png/logo.png',
-                width: 93,
-                height: 30,
+                width: !isMobile(context) ? 123 : 93,
+                height: !isMobile(context) ? 31 : 30,
               ),
             ),
             if (!isMobile(context))
@@ -267,20 +270,23 @@ class _LandingPageState extends State<LandingPage> {
             ),
           ] else ...[
             Padding(
-              padding: const EdgeInsets.only(top: 126, left: 0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // Left side - Main text
-                  _buildMainText(context),
+              padding: const EdgeInsets.only(top: 126, left: 40, right: 40),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: 1280,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Left side - Main text
+                    _buildMainText(context),
 
-                  const SizedBox(),
-
-                  _buildFormSection(
-                    context,
-                  ),
-                ],
+                    _buildFormSection(
+                      context,
+                    ),
+                  ],
+                ),
               ),
             ),
           ]
@@ -293,6 +299,18 @@ class _LandingPageState extends State<LandingPage> {
     BuildContext context,
   ) {
     final screenWidth = MediaQuery.of(context).size.width;
+
+    // Calculate responsive font size based on screen width
+    // Start shrinking when width goes below 1280px
+    double baseFontSize = 82.09;
+    double responsiveFontSize = baseFontSize;
+
+    if (screenWidth < 1100) {
+      // Calculate scale factor: at 1100px = 1.0, at 950px = 0.6 (more aggressive scaling)
+      double scaleFactor = 0.6 + (0.4 * (screenWidth - 950) / (1100 - 950));
+      scaleFactor = scaleFactor.clamp(0.6, 1.0); // Clamp between 0.6 and 1.0
+      responsiveFontSize = baseFontSize * scaleFactor;
+    }
 
     return Container(
       constraints: BoxConstraints(
@@ -309,7 +327,7 @@ class _LandingPageState extends State<LandingPage> {
               style: TextStyle(
                 fontFamily: 'Suisse',
                 fontWeight: FontWeight.w500,
-                fontSize: screenWidth > 950 ? 82.09 : 60,
+                fontSize: responsiveFontSize,
                 height: 79.81 / 82.09,
                 letterSpacing: 0,
                 color: Color.fromRGBO(255, 255, 255, 0.9),
@@ -324,6 +342,7 @@ class _LandingPageState extends State<LandingPage> {
                     textStyle: TextStyle(
                       fontSize: 82.09,
                       height: 79.81 / 82.09,
+                      fontWeight: FontWeight.w500,
                       letterSpacing: 0,
                       color: const Color.fromRGBO(130, 219, 255, 1),
                       shadows: [
@@ -390,52 +409,136 @@ class _LandingPageState extends State<LandingPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // Feature tags
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              'Record. Analyze. Improve.',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
-                fontFamily: 'Suisse',
-                letterSpacing: 0,
-                height: 26 / 15,
+        SizedBox(
+          width: 271 + 16 + _buttonWidth,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                'Record. Analyze. Improve.',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'Suisse',
+                  letterSpacing: 0,
+                  height: 26 / 15,
+                ),
               ),
-            ),
-            Text(
-              'Our AI-powered trainer turns your phone\ninto a performance-boosting machine.',
-              style: TextStyle(
-                color: Color(0xff7A7A7A),
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
-                fontFamily: 'Suisse',
-                letterSpacing: 0,
-                height: 26 / 20,
+              Text(
+                'Our AI-powered trainer turns your phone\ninto a performance-boosting machine.',
+                style: TextStyle(
+                  color: Color(0xff7A7A7A),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'Suisse',
+                  letterSpacing: 0,
+                  height: 26 / 20,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
 
         SizedBox(
           height: 31,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            EnterEmail(
-              onEmailValidationChanged: _onEmailValidationChanged,
-              emailController: _emailController,
-            ),
-            SizedBox(width: 16),
-            RequestAccessButton(
-              opacity: _isEmailValid ? 1.0 : 0.5,
-              onPressed: _isEmailValid ? _onRequestAccess : null,
-            ),
-          ],
-        )
+        _wasEmailSubmitted
+            ? Container(
+                key: ValueKey('success'),
+                width: 271 + 16 + _buttonWidth,
+                alignment: Alignment.centerLeft,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Thank you!',
+                      style: TextStyle(
+                        color: Color(0xffACACAC),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'Inter',
+                        letterSpacing: 0,
+                        height: 26 / 16,
+                      ),
+                    ),
+                    Text(
+                      'We will let you know once the app is ready.',
+                      style: TextStyle(
+                        color: Color(0xff616161),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: 'Inter',
+                        letterSpacing: 0,
+                        height: 26 / 16,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : SizedBox(
+                key: ValueKey('form'),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        EnterEmail(
+                          onEmailValidationChanged: _onEmailValidationChanged,
+                          emailController: _emailController,
+                        ),
+                        SizedBox(width: 16),
+                        MeasureSize(
+                          onChange: (Size size) {
+                            setState(() {
+                              _buttonWidth = size.width;
+                            });
+                          },
+                          child: RequestAccessButton(
+                            opacity: _isEmailValid ? 1.0 : 0.5,
+                            onPressed: _isEmailValid ? _onRequestAccess : null,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Text(
+                        'Available on Android and iOS',
+                        style: TextStyle(
+                          color: Color.fromRGBO(172, 172, 172, 0.5),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'Inter',
+                          letterSpacing: 0,
+                          height: 1,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: [
+        //     EnterEmail(
+        //       onEmailValidationChanged: _onEmailValidationChanged,
+        //       emailController: _emailController,
+        //     ),
+        //     SizedBox(width: 16),
+        //     RequestAccessButton(
+        //       opacity: _isEmailValid ? 1.0 : 0.5,
+        //       onPressed: _isEmailValid ? _onRequestAccess : null,
+        //     ),
+        //   ],
+        // )
       ],
     );
   }
