@@ -1,0 +1,58 @@
+name: 🚀 Build & Deploy Flutter Web to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    name: 🛠 Build & Upload
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Build Flutter web (release)
+        # no --base-href needed for a root domain
+        run: flutter build web --release
+
+      # OPTIONAL: if you ever move to a subfolder later, you can make assets load relative:
+      - name: (Optional) Make base href relative
+        run: sed -i 's|<base href="/">|<base href="./">|' build/web/index.html
+
+      - name: Add CNAME for custom domain
+        run: echo 'vcimbora.dev' > build/web/CNAME
+
+      - name: Disable Jekyll
+        run: touch build/web/.nojekyll
+
+      - id: deployment
+        name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    name: 🚀 Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
