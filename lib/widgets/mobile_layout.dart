@@ -53,9 +53,17 @@ class _MobileLayoutState extends State<MobileLayout> {
     });
 
     _emailFocusNode.addListener(() {
-      setState(() {
-        _isKeyboardVisible = _emailFocusNode.hasFocus;
-      });
+      if (!_emailFocusNode.hasFocus) {
+        Future.delayed(const Duration(milliseconds: 300), () {
+          setState(() {
+            _isKeyboardVisible = _emailFocusNode.hasFocus;
+          });
+        });
+      } else {
+        setState(() {
+          _isKeyboardVisible = _emailFocusNode.hasFocus;
+        });
+      }
     });
   }
 
@@ -115,8 +123,7 @@ class _MobileLayoutState extends State<MobileLayout> {
         14; // bottom spacing
 
     // Calculate required spacing to show at least half of video content
-    final availableSpaceBelow =
-        screenHeight - contentHeight - 60; // minus footer
+    final availableSpaceBelow = screenHeight - contentHeight; // minus footer
     final minimumVisibleVideoContent = scaledActualContentHeight / 2;
 
     // Add extra spacing if needed
@@ -137,7 +144,7 @@ class _MobileLayoutState extends State<MobileLayout> {
             // Start showing from black frame, then reveal phone content as user scrolls
             top: contentHeight -
                 scaledVideoHeight * blackFramePercentage -
-                _scrollOffset * 0.5,
+                _scrollOffset * 1,
             left: 0,
             width: screenWidth,
             height: scaledVideoHeight,
@@ -181,21 +188,6 @@ class _MobileLayoutState extends State<MobileLayout> {
                             emailController: widget.emailController,
                             isEmailValid: widget.isEmailValid,
                             onRequestAccess: widget.onRequestAccess,
-                          ),
-
-                          const SizedBox(height: 14),
-
-                          Center(
-                            child: Text(
-                              'Available on Android and iOS',
-                              style: TextStyle(
-                                color: const Color(0xffACACAC).withOpacity(0.5),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: 'Inter',
-                                letterSpacing: 0,
-                              ),
-                            ),
                           ),
                         ],
                       ),
@@ -393,6 +385,7 @@ class _MobileLayoutState extends State<MobileLayout> {
               emailController: emailController,
               isMobile: true,
               focusNode: _emailFocusNode,
+              comingFromMobileLayout: true,
             ),
           ),
 

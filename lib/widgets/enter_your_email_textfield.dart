@@ -10,12 +10,14 @@ class EnterEmail extends StatefulWidget {
   final Function(bool isValid) onEmailValidationChanged;
   final bool isMobile;
   final FocusNode? focusNode;
+  final bool comingFromMobileLayout;
 
   const EnterEmail({
     super.key,
     required this.emailController,
     required this.onEmailValidationChanged,
     this.isMobile = false,
+    this.comingFromMobileLayout = false,
     this.focusNode,
   });
 
@@ -128,40 +130,44 @@ class _EnterEmailState extends State<EnterEmail> {
                       // ),
                     ],
                   ),
-                  child: Padding(
-                    padding: EdgeInsetsGeometry.only(),
-                    child: TextField(
-                      controller: widget.emailController,
-                      focusNode: widget.focusNode,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.done,
-                      autofillHints: const [AutofillHints.email],
-                      cursorColor: Colors.white70,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: 'Inter',
-                        height: 20 / 15,
-                        letterSpacing: 0,
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: 17,
+                        right: 10,
                       ),
-                      decoration: InputDecoration(
-                        isCollapsed:
-                            true, // we control vertical size via Container
-                        border: InputBorder.none,
-                        hintText: 'Your email',
-                        hintStyle: TextStyle(
-                          color: Colors.white.withOpacity(0.5),
+                      child: TextField(
+                        controller: widget.emailController,
+                        focusNode: widget.focusNode,
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.done,
+                        autofillHints: const [AutofillHints.email],
+                        cursorColor: Colors.white70,
+                        style: const TextStyle(
+                          color: Colors.white,
                           fontSize: 15,
                           fontWeight: FontWeight.w400,
                           fontFamily: 'Inter',
                           height: 20 / 15,
                           letterSpacing: 0,
                         ),
-                        contentPadding: EdgeInsets.only(
-                          left: 17,
-                          right: 17,
-                          top: 19,
+                        decoration: InputDecoration(
+                          isCollapsed:
+                              true, // we control vertical size via Container
+                          border: InputBorder.none,
+                          hintText: 'Your email',
+                          hintStyle: TextStyle(
+                            color: Colors.white.withOpacity(0.5),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Inter',
+                            height: 20 / 15,
+                            letterSpacing: 0,
+                          ),
+                          contentPadding: EdgeInsets.only(
+                            bottom: 15,
+                            top: 15,
+                          ),
                         ),
                       ),
                     ),
