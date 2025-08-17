@@ -54,7 +54,7 @@ class _MobileLayoutState extends State<MobileLayout> {
 
     _emailFocusNode.addListener(() {
       if (!_emailFocusNode.hasFocus) {
-        Future.delayed(const Duration(milliseconds: 300), () {
+        Future.delayed(const Duration(milliseconds: 700), () {
           setState(() {
             _isKeyboardVisible = _emailFocusNode.hasFocus;
           });
@@ -110,7 +110,7 @@ class _MobileLayoutState extends State<MobileLayout> {
     // Calculate video dimensions when scaled to screen width
     final scaledVideoHeight = screenWidth / videoAspectRatio;
     final scaledActualContentHeight =
-        scaledVideoHeight * actualVideoContentHeightRatio;
+        scaledVideoHeight * actualVideoContentHeightRatio - 100;
 
     // Calculate content height (all elements before "Available on Android and iOS")
     const contentHeight = 22 + // top padding
@@ -124,15 +124,6 @@ class _MobileLayoutState extends State<MobileLayout> {
 
     // Calculate required spacing to show at least half of video content
     final availableSpaceBelow = screenHeight - contentHeight; // minus footer
-    final minimumVisibleVideoContent = scaledActualContentHeight / 2;
-
-    // Add extra spacing if needed
-    final extraSpacing = availableSpaceBelow < minimumVisibleVideoContent
-        ? minimumVisibleVideoContent - availableSpaceBelow
-        : 0;
-
-    // Total scrollable height should accommodate the full video
-    final totalScrollHeight = contentHeight + scaledActualContentHeight + 60;
 
     return Stack(
       children: [

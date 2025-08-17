@@ -166,7 +166,7 @@ class _EnterEmailState extends State<EnterEmail> {
                           ),
                           contentPadding: EdgeInsets.only(
                             bottom: 15,
-                            top: 15,
+                            top: 17,
                           ),
                         ),
                       ),
