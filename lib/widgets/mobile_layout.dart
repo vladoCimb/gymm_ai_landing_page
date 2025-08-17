@@ -217,7 +217,7 @@ class _MobileLayoutState extends State<MobileLayout> {
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 26, bottom: 22),
+                  padding: const EdgeInsets.only(left: 26, bottom: 22, top: 60),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
