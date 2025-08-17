@@ -153,6 +153,7 @@ class _LandingPageState extends State<LandingPage> {
                   emailController: _emailController,
                   isEmailValid: _isEmailValid,
                   onRequestAccess: _onRequestAccess,
+                  wasEmailSubmitted: _wasEmailSubmitted,
                 ),
               )
             else ...[
@@ -267,6 +268,7 @@ class _LandingPageState extends State<LandingPage> {
               emailController: _emailController,
               isEmailValid: _isEmailValid,
               onRequestAccess: _onRequestAccess,
+              wasEmailSubmitted: _wasEmailSubmitted,
             ),
           ] else ...[
             Padding(

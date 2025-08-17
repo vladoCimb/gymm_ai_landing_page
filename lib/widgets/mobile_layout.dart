@@ -9,6 +9,7 @@ class MobileLayout extends StatefulWidget {
   final TextEditingController emailController;
   final bool isEmailValid;
   final VoidCallback onRequestAccess;
+  final bool wasEmailSubmitted;
 
   const MobileLayout({
     super.key,
@@ -16,6 +17,7 @@ class MobileLayout extends StatefulWidget {
     required this.emailController,
     required this.isEmailValid,
     required this.onRequestAccess,
+    required this.wasEmailSubmitted,
   });
 
   @override
@@ -353,28 +355,59 @@ class _MobileLayoutState extends State<MobileLayout> {
 
         const SizedBox(height: 24),
 
-        // Email input - full width on mobile
-        SizedBox(
-          width: double.infinity,
-          child: EnterEmail(
-            onEmailValidationChanged: onEmailValidationChanged,
-            emailController: emailController,
-            isMobile: true,
-            focusNode: _emailFocusNode,
+        if (widget.wasEmailSubmitted)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Thank you!',
+                style: TextStyle(
+                  color: Color(0xffACACAC),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Inter',
+                  letterSpacing: 0,
+                  height: 26 / 16,
+                ),
+              ),
+              Text(
+                'We will let you know once the app is ready.',
+                style: TextStyle(
+                  color: Color(0xff616161),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'Inter',
+                  letterSpacing: 0,
+                  height: 26 / 16,
+                ),
+              ),
+            ],
+          )
+        else ...[
+          // Email input - full width on mobile
+          SizedBox(
+            width: double.infinity,
+            child: EnterEmail(
+              onEmailValidationChanged: onEmailValidationChanged,
+              emailController: emailController,
+              isMobile: true,
+              focusNode: _emailFocusNode,
+            ),
           ),
-        ),
 
-        const SizedBox(height: 16),
+          const SizedBox(height: 16),
 
-        // Request access button - full width on mobile
-        SizedBox(
-          width: double.infinity,
-          child: RequestAccessButton(
-            opacity: isEmailValid ? 1.0 : 0.5,
-            onPressed: isEmailValid ? onRequestAccess : null,
-            isMobile: true,
+          // Request access button - full width on mobile
+          SizedBox(
+            width: double.infinity,
+            child: RequestAccessButton(
+              opacity: isEmailValid ? 1.0 : 0.5,
+              onPressed: isEmailValid ? onRequestAccess : null,
+              isMobile: true,
+            ),
           ),
-        ),
+        ]
       ],
     );
   }
