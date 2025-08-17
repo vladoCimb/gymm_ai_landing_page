@@ -9,12 +9,14 @@ class EnterEmail extends StatefulWidget {
   final TextEditingController emailController;
   final Function(bool isValid) onEmailValidationChanged;
   final bool isMobile;
+  final FocusNode? focusNode;
 
   const EnterEmail({
     super.key,
     required this.emailController,
     required this.onEmailValidationChanged,
     this.isMobile = false,
+    this.focusNode,
   });
 
   @override
@@ -130,6 +132,7 @@ class _EnterEmailState extends State<EnterEmail> {
                     padding: EdgeInsetsGeometry.only(),
                     child: TextField(
                       controller: widget.emailController,
+                      focusNode: widget.focusNode,
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.done,
                       autofillHints: const [AutofillHints.email],

@@ -24,16 +24,43 @@ class MobileLayout extends StatefulWidget {
 
 class _MobileLayoutState extends State<MobileLayout> {
   VideoPlayerController? _mobileVideoController;
+  final ScrollController _scrollController = ScrollController();
+  double _scrollOffset = 0;
+  bool _isKeyboardVisible = false;
+
+  // Video dimensions
+  static const double videoOriginalWidth = 1420;
+  static const double videoOriginalHeight = 3132;
+  static const double videoAspectRatio =
+      videoOriginalWidth / videoOriginalHeight;
+
+  // Approximate percentage where actual content starts in the video (after black frame)
+  static const double blackFramePercentage = 0.6; // Adjust based on your video
+  static const double actualVideoContentHeightRatio = 1 - blackFramePercentage;
+
+  final FocusNode _emailFocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
     _initializeMobileVideo();
+    _scrollController.addListener(() {
+      setState(() {
+        _scrollOffset = _scrollController.offset;
+      });
+    });
+
+    _emailFocusNode.addListener(() {
+      setState(() {
+        _isKeyboardVisible = _emailFocusNode.hasFocus;
+      });
+    });
   }
 
   @override
   void dispose() {
     _mobileVideoController?.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -46,21 +73,17 @@ class _MobileLayoutState extends State<MobileLayout> {
       await _mobileVideoController!.initialize();
       await _mobileVideoController!.setLooping(true);
 
-      // Add listener for video state changes
       _mobileVideoController!.addListener(() {
         if (mounted) {
           setState(() {});
         }
       });
 
-      // For web, we need to handle autoplay restrictions
       try {
         await _mobileVideoController!.play();
       } catch (playError) {
         print(
             'Mobile video autoplay failed (this is normal on web): $playError');
-        // On web, autoplay might fail due to browser restrictions
-        // The video will still be ready to play when user interacts
       }
 
       setState(() {});
@@ -71,67 +94,126 @@ class _MobileLayoutState extends State<MobileLayout> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    // Calculate video dimensions when scaled to screen width
+    final scaledVideoHeight = screenWidth / videoAspectRatio;
+    final scaledActualContentHeight =
+        scaledVideoHeight * actualVideoContentHeightRatio;
+
+    // Calculate content height (all elements before "Available on Android and iOS")
+    const contentHeight = 22 + // top padding
+        60 + // Logo space
+        200 + // Approximate height for main text
+        16 + // spacing
+        180 + // Approximate height for form section
+        14 + // spacing
+        20 + // "Available on Android and iOS" text height
+        14; // bottom spacing
+
+    // Calculate required spacing to show at least half of video content
+    final availableSpaceBelow =
+        screenHeight - contentHeight - 60; // minus footer
+    final minimumVisibleVideoContent = scaledActualContentHeight / 2;
+
+    // Add extra spacing if needed
+    final extraSpacing = availableSpaceBelow < minimumVisibleVideoContent
+        ? minimumVisibleVideoContent - availableSpaceBelow
+        : 0;
+
+    // Total scrollable height should accommodate the full video
+    final totalScrollHeight = contentHeight + scaledActualContentHeight + 60;
+
     return Stack(
       children: [
-        // if (_mobileVideoController != null &&
-        //     _mobileVideoController!.value.isInitialized &&
-        //     MediaQuery.of(context).size.height > 670)
-        Positioned.fill(
-          child: FractionallySizedBox(
-            heightFactor: MediaQuery.of(context).size.height < 850 ? 0.95 : 1,
-            alignment: Alignment.bottomCenter,
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: VideoPlayer(_mobileVideoController!),
-            ),
+        // Video background - moves with scroll
+        if (_mobileVideoController != null &&
+            _mobileVideoController!.value.isInitialized)
+          Positioned(
+            // Position video based on scroll offset
+            // Start showing from black frame, then reveal phone content as user scrolls
+            top: contentHeight -
+                scaledVideoHeight * blackFramePercentage -
+                _scrollOffset * 0.5,
+            left: 0,
+            width: screenWidth,
+            height: scaledVideoHeight,
+            child: VideoPlayer(_mobileVideoController!),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 22),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Logo
-                SizedBox(
-                  height: 30 + 30,
+
+        // Scrollable content
+        SingleChildScrollView(
+          controller: _scrollController,
+          physics: const ClampingScrollPhysics(),
+          child: Column(
+            children: [
+              // Main content container
+              Container(
+                constraints: BoxConstraints(
+                  minHeight: screenHeight,
                 ),
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 28, vertical: 22),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Logo
+                          const SizedBox(
+                            height: 60,
+                          ),
 
-                // Mobile-optimized main text
-                _buildMobileMainText(context),
+                          // Mobile-optimized main text
+                          _buildMobileMainText(context),
 
-                const SizedBox(height: 16),
+                          const SizedBox(height: 16),
 
-                // Mobile-optimized form section
-                _buildMobileFormSection(
-                  context,
-                  onEmailValidationChanged: widget.onEmailValidationChanged,
-                  emailController: widget.emailController,
-                  isEmailValid: widget.isEmailValid,
-                  onRequestAccess: widget.onRequestAccess,
-                ),
+                          // Mobile-optimized form section
+                          _buildMobileFormSection(
+                            context,
+                            onEmailValidationChanged:
+                                widget.onEmailValidationChanged,
+                            emailController: widget.emailController,
+                            isEmailValid: widget.isEmailValid,
+                            onRequestAccess: widget.onRequestAccess,
+                          ),
 
-                const SizedBox(height: 14),
-                Center(
-                  child: Text(
-                    'Available on Android and iOS',
-                    style: TextStyle(
-                      color: Color(0xffACACAC).withOpacity(0.5),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      fontFamily: 'Inter',
-                      letterSpacing: 0,
+                          const SizedBox(height: 14),
+
+                          Center(
+                            child: Text(
+                              'Available on Android and iOS',
+                              style: TextStyle(
+                                color: const Color(0xffACACAC).withOpacity(0.5),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Inter',
+                                letterSpacing: 0,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+
+              // Extra scrollable space to reveal the full video
+              SizedBox(
+                height: scaledActualContentHeight > availableSpaceBelow
+                    ? scaledActualContentHeight - availableSpaceBelow + 100
+                    : 100,
+              ),
+            ],
           ),
         ),
-        if (MediaQuery.of(context).viewInsets.bottom > 0)
-          SizedBox.shrink()
-        else
+
+        // Footer - fixed at bottom
+        if (!_isKeyboardVisible)
           Positioned(
             bottom: 22,
             left: 26,
@@ -141,7 +223,7 @@ class _MobileLayoutState extends State<MobileLayout> {
                 Text(
                   '© Gymm AI 2025',
                   style: TextStyle(
-                    color: Color(0xff848484),
+                    color: const Color(0xff848484),
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                     fontFamily: 'Inter',
@@ -152,7 +234,7 @@ class _MobileLayoutState extends State<MobileLayout> {
                 Text(
                   'Term of Use  ·  Privacy Policy  ·  Contact us',
                   style: TextStyle(
-                    color: Color(0xffBBBBBB),
+                    color: const Color(0xffBBBBBB),
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                     fontFamily: 'Inter',
@@ -162,14 +244,14 @@ class _MobileLayoutState extends State<MobileLayout> {
                 )
               ],
             ),
-          )
+          ),
       ],
     );
   }
 
   static Widget _buildMobileMainText(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(
+      constraints: const BoxConstraints(
         maxWidth: 270,
         minWidth: 200,
       ),
@@ -180,7 +262,7 @@ class _MobileLayoutState extends State<MobileLayout> {
           RichText(
             textAlign: TextAlign.start,
             text: TextSpan(
-              style: TextStyle(
+              style: const TextStyle(
                 fontFamily: 'Suisse',
                 fontWeight: FontWeight.w500,
                 fontSize: 46.54, // Smaller font size for mobile
@@ -195,25 +277,25 @@ class _MobileLayoutState extends State<MobileLayout> {
                   baseline: TextBaseline.alphabetic,
                   child: FallingParticlesText(
                     text: 'AI',
-                    textStyle: TextStyle(
+                    textStyle: const TextStyle(
                       fontSize: 46.54, // Smaller font size for mobile
                       height: 45.25 / 46.54,
                       letterSpacing: 0,
-                      color: const Color.fromRGBO(130, 219, 255, 1),
+                      color: Color.fromRGBO(130, 219, 255, 1),
                       shadows: [
-                        const Shadow(
+                        Shadow(
                           color: Color.fromRGBO(63, 89, 255, 1),
                           offset: Offset(0, 0),
                           blurRadius: 9,
                         ),
-                        const Shadow(
+                        Shadow(
                           color: Color.fromRGBO(66, 91, 255, 1),
                           offset: Offset(0, 0),
                           blurRadius: 24,
                         ),
                         Shadow(
-                          color: const Color.fromRGBO(66, 91, 255, 1),
-                          offset: const Offset(0, 32),
+                          color: Color.fromRGBO(66, 91, 255, 1),
+                          offset: Offset(0, 32),
                           blurRadius: 48,
                         ),
                       ],
@@ -230,7 +312,7 @@ class _MobileLayoutState extends State<MobileLayout> {
     );
   }
 
-  static Widget _buildMobileFormSection(
+  Widget _buildMobileFormSection(
     BuildContext context, {
     required Function(bool) onEmailValidationChanged,
     required TextEditingController emailController,
@@ -244,7 +326,7 @@ class _MobileLayoutState extends State<MobileLayout> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Record. Analyze. Improve.',
               style: TextStyle(
                 color: Colors.white,
@@ -254,7 +336,7 @@ class _MobileLayoutState extends State<MobileLayout> {
                 letterSpacing: 0,
               ),
             ),
-            Text(
+            const Text(
               'Our AI-powered trainer turns your phone\ninto a performance-boosting machine.',
               textAlign: TextAlign.start,
               style: TextStyle(
@@ -278,6 +360,7 @@ class _MobileLayoutState extends State<MobileLayout> {
             onEmailValidationChanged: onEmailValidationChanged,
             emailController: emailController,
             isMobile: true,
+            focusNode: _emailFocusNode,
           ),
         ),
 

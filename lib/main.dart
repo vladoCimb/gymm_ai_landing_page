@@ -141,7 +141,7 @@ class _LandingPageState extends State<LandingPage> {
                 top: MediaQuery.of(context).size.height * 0.5,
                 child: SizedBox(
                   child: FractionallySizedBox(
-                    heightFactor: 1.5,
+                    heightFactor: 2,
                     child: _buildVideoPlayer(context),
                   ),
                 ),
