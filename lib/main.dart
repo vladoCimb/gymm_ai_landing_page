@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gymm_ai_landing_page/services/firebase_service.dart';
 import 'package:gymm_ai_landing_page/widgets/elipses.dart';
@@ -169,33 +170,35 @@ class _LandingPageState extends State<LandingPage> {
                 ),
               ),
             ],
-            Positioned(
-              left: 0,
-              top: 0,
-              child: IgnorePointer(
-                child: Transform.scale(
-                  scale: switch (getDeviceType(context)) {
-                    DeviceType.desktop => 1.0,
-                    DeviceType.tablet => 1.0,
-                    DeviceType.mobile => 0.4,
-                  },
-                  alignment: Alignment.topLeft,
-                  child: Elipses(
-                    width: 3612,
-                    height: 2500,
+            if (!isMobile(context))
+              Positioned(
+                left: 0,
+                top: 0,
+                child: IgnorePointer(
+                  child: Transform.scale(
+                    scale: switch (getDeviceType(context)) {
+                      DeviceType.desktop => 1.0,
+                      DeviceType.tablet => 1.0,
+                      DeviceType.mobile => 0.4,
+                    },
+                    alignment: Alignment.topLeft,
+                    child: Elipses(
+                      width: 3612,
+                      height: 2500,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              left: 28,
-              top: 22,
-              child: Image.asset(
-                'assets/png/logo.png',
-                width: !isMobile(context) ? 123 : 93,
-                height: !isMobile(context) ? 31 : 30,
+            if (!isMobile(context))
+              Positioned(
+                left: 28,
+                top: 22,
+                child: Image.asset(
+                  'assets/png/logo.png',
+                  width: !isMobile(context) ? 123 : 93,
+                  height: !isMobile(context) ? 31 : 30,
+                ),
               ),
-            ),
             if (!isMobile(context))
               Positioned(
                 left: MediaQuery.of(context).size.width * 0.1,

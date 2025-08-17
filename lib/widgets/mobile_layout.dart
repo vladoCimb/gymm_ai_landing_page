@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gymm_ai_landing_page/widgets/elipses.dart';
 import 'package:gymm_ai_landing_page/widgets/enter_your_email_textfield.dart';
 import 'package:gymm_ai_landing_page/widgets/falling_particles_text.dart';
 import 'package:gymm_ai_landing_page/widgets/request_access_button.dart';
@@ -141,6 +142,20 @@ class _MobileLayoutState extends State<MobileLayout> {
             height: scaledVideoHeight,
             child: VideoPlayer(_mobileVideoController!),
           ),
+        Positioned(
+          left: 0,
+          top: 0,
+          child: IgnorePointer(
+            child: Transform.scale(
+              scale: 0.4,
+              alignment: Alignment.topLeft,
+              child: Elipses(
+                width: 3612,
+                height: 2500,
+              ),
+            ),
+          ),
+        ),
 
         // Scrollable content
         SingleChildScrollView(
@@ -162,8 +177,13 @@ class _MobileLayoutState extends State<MobileLayout> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Logo
-                          const SizedBox(
-                            height: 60,
+                          Image.asset(
+                            'assets/png/logo.png',
+                            width: 93,
+                            height: 30,
+                          ),
+                          SizedBox(
+                            height: 29,
                           ),
 
                           // Mobile-optimized main text
@@ -189,47 +209,47 @@ class _MobileLayoutState extends State<MobileLayout> {
 
               // Extra scrollable space to reveal the full video
               SizedBox(
-                height: scaledActualContentHeight > availableSpaceBelow
-                    ? scaledActualContentHeight - availableSpaceBelow + 100
-                    : 100,
+                height: (scaledActualContentHeight > availableSpaceBelow
+                        ? scaledActualContentHeight - availableSpaceBelow + 100
+                        : 100) -
+                    100,
               ),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 26, bottom: 22),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '© Gymm AI 2025',
+                        style: TextStyle(
+                          color: const Color(0xff848484),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Inter',
+                          letterSpacing: 0,
+                          height: 20 / 13,
+                        ),
+                      ),
+                      Text(
+                        'Term of Use  ·  Privacy Policy  ·  Contact us',
+                        style: TextStyle(
+                          color: const Color(0xffBBBBBB),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Inter',
+                          letterSpacing: 0,
+                          height: 20 / 13,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ),
-
-        // Footer - fixed at bottom
-        if (!_isKeyboardVisible)
-          Positioned(
-            bottom: 22,
-            left: 26,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '© Gymm AI 2025',
-                  style: TextStyle(
-                    color: const Color(0xff848484),
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: 'Inter',
-                    letterSpacing: 0,
-                    height: 20 / 13,
-                  ),
-                ),
-                Text(
-                  'Term of Use  ·  Privacy Policy  ·  Contact us',
-                  style: TextStyle(
-                    color: const Color(0xffBBBBBB),
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: 'Inter',
-                    letterSpacing: 0,
-                    height: 20 / 13,
-                  ),
-                )
-              ],
-            ),
-          ),
       ],
     );
   }
@@ -256,7 +276,17 @@ class _MobileLayoutState extends State<MobileLayout> {
                 color: Color.fromRGBO(255, 255, 255, 0.9),
               ),
               children: [
-                const TextSpan(text: 'Transform your fitness with '),
+                const TextSpan(
+                  text: 'Transform your fitness with ',
+                  style: TextStyle(
+                    fontFamily: 'Suisse',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 46.54, // Smaller font size for mobile
+                    height: 45.25 / 46.54,
+                    letterSpacing: 0,
+                    color: Color.fromRGBO(255, 255, 255, 0.8),
+                  ),
+                ),
                 WidgetSpan(
                   alignment: PlaceholderAlignment.baseline,
                   baseline: TextBaseline.alphabetic,
@@ -266,6 +296,7 @@ class _MobileLayoutState extends State<MobileLayout> {
                       fontSize: 46.54, // Smaller font size for mobile
                       height: 45.25 / 46.54,
                       letterSpacing: 0,
+                      fontWeight: FontWeight.w500,
                       color: Color.fromRGBO(130, 219, 255, 1),
                       shadows: [
                         Shadow(
@@ -391,6 +422,22 @@ class _MobileLayoutState extends State<MobileLayout> {
               isMobile: true,
             ),
           ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 14),
+              child: Text(
+                'Available on Android and iOS',
+                style: TextStyle(
+                  color: Color.fromRGBO(172, 172, 172, 0.5),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'Inter',
+                  letterSpacing: 0,
+                  height: 1,
+                ),
+              ),
+            ),
+          )
         ]
       ],
     );
