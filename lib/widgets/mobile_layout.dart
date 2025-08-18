@@ -216,34 +216,37 @@ class _MobileLayoutState extends State<MobileLayout> {
               ),
               Align(
                 alignment: Alignment.bottomLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 26, bottom: 22, top: 60),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '© Gymm AI 2025',
-                        style: TextStyle(
-                          color: const Color(0xff848484),
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Inter',
-                          letterSpacing: 0,
-                          height: 20 / 13,
+                child: SelectionArea(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(left: 26, bottom: 22, top: 60),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '© Gymm AI 2025',
+                          style: TextStyle(
+                            color: const Color(0xff848484),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Inter',
+                            letterSpacing: 0,
+                            height: 20 / 13,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'Term of Use  ·  Privacy Policy  ·  Contact us',
-                        style: TextStyle(
-                          color: const Color(0xffBBBBBB),
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Inter',
-                          letterSpacing: 0,
-                          height: 20 / 13,
-                        ),
-                      )
-                    ],
+                        Text(
+                          'Term of Use  ·  Privacy Policy  ·  Contact us',
+                          style: TextStyle(
+                            color: const Color(0xffBBBBBB),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Inter',
+                            letterSpacing: 0,
+                            height: 20 / 13,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               )
@@ -297,6 +300,7 @@ class _MobileLayoutState extends State<MobileLayout> {
                       height: 45.25 / 46.54,
                       letterSpacing: 0,
                       fontWeight: FontWeight.w500,
+                      fontFamily: 'Suisse',
                       color: Color.fromRGBO(130, 219, 255, 1),
                       shadows: [
                         Shadow(
@@ -339,32 +343,34 @@ class _MobileLayoutState extends State<MobileLayout> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         // Feature tags - mobile optimized
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Record. Analyze. Improve.',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16, // Smaller for mobile
-                fontWeight: FontWeight.w500,
-                fontFamily: 'Suisse',
-                letterSpacing: 0,
+        SelectionArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Record. Analyze. Improve.',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16, // Smaller for mobile
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'Suisse',
+                  letterSpacing: 0,
+                ),
               ),
-            ),
-            const Text(
-              'Our AI-powered trainer turns your phone\ninto a performance-boosting machine.',
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                color: Color(0xff7A7A7A),
-                fontSize: 16, // Smaller for mobile
-                fontWeight: FontWeight.w500,
-                fontFamily: 'Suisse',
-                letterSpacing: 0,
-                height: 1.4,
+              const Text(
+                'Our AI-powered trainer turns your phone\ninto a performance-boosting machine.',
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  color: Color(0xff7A7A7A),
+                  fontSize: 16, // Smaller for mobile
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'Suisse',
+                  letterSpacing: 0,
+                  height: 1.4,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
 
         const SizedBox(height: 24),
@@ -425,7 +431,7 @@ class _MobileLayoutState extends State<MobileLayout> {
           Center(
             child: Padding(
               padding: const EdgeInsets.only(top: 14),
-              child: Text(
+              child: SelectableText(
                 'Available on Android and iOS',
                 style: TextStyle(
                   color: Color.fromRGBO(172, 172, 172, 0.5),

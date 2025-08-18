@@ -203,35 +203,37 @@ class _LandingPageState extends State<LandingPage> {
               Positioned(
                 left: MediaQuery.of(context).size.width * 0.1,
                 bottom: 40,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '© Gymm AI 2025',
-                      style: TextStyle(
-                        color: Color(0xff848484),
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'Inter',
-                        letterSpacing: 0,
-                        height: 20 / 13,
+                child: SelectionArea(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '© Gymm AI 2025',
+                        style: TextStyle(
+                          color: Color(0xff848484),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Inter',
+                          letterSpacing: 0,
+                          height: 20 / 13,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Term of Use  ·  Privacy Policy  ·  Contact us',
-                      style: TextStyle(
-                        color: Color(0xffBBBBBB),
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'Inter',
-                        letterSpacing: 0,
-                        height: 20 / 13,
+                      SizedBox(
+                        width: 10,
                       ),
-                    )
-                  ],
+                      Text(
+                        'Term of Use  ·  Privacy Policy  ·  Contact us',
+                        style: TextStyle(
+                          color: Color(0xffBBBBBB),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Inter',
+                          letterSpacing: 0,
+                          height: 20 / 13,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
           ],
@@ -337,7 +339,9 @@ class _LandingPageState extends State<LandingPage> {
                 color: Color.fromRGBO(255, 255, 255, 0.9),
               ),
               children: [
-                const TextSpan(text: 'Transform your fitness with '),
+                const TextSpan(
+                  text: 'Transform your fitness with ',
+                ),
                 WidgetSpan(
                   alignment: PlaceholderAlignment.baseline,
                   baseline: TextBaseline.alphabetic,
@@ -347,6 +351,7 @@ class _LandingPageState extends State<LandingPage> {
                       fontSize: 82.09,
                       height: 79.81 / 82.09,
                       fontWeight: FontWeight.w500,
+                      fontFamily: 'Suisse',
                       letterSpacing: 0,
                       color: const Color.fromRGBO(130, 219, 255, 1),
                       shadows: [
@@ -413,35 +418,37 @@ class _LandingPageState extends State<LandingPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // Feature tags
-        SizedBox(
-          width: 271 + 16 + _buttonWidth,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                'Record. Analyze. Improve.',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
-                  fontFamily: 'Suisse',
-                  letterSpacing: 0,
-                  height: 26 / 15,
+        SelectionArea(
+          child: SizedBox(
+            width: 271 + 16 + _buttonWidth,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  'Record. Analyze. Improve.',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'Suisse',
+                    letterSpacing: 0,
+                    height: 26 / 15,
+                  ),
                 ),
-              ),
-              Text(
-                'Our AI-powered trainer turns your phone\ninto a performance-boosting machine.',
-                style: TextStyle(
-                  color: Color(0xff7A7A7A),
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
-                  fontFamily: 'Suisse',
-                  letterSpacing: 0,
-                  height: 26 / 20,
+                Text(
+                  'Our AI-powered trainer turns your phone\ninto a performance-boosting machine.',
+                  style: TextStyle(
+                    color: Color(0xff7A7A7A),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'Suisse',
+                    letterSpacing: 0,
+                    height: 26 / 20,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
 
@@ -449,37 +456,39 @@ class _LandingPageState extends State<LandingPage> {
           height: 31,
         ),
         _wasEmailSubmitted
-            ? Container(
-                key: ValueKey('success'),
-                width: 271 + 16 + _buttonWidth,
-                alignment: Alignment.centerLeft,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Thank you!',
-                      style: TextStyle(
-                        color: Color(0xffACACAC),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'Inter',
-                        letterSpacing: 0,
-                        height: 26 / 16,
+            ? SelectionArea(
+                child: Container(
+                  key: ValueKey('success'),
+                  width: 271 + 16 + _buttonWidth,
+                  alignment: Alignment.centerLeft,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Thank you!',
+                        style: TextStyle(
+                          color: Color(0xffACACAC),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: 'Inter',
+                          letterSpacing: 0,
+                          height: 26 / 16,
+                        ),
                       ),
-                    ),
-                    Text(
-                      'We will let you know once the app is ready.',
-                      style: TextStyle(
-                        color: Color(0xff616161),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'Inter',
-                        letterSpacing: 0,
-                        height: 26 / 16,
+                      Text(
+                        'We will let you know once the app is ready.',
+                        style: TextStyle(
+                          color: Color(0xff616161),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Inter',
+                          letterSpacing: 0,
+                          height: 26 / 16,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               )
             : SizedBox(
@@ -513,7 +522,7 @@ class _LandingPageState extends State<LandingPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 10),
-                      child: Text(
+                      child: SelectableText(
                         'Available on Android and iOS',
                         style: TextStyle(
                           color: Color.fromRGBO(172, 172, 172, 0.5),
