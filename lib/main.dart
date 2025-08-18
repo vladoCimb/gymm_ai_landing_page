@@ -73,51 +73,87 @@ class LandingPage extends StatefulWidget {
   State<LandingPage> createState() => _LandingPageState();
 }
 
-class _LandingPageState extends State<LandingPage> {
+class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
   bool _isEmailValid = false;
   bool _wasEmailSubmitted = false;
   final TextEditingController _emailController = TextEditingController();
   VideoPlayerController? _videoController;
   double _buttonWidth = 150; // Default width, will be updated when measured
   final FocusNode _emailFocusNode = FocusNode();
+  bool _isVideoInitialized = false;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _initializeVideo();
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _emailController.dispose();
     _videoController?.dispose();
     super.dispose();
   }
 
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      // App became visible again, reinitialize video if needed
+      _handleVideoResume();
+    }
+  }
+
+  void _handleVideoResume() {
+    if (_videoController == null || !_videoController!.value.isInitialized) {
+      _initializeVideo();
+    } else if (_videoController!.value.isPlaying == false) {
+      // Try to resume playing if video was paused
+      try {
+        _videoController!.play();
+      } catch (e) {
+        print('Error resuming video: $e');
+      }
+    }
+  }
+
   void _initializeVideo() async {
+    if (_videoController != null) {
+      await _videoController!.dispose();
+    }
+
     _videoController = VideoPlayerController.asset('assets/png/video.mp4');
     try {
       await _videoController!.setVolume(0);
       await _videoController!.initialize();
       await _videoController!.setLooping(true);
 
-      // // Add listener for video state changes
+      // Add listener for video state changes
       _videoController!.addListener(() {
-        setState(() {});
+        if (mounted) {
+          setState(() {});
+        }
       });
 
       // For web, we need to handle autoplay restrictions
       try {
         await _videoController!.play();
+        _isVideoInitialized = true;
       } catch (playError) {
         print('Autoplay failed (this is normal on web): $playError');
         // On web, autoplay might fail due to browser restrictions
         // The video will still be ready to play when user interacts
+        _isVideoInitialized = true;
       }
 
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     } catch (e) {
       print('Error initializing video: $e');
+      _isVideoInitialized = false;
     }
   }
 
@@ -160,6 +196,16 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Check if video needs to be reinitialized after resize
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted &&
+          !isMobile(context) &&
+          (_videoController == null ||
+              !_videoController!.value.isInitialized)) {
+        _handleVideoResume();
+      }
+    });
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
@@ -505,16 +551,41 @@ class _LandingPageState extends State<LandingPage> {
   Widget _buildVideoPlayer(
     BuildContext context,
   ) {
+    // If video controller is not initialized, try to initialize it
     if (_videoController == null || !_videoController!.value.isInitialized) {
+      // Trigger video initialization if not already done
+      if (!_isVideoInitialized) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted &&
+              (_videoController == null ||
+                  !_videoController!.value.isInitialized)) {
+            _initializeVideo();
+          }
+        });
+      }
       return SizedBox();
+    }
+
+    // Ensure video is playing if it's initialized but not playing
+    if (_videoController!.value.isInitialized &&
+        !_videoController!.value.isPlaying) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted &&
+            _videoController != null &&
+            _videoController!.value.isInitialized) {
+          try {
+            _videoController!.play();
+          } catch (e) {
+            print('Error auto-playing video: $e');
+          }
+        }
+      });
     }
 
     return AspectRatio(
       aspectRatio: _videoController!.value.aspectRatio,
       child: VideoPlayer(_videoController!),
     );
-
-    // Play button overlay for web autoplay restrictions
   }
 
   Widget _buildFormSection(
