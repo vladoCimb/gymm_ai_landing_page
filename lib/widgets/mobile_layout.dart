@@ -31,7 +31,6 @@ class _MobileLayoutState extends State<MobileLayout> {
   VideoPlayerController? _mobileVideoController;
   final ScrollController _scrollController = ScrollController();
   double _scrollOffset = 0;
-  bool _isKeyboardVisible = false;
 
   // Video dimensions
   static const double videoOriginalWidth = 1420;
@@ -53,20 +52,6 @@ class _MobileLayoutState extends State<MobileLayout> {
       setState(() {
         _scrollOffset = _scrollController.offset;
       });
-    });
-
-    _emailFocusNode.addListener(() {
-      if (!_emailFocusNode.hasFocus) {
-        Future.delayed(const Duration(milliseconds: 700), () {
-          setState(() {
-            _isKeyboardVisible = _emailFocusNode.hasFocus;
-          });
-        });
-      } else {
-        setState(() {
-          _isKeyboardVisible = _emailFocusNode.hasFocus;
-        });
-      }
     });
   }
 

@@ -1,8 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide BoxShadow;
 import 'package:flutter_inset_shadow/flutter_inset_shadow.dart'
     hide BoxDecoration;
-import 'package:gymm_ai_landing_page/widgets/falling_particles_overlay.dart';
 
 class RequestAccessButton extends StatefulWidget {
   final double opacity;
@@ -26,10 +24,7 @@ class _RequestAccessButtonState extends State<RequestAccessButton> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isPhone = (defaultTargetPlatform == TargetPlatform.iOS ||
-        defaultTargetPlatform == TargetPlatform.android);
-
-    final button = AnimatedOpacity(
+    return AnimatedOpacity(
       opacity: widget.opacity,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
@@ -149,18 +144,5 @@ class _RequestAccessButtonState extends State<RequestAccessButton> {
         ),
       ),
     );
-
-    if (isPhone) {
-      return RepaintBoundary(child: button);
-    } else {
-      return RepaintBoundary(
-        child: FallingParticles(
-          enabled: widget.opacity == 1.0,
-          particleCount: 25,
-          dropHeight: 50,
-          child: button,
-        ),
-      );
-    }
   }
 }

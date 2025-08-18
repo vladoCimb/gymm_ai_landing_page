@@ -102,7 +102,9 @@ class _LandingPageState extends State<LandingPage> {
       await _videoController!.setLooping(true);
 
       // // Add listener for video state changes
-      // _videoController!.addListener(() {});
+      _videoController!.addListener(() {
+        setState(() {});
+      });
 
       // For web, we need to handle autoplay restrictions
       try {
