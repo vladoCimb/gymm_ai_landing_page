@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:gymm_ai_landing_page/pages/legal_doc_page.dart';
 import 'package:gymm_ai_landing_page/widgets/elipses.dart';
 import 'package:gymm_ai_landing_page/widgets/enter_your_email_textfield.dart';
 import 'package:gymm_ai_landing_page/widgets/falling_particles_text.dart';
 import 'package:gymm_ai_landing_page/widgets/request_access_button.dart';
 import 'package:video_player/video_player.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MobileLayout extends StatefulWidget {
   final Function(bool) onEmailValidationChanged;
@@ -103,6 +105,23 @@ class _MobileLayoutState extends State<MobileLayout> {
     }
   }
 
+  Future<void> _openEmail() async {
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: 'v.cimbora123@gmail.com',
+    );
+
+    if (await canLaunchUrl(emailUri)) {
+      await launchUrl(emailUri);
+    } else {
+      // Fallback for web or if email app can't be opened
+      final webEmailUri = Uri.parse('mailto:v.cimbora123@gmail.com');
+      if (await canLaunchUrl(webEmailUri)) {
+        await launchUrl(webEmailUri);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -140,7 +159,7 @@ class _MobileLayoutState extends State<MobileLayout> {
             left: 0,
             width: screenWidth,
             height: scaledVideoHeight,
-            child: VideoPlayer(_mobileVideoController!),
+            child: IgnorePointer(child: VideoPlayer(_mobileVideoController!)),
           ),
         Positioned(
           left: 0,
@@ -234,16 +253,96 @@ class _MobileLayoutState extends State<MobileLayout> {
                             height: 20 / 13,
                           ),
                         ),
-                        Text(
-                          'Term of Use  ·  Privacy Policy  ·  Contact us',
-                          style: TextStyle(
-                            color: const Color(0xffBBBBBB),
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: 'Inter',
-                            letterSpacing: 0,
-                            height: 20 / 13,
-                          ),
+                        Row(
+                          children: [
+                            MouseRegion(
+                              cursor: SystemMouseCursors.click,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => TermsOfUsePage(),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  'Term of Use',
+                                  style: TextStyle(
+                                    color: const Color(0xffBBBBBB),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: 'Inter',
+                                    letterSpacing: 0,
+                                    height: 20 / 13,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              '  ·  ',
+                              style: TextStyle(
+                                color: const Color(0xffBBBBBB),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Inter',
+                                letterSpacing: 0,
+                                height: 20 / 13,
+                              ),
+                            ),
+                            MouseRegion(
+                              cursor: SystemMouseCursors.click,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PrivacyPolicyPage(),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  'Privacy Policy',
+                                  style: TextStyle(
+                                    color: const Color(0xffBBBBBB),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: 'Inter',
+                                    letterSpacing: 0,
+                                    height: 20 / 13,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              '  ·  ',
+                              style: TextStyle(
+                                color: const Color(0xffBBBBBB),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Inter',
+                                letterSpacing: 0,
+                                height: 20 / 13,
+                              ),
+                            ),
+                            MouseRegion(
+                              cursor: SystemMouseCursors.click,
+                              child: GestureDetector(
+                                onTap: _openEmail,
+                                child: Text(
+                                  'Contact us',
+                                  style: TextStyle(
+                                    color: const Color(0xffBBBBBB),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: 'Inter',
+                                    letterSpacing: 0,
+                                    height: 20 / 13,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         )
                       ],
                     ),

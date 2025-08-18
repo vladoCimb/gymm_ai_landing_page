@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gymm_ai_landing_page/pages/legal_doc_page.dart';
 import 'package:gymm_ai_landing_page/services/firebase_service.dart';
 import 'package:gymm_ai_landing_page/widgets/elipses.dart';
 import 'package:gymm_ai_landing_page/widgets/enter_your_email_textfield.dart';
@@ -9,6 +9,8 @@ import 'package:gymm_ai_landing_page/widgets/request_access_button.dart';
 import 'package:gymm_ai_landing_page/widgets/mobile_layout.dart';
 import 'package:gymm_ai_landing_page/widgets/measure_size.dart';
 import 'package:video_player/video_player.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // Enum for device types
 enum DeviceType {
@@ -29,15 +31,23 @@ DeviceType getDeviceType(BuildContext context) {
   }
 }
 
-void main() {
-  Firebase.initializeApp(
-    options: FirebaseOptions(
-      apiKey: 'AIzaSyCGSSirJE0JPlpRY_ouuQpS1IsPCUHj6lU',
-      appId: '1:125731520630:web:71b85271c5bbed81869f57',
-      messagingSenderId: '125731520630',
-      projectId: 'gymm-6bfe7',
-    ),
-  );
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  try {
+    await Firebase.initializeApp(
+      options: FirebaseOptions(
+        apiKey: 'AIzaSyCGSSirJE0JPlpRY_ouuQpS1IsPCUHj6lU',
+        appId: '1:125731520630:web:71b85271c5bbed81869f57',
+        messagingSenderId: '125731520630',
+        projectId: 'gymm-6bfe7',
+        measurementId: "G-YJMG7TKMVX",
+      ),
+    );
+  } catch (e) {
+    print('Firebase initialization error: $e');
+  }
+
   runApp(const MyApp());
 }
 
@@ -46,7 +56,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: LandingPage());
+    return MaterialApp(
+      navigatorObservers: [
+        if (Firebase.apps.isNotEmpty)
+          FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
+      ],
+      home: LandingPage(),
+    );
   }
 }
 
@@ -79,7 +95,6 @@ class _LandingPageState extends State<LandingPage> {
 
   void _initializeVideo() async {
     _videoController = VideoPlayerController.asset('assets/png/video.mp4');
-
     try {
       await _videoController!.setVolume(0);
       await _videoController!.initialize();
@@ -124,6 +139,23 @@ class _LandingPageState extends State<LandingPage> {
       _emailController.clear();
       // TODO: Handle the email submission
       print('Requesting access for: $email');
+    }
+  }
+
+  Future<void> _openEmail() async {
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: 'v.cimbora123@gmail.com',
+    );
+
+    if (await canLaunchUrl(emailUri)) {
+      await launchUrl(emailUri);
+    } else {
+      // Fallback for web or if email app can't be opened
+      final webEmailUri = Uri.parse('mailto:v.cimbora123@gmail.com');
+      if (await canLaunchUrl(webEmailUri)) {
+        await launchUrl(webEmailUri);
+      }
     }
   }
 
@@ -203,37 +235,115 @@ class _LandingPageState extends State<LandingPage> {
               Positioned(
                 left: MediaQuery.of(context).size.width * 0.1,
                 bottom: 40,
-                child: SelectionArea(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '© Gymm AI 2025',
-                        style: TextStyle(
-                          color: Color(0xff848484),
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Inter',
-                          letterSpacing: 0,
-                          height: 20 / 13,
-                        ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '© Gymm AI 2025',
+                      style: TextStyle(
+                        color: Color(0xff848484),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: 'Inter',
+                        letterSpacing: 0,
+                        height: 20 / 13,
                       ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        'Term of Use  ·  Privacy Policy  ·  Contact us',
-                        style: TextStyle(
-                          color: Color(0xffBBBBBB),
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Inter',
-                          letterSpacing: 0,
-                          height: 20 / 13,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Row(
+                      children: [
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => TermsOfUsePage(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              'Term of Use',
+                              style: TextStyle(
+                                color: Color(0xffBBBBBB),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Inter',
+                                letterSpacing: 0,
+                                height: 20 / 13,
+                              ),
+                            ),
+                          ),
                         ),
-                      )
-                    ],
-                  ),
+                        Text(
+                          '  ·  ',
+                          style: TextStyle(
+                            color: Color(0xffBBBBBB),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Inter',
+                            letterSpacing: 0,
+                            height: 20 / 13,
+                          ),
+                        ),
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PrivacyPolicyPage(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              'Privacy Policy',
+                              style: TextStyle(
+                                color: Color(0xffBBBBBB),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Inter',
+                                letterSpacing: 0,
+                                height: 20 / 13,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          '  ·  ',
+                          style: TextStyle(
+                            color: Color(0xffBBBBBB),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Inter',
+                            letterSpacing: 0,
+                            height: 20 / 13,
+                          ),
+                        ),
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: _openEmail,
+                            child: Text(
+                              'Contact us',
+                              style: TextStyle(
+                                color: Color(0xffBBBBBB),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Inter',
+                                letterSpacing: 0,
+                                height: 20 / 13,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
               ),
           ],
