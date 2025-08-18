@@ -105,55 +105,57 @@ class _FallingParticlesTextState extends State<FallingParticlesText>
     final textW = _textSize!.width;
     final textH = _textSize!.height;
 
-    return SizedBox(
-      width: textW,
-      height: textH,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Text(widget.text, style: widget.textStyle),
-          Positioned(
-            left: 0,
-            top: textH - 10,
-            child: SizedBox(
-              width: textW,
-              height: widget.dropHeight,
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: _particles.map((p) {
-                  final double y = p.age * widget.dropHeight;
-                  final double xDrift =
-                      math.sin((p.age * 2 * math.pi) + p.driftSeed) * 6;
-                  final double x = p.initialX + xDrift;
-                  final double opacity = (1.0 - p.age).clamp(0.0, 1.0);
+    return RepaintBoundary(
+      child: SizedBox(
+        width: textW,
+        height: textH,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Text(widget.text, style: widget.textStyle),
+            Positioned(
+              left: 0,
+              top: textH - 10,
+              child: SizedBox(
+                width: textW,
+                height: widget.dropHeight,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: _particles.map((p) {
+                    final double y = p.age * widget.dropHeight;
+                    final double xDrift =
+                        math.sin((p.age * 2 * math.pi) + p.driftSeed) * 6;
+                    final double x = p.initialX + xDrift;
+                    final double opacity = (1.0 - p.age).clamp(0.0, 1.0);
 
-                  return Positioned(
-                    left: x,
-                    top: y,
-                    child: Opacity(
-                      opacity: opacity,
-                      child: Container(
-                        width: 2,
-                        height: 2,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.9),
-                          borderRadius: BorderRadius.circular(1),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.white.withOpacity(0.45 * opacity),
-                              blurRadius: 2,
-                              spreadRadius: 1,
-                            ),
-                          ],
+                    return Positioned(
+                      left: x,
+                      top: y,
+                      child: Opacity(
+                        opacity: opacity,
+                        child: Container(
+                          width: 2,
+                          height: 2,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.9),
+                            borderRadius: BorderRadius.circular(1),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.white.withOpacity(0.45 * opacity),
+                                blurRadius: 2,
+                                spreadRadius: 1,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                }).toList(),
+                    );
+                  }).toList(),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

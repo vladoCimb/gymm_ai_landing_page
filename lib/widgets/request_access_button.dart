@@ -151,13 +151,15 @@ class _RequestAccessButtonState extends State<RequestAccessButton> {
     );
 
     if (isPhone) {
-      return button;
+      return RepaintBoundary(child: button);
     } else {
-      return FallingParticles(
-        enabled: widget.opacity == 1.0,
-        particleCount: 25,
-        dropHeight: 50,
-        child: button,
+      return RepaintBoundary(
+        child: FallingParticles(
+          enabled: widget.opacity == 1.0,
+          particleCount: 25,
+          dropHeight: 50,
+          child: button,
+        ),
       );
     }
   }

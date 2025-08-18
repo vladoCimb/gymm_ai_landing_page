@@ -142,52 +142,54 @@ class _FallingParticlesState extends State<FallingParticles>
     final particleColor = widget.particleColor;
     final particleSize = widget.particleSize;
 
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        child,
-        Positioned(
-          left: 0,
-          top: height,
-          child: SizedBox(
-            width: width,
-            height: widget.dropHeight,
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: _particles.map((p) {
-                final double y = p.age * widget.dropHeight;
-                final double xDrift =
-                    math.sin((p.age * 2 * math.pi) + p.driftSeed) * 6;
-                final double x = p.initialX + xDrift;
-                final double opacity = (1.0 - p.age).clamp(0.0, 1.0);
+    return RepaintBoundary(
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          child,
+          Positioned(
+            left: 0,
+            top: height,
+            child: SizedBox(
+              width: width,
+              height: widget.dropHeight,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: _particles.map((p) {
+                  final double y = p.age * widget.dropHeight;
+                  final double xDrift =
+                      math.sin((p.age * 2 * math.pi) + p.driftSeed) * 6;
+                  final double x = p.initialX + xDrift;
+                  final double opacity = (1.0 - p.age).clamp(0.0, 1.0);
 
-                return Positioned(
-                  left: x,
-                  top: y,
-                  child: Opacity(
-                    opacity: opacity,
-                    child: Container(
-                      width: particleSize,
-                      height: particleSize,
-                      decoration: BoxDecoration(
-                        color: particleColor.withOpacity(0.9),
-                        borderRadius: BorderRadius.circular(particleSize / 2),
-                        boxShadow: [
-                          BoxShadow(
-                            color: particleColor.withOpacity(0.45 * opacity),
-                            blurRadius: 2,
-                            spreadRadius: 1,
-                          ),
-                        ],
+                  return Positioned(
+                    left: x,
+                    top: y,
+                    child: Opacity(
+                      opacity: opacity,
+                      child: Container(
+                        width: particleSize,
+                        height: particleSize,
+                        decoration: BoxDecoration(
+                          color: particleColor.withOpacity(0.9),
+                          borderRadius: BorderRadius.circular(particleSize / 2),
+                          boxShadow: [
+                            BoxShadow(
+                              color: particleColor.withOpacity(0.45 * opacity),
+                              blurRadius: 2,
+                              spreadRadius: 1,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              }).toList(),
+                  );
+                }).toList(),
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
         if (Firebase.apps.isNotEmpty)
           FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
       ],
-      home: LandingPage(),
+      home: const LandingPage(),
     );
   }
 }
@@ -100,12 +100,8 @@ class _LandingPageState extends State<LandingPage> {
       await _videoController!.initialize();
       await _videoController!.setLooping(true);
 
-      // Add listener for video state changes
-      _videoController!.addListener(() {
-        if (mounted) {
-          setState(() {});
-        }
-      });
+      // // Add listener for video state changes
+      // _videoController!.addListener(() {});
 
       // For web, we need to handle autoplay restrictions
       try {
@@ -175,7 +171,7 @@ class _LandingPageState extends State<LandingPage> {
                 child: SizedBox(
                   child: FractionallySizedBox(
                     heightFactor: 2,
-                    child: _buildVideoPlayer(context),
+                    child: RepaintBoundary(child: _buildVideoPlayer(context)),
                   ),
                 ),
               ),
@@ -521,148 +517,151 @@ class _LandingPageState extends State<LandingPage> {
   Widget _buildFormSection(
     BuildContext context,
   ) {
-    return Column(
-      crossAxisAlignment: isDesktop(context)
-          ? CrossAxisAlignment.start
-          : CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        // Feature tags
-        SelectionArea(
-          child: SizedBox(
-            width: 271 + 16 + _buttonWidth,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  'Record. Analyze. Improve.',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w400,
-                    fontFamily: 'Suisse',
-                    letterSpacing: 0,
-                    height: 26 / 15,
+    return RepaintBoundary(
+      child: Column(
+        crossAxisAlignment: isDesktop(context)
+            ? CrossAxisAlignment.start
+            : CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Feature tags
+          SelectionArea(
+            child: SizedBox(
+              width: 271 + 16 + _buttonWidth,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Record. Analyze. Improve.',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: 'Suisse',
+                      letterSpacing: 0,
+                      height: 26 / 15,
+                    ),
                   ),
-                ),
-                Text(
-                  'Our AI-powered trainer turns your phone\ninto a performance-boosting machine.',
-                  style: TextStyle(
-                    color: Color(0xff7A7A7A),
-                    fontSize: 20,
-                    fontWeight: FontWeight.w400,
-                    fontFamily: 'Suisse',
-                    letterSpacing: 0,
-                    height: 26 / 20,
+                  Text(
+                    'Our AI-powered trainer turns your phone\ninto a performance-boosting machine.',
+                    style: TextStyle(
+                      color: Color(0xff7A7A7A),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: 'Suisse',
+                      letterSpacing: 0,
+                      height: 26 / 20,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
 
-        SizedBox(
-          height: 31,
-        ),
-        _wasEmailSubmitted
-            ? SelectionArea(
-                child: Container(
-                  key: ValueKey('success'),
-                  width: 271 + 16 + _buttonWidth,
-                  alignment: Alignment.centerLeft,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Thank you!',
-                        style: TextStyle(
-                          color: Color(0xffACACAC),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          fontFamily: 'Inter',
-                          letterSpacing: 0,
-                          height: 26 / 16,
-                        ),
-                      ),
-                      Text(
-                        'We will let you know once the app is ready.',
-                        style: TextStyle(
-                          color: Color(0xff616161),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Inter',
-                          letterSpacing: 0,
-                          height: 26 / 16,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            : SizedBox(
-                key: ValueKey('form'),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+          SizedBox(
+            height: 31,
+          ),
+          _wasEmailSubmitted
+              ? SelectionArea(
+                  child: Container(
+                    key: ValueKey('success'),
+                    width: 271 + 16 + _buttonWidth,
+                    alignment: Alignment.centerLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        EnterEmail(
-                          onEmailValidationChanged: _onEmailValidationChanged,
-                          emailController: _emailController,
+                        Text(
+                          'Thank you!',
+                          style: TextStyle(
+                            color: Color(0xffACACAC),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            fontFamily: 'Inter',
+                            letterSpacing: 0,
+                            height: 26 / 16,
+                          ),
                         ),
-                        SizedBox(width: 16),
-                        MeasureSize(
-                          onChange: (Size size) {
-                            setState(() {
-                              _buttonWidth = size.width;
-                            });
-                          },
-                          child: RequestAccessButton(
-                            opacity: _isEmailValid ? 1.0 : 0.5,
-                            onPressed: _isEmailValid ? _onRequestAccess : null,
+                        Text(
+                          'We will let you know once the app is ready.',
+                          style: TextStyle(
+                            color: Color(0xff616161),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Inter',
+                            letterSpacing: 0,
+                            height: 26 / 16,
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: SelectableText(
-                        'Available on Android and iOS',
-                        style: TextStyle(
-                          color: Color.fromRGBO(172, 172, 172, 0.5),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'Inter',
-                          letterSpacing: 0,
-                          height: 1,
-                        ),
+                  ),
+                )
+              : SizedBox(
+                  key: ValueKey('form'),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          EnterEmail(
+                            onEmailValidationChanged: _onEmailValidationChanged,
+                            emailController: _emailController,
+                          ),
+                          SizedBox(width: 16),
+                          MeasureSize(
+                            onChange: (Size size) {
+                              setState(() {
+                                _buttonWidth = size.width;
+                              });
+                            },
+                            child: RequestAccessButton(
+                              opacity: _isEmailValid ? 1.0 : 0.5,
+                              onPressed:
+                                  _isEmailValid ? _onRequestAccess : null,
+                            ),
+                          ),
+                        ],
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: SelectableText(
+                          'Available on Android and iOS',
+                          style: TextStyle(
+                            color: Color.fromRGBO(172, 172, 172, 0.5),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Inter',
+                            letterSpacing: 0,
+                            height: 1,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
 
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: [
-        //     EnterEmail(
-        //       onEmailValidationChanged: _onEmailValidationChanged,
-        //       emailController: _emailController,
-        //     ),
-        //     SizedBox(width: 16),
-        //     RequestAccessButton(
-        //       opacity: _isEmailValid ? 1.0 : 0.5,
-        //       onPressed: _isEmailValid ? _onRequestAccess : null,
-        //     ),
-        //   ],
-        // )
-      ],
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     EnterEmail(
+          //       onEmailValidationChanged: _onEmailValidationChanged,
+          //       emailController: _emailController,
+          //     ),
+          //     SizedBox(width: 16),
+          //     RequestAccessButton(
+          //       opacity: _isEmailValid ? 1.0 : 0.5,
+          //       onPressed: _isEmailValid ? _onRequestAccess : null,
+          //     ),
+          //   ],
+          // )
+        ],
+      ),
     );
   }
 }

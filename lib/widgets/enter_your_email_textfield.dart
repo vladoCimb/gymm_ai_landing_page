@@ -52,132 +52,112 @@ class _EnterEmailState extends State<EnterEmail> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: IgnorePointer(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(61),
+    return RepaintBoundary(
+      child: MouseRegion(
+        onEnter: (_) => setState(() => _isHovered = true),
+        onExit: (_) => setState(() => _isHovered = false),
+        child: Focus(
+          onFocusChange: (hasFocus) => setState(() => _isFocused = hasFocus),
+          child: Container(
+            width: widget.isMobile ? double.infinity : 271,
+            height: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(61),
+              color: (_isHovered || _isFocused)
+                  ? const Color.fromRGBO(221, 229, 255, 0.15)
+                  : const Color.fromRGBO(221, 229, 255, 0.12),
+              border: GradientBoxBorder(
+                width: 1,
                 gradient: LinearGradient(
-                  transform: GradientRotation(246.75 * math.pi / 90),
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
-                  // begin: _beginFromCssAngle(246.75),
-                  // end: _endFromCssAngle(246.75),
+                  transform: GradientRotation((25 - 322.08) * math.pi / 180),
                   colors: const [
-                    Color.fromRGBO(0, 0, 0, 0.0),
-                    Color.fromRGBO(67, 86, 255, 0.4),
+                    Color.fromRGBO(255, 255, 255, 0.28),
+                    Color.fromRGBO(124, 124, 124, 0.1092),
+                    Color.fromRGBO(255, 255, 255, 0.21),
                   ],
-                  stops: const [0.3498, 0.9627], // 34.98%, 96.27%
+                  stops: const [0.012, 0.5078, 0.9555],
                 ),
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: Color.fromRGBO(0, 0, 0, 0.2),
+                  offset: Offset(0, 3),
+                  blurRadius: 9,
+                  spreadRadius: 0,
+                  inset: false,
+                ),
+              ],
             ),
-          ),
-        ),
-        MouseRegion(
-          onEnter: (_) => setState(() => _isHovered = true),
-          onExit: (_) => setState(() => _isHovered = false),
-          child: Focus(
-            onFocusChange: (hasFocus) => setState(() => _isFocused = hasFocus),
-            child: TweenAnimationBuilder<Color?>(
-              duration: const Duration(milliseconds: 200),
-              tween: ColorTween(
-                begin: const Color.fromRGBO(221, 229, 255, 0.12),
-                end: (_isHovered || _isFocused)
-                    ? const Color.fromRGBO(221, 229, 255, 0.15)
-                    : const Color.fromRGBO(221, 229, 255, 0.12),
-              ),
-              builder: (context, color, child) {
-                return Container(
-                  width: widget.isMobile ? double.infinity : 271,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(61),
-                    color: color ?? const Color.fromRGBO(221, 229, 255, 0.12),
-                    border: GradientBoxBorder(
-                      width: 1,
+            child: Stack(
+              children: [
+                // Background gradient layer
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(61),
                       gradient: LinearGradient(
-                        // CSS 322.08deg → Flutter rotation
-                        transform:
-                            GradientRotation((25 - 322.08) * math.pi / 180),
+                        transform: GradientRotation(246.75 * math.pi / 90),
+                        begin: Alignment.bottomLeft,
+                        end: Alignment.topRight,
                         colors: const [
-                          Color.fromRGBO(255, 255, 255, 0.28),
-                          Color.fromRGBO(124, 124, 124, 0.1092),
-                          Color.fromRGBO(255, 255, 255, 0.21),
+                          Color.fromRGBO(0, 0, 0, 0.0),
+                          Color.fromRGBO(67, 86, 255, 0.4),
                         ],
-                        stops: const [
-                          0.012,
-                          0.5078,
-                          0.9555
-                        ], // 1.2%, 40.78%, 95.55%
+                        stops: const [0.3498, 0.9627],
                       ),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color.fromRGBO(0, 0, 0, 0.2),
-                        offset: Offset(0, 3),
-                        blurRadius: 9,
-                        spreadRadius: 0,
-                        inset: false,
-                      ),
-                      // BoxShadow(
-                      //   color: Color.fromRGBO(255, 255, 255, 0.04),
-                      //   offset: Offset(0, 4),
-                      //   blurRadius: 6.1,
-                      //   spreadRadius: 0,
-                      //   inset: true, // this is your inset shadow
-                      // ),
-                    ],
                   ),
-                  child: Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: 17,
-                        right: 10,
+                ),
+                // Text field layer
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 17,
+                      right: 10,
+                    ),
+                    child: TextField(
+                      controller: widget.emailController,
+                      focusNode: widget.focusNode,
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.done,
+                      autofillHints: const [AutofillHints.email],
+                      cursorColor: Colors.white70,
+                      // Safari-specific fixes
+                      enableInteractiveSelection: true,
+                      textAlignVertical: TextAlignVertical.center,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'Inter',
+                        height: 20 / 15,
+                        letterSpacing: 0,
                       ),
-                      child: TextField(
-                        controller: widget.emailController,
-                        focusNode: widget.focusNode,
-                        keyboardType: TextInputType.emailAddress,
-                        textInputAction: TextInputAction.done,
-                        autofillHints: const [AutofillHints.email],
-                        cursorColor: Colors.white70,
-                        style: const TextStyle(
-                          color: Colors.white,
+                      decoration: InputDecoration(
+                        isCollapsed: true,
+                        border: InputBorder.none,
+                        hintText: 'Your email',
+                        hintStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.5),
                           fontSize: 15,
                           fontWeight: FontWeight.w400,
                           fontFamily: 'Inter',
                           height: 20 / 15,
                           letterSpacing: 0,
                         ),
-                        decoration: InputDecoration(
-                          isCollapsed:
-                              true, // we control vertical size via Container
-                          border: InputBorder.none,
-                          hintText: 'Your email',
-                          hintStyle: TextStyle(
-                            color: Colors.white.withOpacity(0.5),
-                            fontSize: 15,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: 'Inter',
-                            height: 20 / 15,
-                            letterSpacing: 0,
-                          ),
-                          contentPadding: EdgeInsets.only(
-                            bottom: 15,
-                            top: 17,
-                          ),
+                        contentPadding: const EdgeInsets.only(
+                          bottom: 15,
+                          top: 17,
                         ),
                       ),
                     ),
                   ),
-                );
-              },
+                ),
+              ],
             ),
           ),
         ),
-      ],
+      ),
     );
   }
 }
