@@ -79,6 +79,7 @@ class _LandingPageState extends State<LandingPage> {
   final TextEditingController _emailController = TextEditingController();
   VideoPlayerController? _videoController;
   double _buttonWidth = 150; // Default width, will be updated when measured
+  final FocusNode _emailFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -609,6 +610,7 @@ class _LandingPageState extends State<LandingPage> {
                           EnterEmail(
                             onEmailValidationChanged: _onEmailValidationChanged,
                             emailController: _emailController,
+                            focusNode: _emailFocusNode,
                           ),
                           SizedBox(width: 16),
                           MeasureSize(
