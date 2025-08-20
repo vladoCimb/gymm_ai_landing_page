@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gymm_ai_landing_page/pages/legal_doc_page.dart';
 import 'package:gymm_ai_landing_page/services/firebase_service.dart';
 import 'package:gymm_ai_landing_page/widgets/elipses.dart';
+import 'package:gymm_ai_landing_page/widgets/ellipses_without_animation.dart';
 import 'package:gymm_ai_landing_page/widgets/enter_your_email_textfield.dart';
 import 'package:gymm_ai_landing_page/widgets/falling_particles_text.dart';
 import 'package:gymm_ai_landing_page/widgets/request_access_button.dart';
@@ -248,25 +249,25 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
                 ),
               ),
             ],
-            if (!isMobile(context))
-              Positioned(
-                left: 0,
-                top: 0,
-                child: IgnorePointer(
-                  child: Transform.scale(
-                    scale: switch (getDeviceType(context)) {
-                      DeviceType.desktop => 1.0,
-                      DeviceType.tablet => 1.0,
-                      DeviceType.mobile => 0.4,
-                    },
-                    alignment: Alignment.topLeft,
-                    child: Elipses(
-                      width: 3612,
-                      height: 2500,
-                    ),
-                  ),
-                ),
-              ),
+            // if (!isMobile(context))
+            //   Positioned(
+            //     left: 0,
+            //     top: 0,
+            //     child: IgnorePointer(
+            //       child: Transform.scale(
+            //         scale: switch (getDeviceType(context)) {
+            //           DeviceType.desktop => 1.0,
+            //           DeviceType.tablet => 1.0,
+            //           DeviceType.mobile => 0.4,
+            //         },
+            //         alignment: Alignment.topLeft,
+            //         child: ElipsesWithoutAnimation(
+            //           width: 3612,
+            //           height: 2500,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
             if (!isMobile(context))
               Positioned(
                 left: 28,
@@ -529,7 +530,7 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
                         ),
                       ],
                     ),
-                    particleCount: 15,
+                    particleCount: 10,
                     dropHeight: 80,
                   ),
                 ),

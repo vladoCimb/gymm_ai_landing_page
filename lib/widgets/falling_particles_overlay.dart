@@ -32,7 +32,8 @@ class FallingParticles extends StatefulWidget {
 
 class _FallingParticlesState extends State<FallingParticles>
     with TickerProviderStateMixin {
-  static const double _baseDropDurationSeconds = 4.0;
+  static const double _baseDropDurationSeconds =
+      2.0; // Reduced from 4.0 to make particles fall faster
 
   final GlobalKey _childKey = GlobalKey();
   late final Ticker _ticker;
@@ -41,6 +42,12 @@ class _FallingParticlesState extends State<FallingParticles>
 
   Size? _childSize;
   late List<_Particle> _particles;
+
+  // Performance optimizations
+  static const double _targetFPS = 30.0; // Limit to 30 FPS for web
+  static const double _frameInterval = 1.0 / _targetFPS;
+  double _accumulatedTime = 0.0;
+  bool _needsUpdate = false;
 
   @override
   void initState() {
@@ -82,19 +89,28 @@ class _FallingParticlesState extends State<FallingParticles>
     _lastTick = elapsed;
     if (_childSize == null || dt <= 0) return;
 
-    bool changed = false;
+    // Accumulate time and only update at target FPS
+    _accumulatedTime += dt;
+    if (_accumulatedTime < _frameInterval) return;
+
+    _accumulatedTime = 0.0;
+    _needsUpdate = false;
+
+    // Update particles
     for (int i = 0; i < _particles.length; i++) {
       final p = _particles[i];
       p.age += (dt / _baseDropDurationSeconds) * p.speedFactor;
       if (p.age >= 1.0) {
         _particles[i] =
             _spawnParticle(width: _childSize!.width, randomizeAge: false);
-        changed = true;
+        _needsUpdate = true;
       } else {
-        changed = true;
+        _needsUpdate = true;
       }
     }
-    if (changed && mounted) setState(() {});
+
+    // Only call setState if something actually changed
+    if (_needsUpdate && mounted) setState(() {});
   }
 
   void _measureChild() {
@@ -117,7 +133,9 @@ class _FallingParticlesState extends State<FallingParticles>
     return _Particle(
       initialX: _random.nextDouble() * width,
       driftSeed: _random.nextDouble() * math.pi * 2,
-      speedFactor: 0.7 + _random.nextDouble() * 0.9,
+      speedFactor: 1.2 +
+          _random.nextDouble() *
+              1.3, // Increased base speed and range for faster falling
       age: randomizeAge ? _random.nextDouble() : 0.0,
     );
   }
@@ -147,44 +165,20 @@ class _FallingParticlesState extends State<FallingParticles>
         clipBehavior: Clip.none,
         children: [
           child,
+          // Use CustomPaint for better performance instead of multiple Positioned widgets
           Positioned(
             left: 0,
             top: height,
             child: SizedBox(
               width: width,
               height: widget.dropHeight,
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: _particles.map((p) {
-                  final double y = p.age * widget.dropHeight;
-                  final double xDrift =
-                      math.sin((p.age * 2 * math.pi) + p.driftSeed) * 6;
-                  final double x = p.initialX + xDrift;
-                  final double opacity = (1.0 - p.age).clamp(0.0, 1.0);
-
-                  return Positioned(
-                    left: x,
-                    top: y,
-                    child: Opacity(
-                      opacity: opacity,
-                      child: Container(
-                        width: particleSize,
-                        height: particleSize,
-                        decoration: BoxDecoration(
-                          color: particleColor.withOpacity(0.9),
-                          borderRadius: BorderRadius.circular(particleSize / 2),
-                          boxShadow: [
-                            BoxShadow(
-                              color: particleColor.withOpacity(0.45 * opacity),
-                              blurRadius: 2,
-                              spreadRadius: 1,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
+              child: CustomPaint(
+                painter: _ParticlesPainter(
+                  particles: _particles,
+                  dropHeight: widget.dropHeight,
+                  particleColor: particleColor,
+                  particleSize: particleSize,
+                ),
               ),
             ),
           ),
@@ -192,6 +186,43 @@ class _FallingParticlesState extends State<FallingParticles>
       ),
     );
   }
+}
+
+// Custom painter for better performance
+class _ParticlesPainter extends CustomPainter {
+  final List<_Particle> particles;
+  final double dropHeight;
+  final Color particleColor;
+  final double particleSize;
+
+  _ParticlesPainter({
+    required this.particles,
+    required this.dropHeight,
+    required this.particleColor,
+    required this.particleSize,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = particleColor.withOpacity(0.9)
+      ..style = PaintingStyle.fill;
+
+    for (final p in particles) {
+      final double y = p.age * dropHeight;
+      final double xDrift = math.sin((p.age * 2 * math.pi) + p.driftSeed) * 6;
+      final double x = p.initialX + xDrift;
+      final double opacity = (1.0 - p.age).clamp(0.0, 1.0);
+
+      if (opacity > 0) {
+        paint.color = particleColor.withOpacity(0.9 * opacity);
+        canvas.drawCircle(Offset(x, y), particleSize / 2, paint);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
 
 class _Particle {

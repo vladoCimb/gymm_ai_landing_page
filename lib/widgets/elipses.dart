@@ -57,22 +57,23 @@ class _ElipsesState extends State<Elipses> with TickerProviderStateMixin {
             alignment: Alignment.center,
             children: [
               //  Bottom layer with gentle wave
-              // AnimatedBuilder(
-              //   animation: _waveController,
-              //   builder: (context, child) {
-              //     final waveValue = math.sin(_waveController.value * 2 * math.pi);
-              //     return Positioned(
-              //       top: 0 + waveValue * 80,
-              //       left: 0 + waveValue * 60,
-              //       child: ImageFiltered(
-              //         imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-              //         child: SvgPicture.asset(
-              //           'assets/ellipses/bottom_one.svg',
-              //         ),
-              //       ),
-              //     );
-              //   },
-              // ),
+              AnimatedBuilder(
+                animation: _waveController,
+                builder: (context, child) {
+                  final waveValue =
+                      math.sin(_waveController.value * 2 * math.pi);
+                  return Positioned(
+                    top: 0 + waveValue * 80,
+                    left: 0 + waveValue * 60,
+                    child: ImageFiltered(
+                      imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+                      child: SvgPicture.asset(
+                        'assets/ellipses/bottom_one.svg',
+                      ),
+                    ),
+                  );
+                },
+              ),
 
               // Side layer with float animation -- TURN RED during redPhase
               AnimatedBuilder(
@@ -234,22 +235,23 @@ class _ElipsesState extends State<Elipses> with TickerProviderStateMixin {
               ),
 
               //Layer 4 with gentle wave -- BIGMIDDLE BUBBLE
-              // AnimatedBuilder(
-              //   animation: _waveController,
-              //   builder: (context, child) {
-              //     final waveValue = math.sin(_waveController.value * 2 * math.pi);
-              //     return Positioned(
-              //       top: 0 + waveValue * 100,
-              //       left: -10 + waveValue * 0,
-              //       child: ImageFiltered(
-              //         imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-              //         child: SvgPicture.asset(
-              //           'assets/ellipses/4.svg',
-              //         ),
-              //       ),
-              //     );
-              //   },
-              // ),
+              AnimatedBuilder(
+                animation: _waveController,
+                builder: (context, child) {
+                  final waveValue =
+                      math.sin(_waveController.value * 2 * math.pi);
+                  return Positioned(
+                    top: 0 + waveValue * 100,
+                    left: -10 + waveValue * 0,
+                    child: ImageFiltered(
+                      imageFilter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                      child: SvgPicture.asset(
+                        'assets/ellipses/4.svg',
+                      ),
+                    ),
+                  );
+                },
+              ),
 
               Positioned(
                 top: -10,
@@ -287,22 +289,23 @@ class _ElipsesState extends State<Elipses> with TickerProviderStateMixin {
               ),
 
               //  Top ellipse with wave
-              // AnimatedBuilder(
-              //   animation: _waveController,
-              //   builder: (context, child) {
-              //     final waveValue = math.sin(_waveController.value * 2 * math.pi);
-              //     return Positioned(
-              //       left: 0 + waveValue * 35,
-              //       top: 0 + waveValue * 45,
-              //       child: ImageFiltered(
-              //         imageFilter: ImageFilter.blur(sigmaX: 84, sigmaY: 84),
-              //         child: SvgPicture.asset(
-              //           'assets/ellipses/top_elipse.svg',
-              //         ),
-              //       ),
-              //     );
-              //   },
-              // ),
+              AnimatedBuilder(
+                animation: _waveController,
+                builder: (context, child) {
+                  final waveValue =
+                      math.sin(_waveController.value * 2 * math.pi);
+                  return Positioned(
+                    left: 0 + waveValue * 35,
+                    top: 0 + waveValue * 45,
+                    child: ImageFiltered(
+                      imageFilter: ImageFilter.blur(sigmaX: 84, sigmaY: 84),
+                      child: SvgPicture.asset(
+                        'assets/ellipses/top_elipse.svg',
+                      ),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
