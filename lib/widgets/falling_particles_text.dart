@@ -38,7 +38,7 @@ class _FallingParticlesTextState extends State<FallingParticlesText>
   bool _needsUpdate = false;
 
   static const double _baseDropDurationSeconds =
-      2.0; // Reduced from 4.0 to make particles fall faster
+      6.0; // Reduced from 4.0 to make particles fall faster
 
   @override
   void initState() {

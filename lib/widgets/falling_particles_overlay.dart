@@ -33,7 +33,7 @@ class FallingParticles extends StatefulWidget {
 class _FallingParticlesState extends State<FallingParticles>
     with TickerProviderStateMixin {
   static const double _baseDropDurationSeconds =
-      2.0; // Reduced from 4.0 to make particles fall faster
+      6.0; // Reduced from 4.0 to make particles fall faster
 
   final GlobalKey _childKey = GlobalKey();
   late final Ticker _ticker;
