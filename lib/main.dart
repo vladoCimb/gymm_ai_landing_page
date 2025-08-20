@@ -57,6 +57,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       navigatorObservers: [
         if (Firebase.apps.isNotEmpty)
           FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
