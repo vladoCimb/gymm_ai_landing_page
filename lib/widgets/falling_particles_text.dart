@@ -46,24 +46,29 @@ class _FallingParticlesTextState extends State<FallingParticlesText>
     _random = math.Random();
 
     _ticker = createTicker((elapsed) {
+      // Cross-browser timing fix: use a more reliable timing method
       final double dt = _lastTick == Duration.zero
-          ? 0
+          ? 0.016 // Default to ~60 FPS if no previous tick
           : (elapsed - _lastTick).inMicroseconds / 1e6;
+
+      // Clamp dt to prevent extreme values on different browsers
+      final double clampedDt = dt.clamp(0.001, 0.1); // Between 1ms and 100ms
       _lastTick = elapsed;
 
-      if (_textSize == null || dt == 0) return;
+      if (_textSize == null || clampedDt == 0) return;
 
       // Accumulate time and only update at target FPS
-      _accumulatedTime += dt;
+      _accumulatedTime += clampedDt;
       if (_accumulatedTime < _frameInterval) return;
 
       _accumulatedTime = 0.0;
       _needsUpdate = false;
 
-      // Update particles
+      // Update particles with normalized timing
       for (int i = 0; i < _particles.length; i++) {
         final p = _particles[i];
-        p.age += (dt / _baseDropDurationSeconds) * p.speedFactor;
+        // Normalize the age increment to be consistent across browsers
+        p.age += (clampedDt / _baseDropDurationSeconds) * p.speedFactor;
         if (p.age >= 1.0) {
           _particles[i] =
               _spawnParticle(textWidth: _textSize!.width, randomizeAge: false);
