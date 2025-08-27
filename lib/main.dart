@@ -40,12 +40,12 @@ void main() async {
   try {
     await Firebase.initializeApp(
       options: FirebaseOptions(
-        apiKey: 'AIzaSyCGSSirJE0JPlpRY_ouuQpS1IsPCUHj6lU',
-        appId: '1:125731520630:web:71b85271c5bbed81869f57',
-        messagingSenderId: '125731520630',
-        projectId: 'gymm-6bfe7',
-        measurementId: "G-YJMG7TKMVX",
-      ),
+          apiKey: "AIzaSyDr1reBoyNgPkhI_74reNhU9AMrEs8D3wo",
+          authDomain: "gymmemails.firebaseapp.com",
+          projectId: "gymmemails",
+          storageBucket: "gymmemails.firebasestorage.app",
+          messagingSenderId: "354600174377",
+          appId: "1:354600174377:web:00f4cf7d0808e260c12d38"),
     );
   } catch (e) {
     print('Firebase initialization error: $e');
