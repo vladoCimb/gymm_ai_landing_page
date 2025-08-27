@@ -129,6 +129,9 @@
 
   <script src="flutter_bootstrap.js" async></script>
   <script>
+    // Store the initial route for Flutter to handle
+    window.initialRoute = window.location.pathname;
+    
     window.addEventListener('flutter-first-frame', () => {
       const s = document.getElementById('splash');
       if (s) s.remove();

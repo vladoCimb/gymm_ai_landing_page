@@ -244,15 +244,10 @@ class _MobileLayoutState extends State<MobileLayout> {
                               cursor: SystemMouseCursors.click,
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => TermsOfUsePage(),
-                                    ),
-                                  );
+                                  Navigator.pushNamed(context, '/terms_of_use');
                                 },
                                 child: Text(
-                                  'Term of Use',
+                                  'Terms of Use',
                                   style: TextStyle(
                                     color: const Color(0xffBBBBBB),
                                     fontSize: 13,
@@ -279,12 +274,8 @@ class _MobileLayoutState extends State<MobileLayout> {
                               cursor: SystemMouseCursors.click,
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => PrivacyPolicyPage(),
-                                    ),
-                                  );
+                                  Navigator.pushNamed(
+                                      context, '/privacy_policy');
                                 },
                                 child: Text(
                                   'Privacy Policy',

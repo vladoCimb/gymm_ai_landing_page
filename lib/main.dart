@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:gymm_ai_landing_page/pages/legal_doc_page.dart';
 import 'package:gymm_ai_landing_page/services/firebase_service.dart';
 import 'package:gymm_ai_landing_page/widgets/elipses.dart';
@@ -11,6 +12,7 @@ import 'package:gymm_ai_landing_page/widgets/measure_size.dart';
 import 'package:video_player/video_player.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:js' as js;
 
 // Enum for device types
 enum DeviceType {
@@ -62,7 +64,12 @@ class MyApp extends StatelessWidget {
         if (Firebase.apps.isNotEmpty)
           FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
       ],
-      home: const LandingPage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const LandingPage(),
+        '/privacy_policy': (context) => const PrivacyPolicyPage(),
+        '/terms_of_use': (context) => const TermsOfUsePage(),
+      },
     );
   }
 }
@@ -88,6 +95,51 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _initializeVideo();
+
+    // Check for initial route from web URL
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkInitialRoute();
+    });
+  }
+
+  void _checkInitialRoute() {
+    if (!kIsWeb) return;
+
+    try {
+      // Get the initial route from JavaScript
+      final initialRoute = js.context['initialRoute'];
+      if (initialRoute != null && initialRoute.toString() != '/') {
+        final route = initialRoute.toString();
+
+        // Clear the stored route
+        js.context['initialRoute'] = '/';
+
+        // Navigate to the correct page
+        if (route == '/privacy_policy') {
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const PrivacyPolicyPage(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) => child,
+            ),
+          );
+        } else if (route == '/terms_of_use') {
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const TermsOfUsePage(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) => child,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      print('Error checking initial route: $e');
+    }
   }
 
   @override
@@ -304,15 +356,10 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
                           cursor: SystemMouseCursors.click,
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => TermsOfUsePage(),
-                                ),
-                              );
+                              Navigator.pushNamed(context, '/terms_of_use');
                             },
                             child: Text(
-                              'Term of Use',
+                              'Terms of Use',
                               style: TextStyle(
                                 color: Color(0xffBBBBBB),
                                 fontSize: 13,
@@ -339,12 +386,7 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
                           cursor: SystemMouseCursors.click,
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PrivacyPolicyPage(),
-                                ),
-                              );
+                              Navigator.pushNamed(context, '/privacy_policy');
                             },
                             child: Text(
                               'Privacy Policy',
