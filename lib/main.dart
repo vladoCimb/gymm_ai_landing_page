@@ -13,6 +13,7 @@ import 'package:video_player/video_player.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:js' as js;
+import 'dart:html' as html;
 
 // Enum for device types
 enum DeviceType {
@@ -106,7 +107,37 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
     if (!kIsWeb) return;
 
     try {
-      // Get the initial route from JavaScript
+      // Check for route in URL query parameters (from 404.html redirect)
+      final uri = Uri.parse(html.window.location.href);
+      final queryParams = uri.queryParameters;
+
+      if (queryParams.containsKey('/')) {
+        final route = queryParams['/']!;
+        if (route == 'privacy_policy') {
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const PrivacyPolicyPage(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) => child,
+            ),
+          );
+        } else if (route == 'terms_of_use') {
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const TermsOfUsePage(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) => child,
+            ),
+          );
+        }
+        return;
+      }
+
+      // Get the initial route from JavaScript (fallback)
       final initialRoute = js.context['initialRoute'];
       if (initialRoute != null && initialRoute.toString() != '/') {
         final route = initialRoute.toString();
