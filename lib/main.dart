@@ -692,7 +692,7 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
                     ),
                   ),
                   Text(
-                    'Our AI-powered trainer turns your phone\ninto a performance-boosting machine.',
+                    'Record your training session and receive detailed improvement suggestions from our AI trainer.',
                     style: TextStyle(
                       color: Color(0xff7A7A7A),
                       fontSize: 20,

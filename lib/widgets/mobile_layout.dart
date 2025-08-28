@@ -433,7 +433,7 @@ class _MobileLayoutState extends State<MobileLayout> {
                 ),
               ),
               const Text(
-                'Our AI-powered trainer turns your phone\ninto a performance-boosting machine.',
+                'Record your training session and receive detailed improvement suggestions from our AI trainer.',
                 textAlign: TextAlign.start,
                 style: TextStyle(
                   color: Color(0xff7A7A7A),
