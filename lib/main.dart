@@ -177,7 +177,14 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _emailController.dispose();
-    _videoController?.dispose();
+    if (_videoController != null) {
+      try {
+        _videoController!.dispose();
+      } catch (e) {
+        print('Error disposing video controller: $e');
+      }
+      _videoController = null;
+    }
     super.dispose();
   }
 
@@ -196,7 +203,9 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
     } else if (_videoController!.value.isPlaying == false) {
       // Try to resume playing if video was paused
       try {
-        _videoController!.play();
+        if (_videoController != null && _videoController!.value.isInitialized) {
+          _videoController!.play();
+        }
       } catch (e) {
         print('Error resuming video: $e');
       }
@@ -204,19 +213,30 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
   }
 
   void _initializeVideo() async {
-    if (_videoController != null) {
-      await _videoController!.dispose();
+    // Don't reinitialize if already initialized
+    if (_videoController != null && _videoController!.value.isInitialized) {
+      return;
     }
 
-    _videoController = VideoPlayerController.asset('assets/png/video.mp4');
+    // Dispose existing controller if it exists
+    if (_videoController != null) {
+      try {
+        await _videoController!.dispose();
+      } catch (e) {
+        print('Error disposing video controller: $e');
+      }
+      _videoController = null;
+    }
+
     try {
+      _videoController = VideoPlayerController.asset('assets/png/video.mp4');
       await _videoController!.setVolume(0);
       await _videoController!.initialize();
       await _videoController!.setLooping(true);
 
       // Add listener for video state changes
       _videoController!.addListener(() {
-        if (mounted) {
+        if (mounted && _videoController != null) {
           setState(() {});
         }
       });
@@ -238,6 +258,7 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
     } catch (e) {
       print('Error initializing video: $e');
       _isVideoInitialized = false;
+      _videoController = null;
     }
   }
 
@@ -281,14 +302,15 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     // Check if video needs to be reinitialized after resize
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted &&
-          !isMobile(context) &&
-          (_videoController == null ||
-              !_videoController!.value.isInitialized)) {
-        _handleVideoResume();
-      }
-    });
+    if (!isMobile(context) &&
+        (_videoController == null || !_videoController!.value.isInitialized)) {
+      // Use a microtask to avoid calling setState during build
+      Future.microtask(() {
+        if (mounted) {
+          _handleVideoResume();
+        }
+      });
+    }
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -625,25 +647,16 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
   Widget _buildVideoPlayer(
     BuildContext context,
   ) {
-    // If video controller is not initialized, try to initialize it
+    // If video controller is not initialized, return empty container
     if (_videoController == null || !_videoController!.value.isInitialized) {
-      // Trigger video initialization if not already done
-      if (!_isVideoInitialized) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted &&
-              (_videoController == null ||
-                  !_videoController!.value.isInitialized)) {
-            _initializeVideo();
-          }
-        });
-      }
       return SizedBox();
     }
 
-    // Ensure video is playing if it's initialized but not playing
+    // Check if video is playing, if not, try to play it
     if (_videoController!.value.isInitialized &&
         !_videoController!.value.isPlaying) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Use a microtask to avoid calling setState during build
+      Future.microtask(() {
         if (mounted &&
             _videoController != null &&
             _videoController!.value.isInitialized) {
@@ -691,15 +704,18 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
                       height: 26 / 15,
                     ),
                   ),
-                  Text(
-                    'Record your training session and receive detailed improvement suggestions from our AI trainer.',
-                    style: TextStyle(
-                      color: Color(0xff7A7A7A),
-                      fontSize: 20,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: 'Suisse',
-                      letterSpacing: 0,
-                      height: 26 / 20,
+                  Padding(
+                    padding: const EdgeInsets.only(right: 50),
+                    child: Text(
+                      'Record your training session and receive detailed improvement suggestions from our AI trainer.',
+                      style: TextStyle(
+                        color: Color(0xff7A7A7A),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'Suisse',
+                        letterSpacing: 0,
+                        height: 26 / 20,
+                      ),
                     ),
                   ),
                 ],
