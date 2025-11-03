@@ -7,12 +7,14 @@ class RequestAccessButton extends StatefulWidget {
   final double opacity;
   final VoidCallback? onPressed;
   final bool isMobile;
+  final String text;
 
   const RequestAccessButton({
     super.key,
     this.opacity = 0.5,
     this.onPressed,
     this.isMobile = false,
+    this.text = 'Request access',
   });
 
   @override
@@ -110,7 +112,7 @@ class _RequestAccessButtonState extends State<RequestAccessButton> {
                                 bottom: 15,
                               ),
                               child: Text(
-                                'Request access',
+                                widget.text,
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 15,
@@ -130,7 +132,7 @@ class _RequestAccessButtonState extends State<RequestAccessButton> {
                               bottom: 15,
                             ),
                             child: Text(
-                              'Request access',
+                              widget.text,
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 15,
