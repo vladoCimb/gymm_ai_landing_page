@@ -148,10 +148,10 @@ class _MarketingPageState extends State<MarketingPage> {
                           SizedBox(
                             height: 33,
                           ),
-                          ShinningButton(
-                            onPressed: () {},
-                            text: 'Download',
-                          )
+                          // ShinningButton(
+                          //   onPressed: () {},
+                          //   text: 'Download',
+                          // )
                         ],
                       ),
                     ),

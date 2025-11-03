@@ -64,9 +64,10 @@ class MyApp extends StatelessWidget {
         ],
         initialRoute: '/',
         routes: {
-          '/': (context) => const NewMarketingPage(),
+          '/': (context) => const LandingPage(),
           '/privacy_policy': (context) => const PrivacyPolicyPage(),
           '/terms_of_use': (context) => const TermsOfUsePage(),
+          '/marketing_page': (context) => const NewMarketingPage(),
         },
       ),
     );

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gymm_ai_landing_page/main.dart';
+import 'package:gymm_ai_landing_page/marketing_page/new_marketing_page.dart';
 import 'package:gymm_ai_landing_page/pages/legal_doc_page.dart';
 import 'package:gymm_ai_landing_page/services/firebase_service.dart';
 import 'package:gymm_ai_landing_page/widgets/elipses.dart';
@@ -72,6 +73,14 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
                   const TermsOfUsePage(),
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) => child,
+            ),
+          );
+        } else if (route == 'marketing_page') {
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const NewMarketingPage(),
             ),
           );
         }

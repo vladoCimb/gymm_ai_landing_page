@@ -8,7 +8,8 @@ class TopHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 156.w).copyWith(top: 22),
+      padding:
+          EdgeInsets.symmetric(horizontal: 156.w).copyWith(top: 22, bottom: 22),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
