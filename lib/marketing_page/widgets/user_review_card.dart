@@ -19,11 +19,11 @@ class UserReviewCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DashCard(
-          width: 360.wc,
-          height: 263.hc,
+          width: 360,
+          height: 263,
           backgroundColor: const Color.fromRGBO(28, 31, 36, 0.7),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 35.wc, vertical: 35.hc),
+            padding: EdgeInsets.symmetric(horizontal: 35, vertical: 30),
             child: Align(
               alignment: Alignment.bottomCenter,
               child: SelectableText(
@@ -31,8 +31,8 @@ class UserReviewCard extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Suisse',
                   fontWeight: FontWeight.w400,
-                  fontSize: 22.spc,
-                  height: 22.spc / 22.spc,
+                  fontSize: 22,
+                  height: 22 / 22,
                   letterSpacing: 0,
                   color: Colors.white,
                 ),
@@ -40,16 +40,16 @@ class UserReviewCard extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 13.hc),
+        SizedBox(height: 13),
         Padding(
-          padding: EdgeInsets.only(left: 4.wc),
+          padding: EdgeInsets.only(left: 4),
           child: SelectableText(
             name,
             style: TextStyle(
               fontFamily: 'Suisse',
               fontWeight: FontWeight.w500,
-              fontSize: 18.spc,
-              height: 24.spc / 18.spc,
+              fontSize: 18,
+              height: 24 / 18,
               letterSpacing: 0,
               color: Color.fromRGBO(132, 131, 148, 1),
             ),
