@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/ai_video_player.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/analyze_widget.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/dash_card.dart';
+import 'package:gymm_ai_landing_page/marketing_page/widgets/dash_card_with_analyze_and_reflection.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/top_header.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/user_review_card.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/user_review_carousel.dart';
@@ -152,32 +153,19 @@ class _NewMarketingPageState extends State<NewMarketingPage> {
                       SizedBox(
                         height: 10,
                       ),
-                      SelectableText.rich(
-                        TextSpan(
-                          style: TextStyle(
-                            fontFamily: 'Suisse',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 40,
-                            height: 50 / 40,
-                            letterSpacing: 0,
-                            color: Colors.white,
-                          ),
-                          children: [
-                            const TextSpan(
-                              text:
-                                  'Gymm reviews your workout video, spots what a mirror or tracker can’t, and gives you one clear cue to fix on the next rep.\n',
-                            ),
-                            const TextSpan(
-                              text:
-                                  'Mistakes aren’t failures, they’re information. Small adjustments, repeated, become real progress.',
-                              style: TextStyle(
-                                color: Color.fromRGBO(255, 255, 255, 0.6),
-                              ),
-                            ),
-                          ],
+                      // https://wave.co animacia na text
+                      SelectableText(
+                        'Gymm reviews your workout video, spots what a mirror or tracker can’t, and gives you one clear cue to fix on the next rep.\n Mistakes aren’t failures, they’re information. Small adjustments, repeated, become real progress',
+                        style: TextStyle(
+                          fontFamily: 'Suisse',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 40,
+                          height: 50 / 40,
+                          letterSpacing: 0,
+                          color: Colors.white,
                         ),
                         textAlign: TextAlign.start,
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -271,72 +259,7 @@ class _NewMarketingPageState extends State<NewMarketingPage> {
                         ),
                       ),
                       SizedBox(width: 24),
-                      DashCard(
-                        width: 648,
-                        height: 407,
-                        backgroundColor: Color.fromRGBO(42, 28, 67, 0.5),
-                        child: Container(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(left: 42, top: 35),
-                                child: ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                    maxWidth: 242,
-                                  ),
-                                  child: SelectableText.rich(
-                                    TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text:
-                                              'Gymm reviews your workout video.',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.w400,
-                                            fontFamily: 'Suisse',
-                                            letterSpacing: 0,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text:
-                                              '  Mistakes aren’t failures, they’re information. Small adjustments, repeated, become real progress.',
-                                          style: TextStyle(
-                                            color: Color(0xff7A7A7A),
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.w400,
-                                            fontFamily: 'Suisse',
-                                            letterSpacing: 0,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.center,
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                    right: 57,
-                                  ),
-                                  child: Container(
-                                    height: 293,
-                                    width: 200,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: Colors.black.withOpacity(0.1)),
-                                    child:
-                                        AnalyzeWidget(width: 215, height: 293),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                      DashCardWithAnalyzeAndReflectionText(),
                     ],
                   ),
                 ),
@@ -368,7 +291,8 @@ class _NewMarketingPageState extends State<NewMarketingPage> {
                                                 'Gymm reviews your workout video.',
                                             style: TextStyle(
                                               color: Colors.white,
-                                              fontSize: 22,
+                                              fontSize: 20,
+                                              height: 26 / 20,
                                               fontWeight: FontWeight.w400,
                                               fontFamily: 'Suisse',
                                               letterSpacing: 0,
@@ -379,7 +303,8 @@ class _NewMarketingPageState extends State<NewMarketingPage> {
                                                 ' Mistakes aren’t failures, they’re information. Small adjustments, repeated, become real progress.',
                                             style: TextStyle(
                                               color: Color(0xff7A7A7A),
-                                              fontSize: 22,
+                                              fontSize: 20,
+                                              height: 26 / 20,
                                               fontWeight: FontWeight.w400,
                                               fontFamily: 'Suisse',
                                               letterSpacing: 0,
@@ -394,51 +319,45 @@ class _NewMarketingPageState extends State<NewMarketingPage> {
                             ),
                           ),
                           Positioned(
-                            top: 52,
-                            right: 72,
+                            bottom: 0,
+                            right: 50,
+                            child: SvgPicture.asset(
+                              'assets/png/analysis_text.svg',
+                            ),
+                          ),
+                          Positioned(
+                            top: 83,
+                            right: 275,
                             child: Row(
                               children: [
                                 SvgPicture.asset(
                                   'assets/png/movement.svg',
-                                  height: 158,
-                                  width: 228,
                                 ),
-                                Transform.translate(
-                                  offset: Offset(-12, 0),
-                                  child: SvgPicture.asset(
-                                    'assets/png/technique.svg',
-                                    height: 158,
-                                    width: 228,
-                                  ),
+                                Stack(
+                                  children: [
+                                    Transform.translate(
+                                      offset: Offset(-12, 0),
+                                      child: SvgPicture.asset(
+                                        'assets/png/technique.svg',
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
                           ),
                           Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              child: SvgPicture.asset(
-                                'assets/png/analysis_text_1.svg',
-                                height: 260,
-                                width: 393,
-                              )),
-                          Positioned(
-                            top: 52 + 158 + 12,
-                            right: 42,
+                            top: 83 + 158 + 10,
+                            right: 300,
                             child: Row(
                               children: [
                                 SvgPicture.asset(
                                   'assets/png/stability.svg',
-                                  height: 158,
-                                  width: 228,
                                 ),
                                 Transform.translate(
                                   offset: Offset(-12, 0),
                                   child: SvgPicture.asset(
                                     'assets/png/motion.svg',
-                                    height: 158,
-                                    width: 228,
                                   ),
                                 ),
                               ],
@@ -490,6 +409,7 @@ class _NewMarketingPageState extends State<NewMarketingPage> {
                                               color: Color(0xff7A7A7A),
                                               fontSize: 20,
                                               fontWeight: FontWeight.w400,
+                                              height: 26 / 20,
                                               fontFamily: 'Suisse',
                                               letterSpacing: 0,
                                             ),
@@ -499,6 +419,7 @@ class _NewMarketingPageState extends State<NewMarketingPage> {
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 20,
+                                              height: 26 / 20,
                                               fontWeight: FontWeight.w400,
                                               fontFamily: 'Suisse',
                                               letterSpacing: 0,
@@ -509,6 +430,7 @@ class _NewMarketingPageState extends State<NewMarketingPage> {
                                             style: TextStyle(
                                               color: Color(0xff7A7A7A),
                                               fontSize: 20,
+                                              height: 26 / 20,
                                               fontWeight: FontWeight.w400,
                                               fontFamily: 'Suisse',
                                               letterSpacing: 0,
@@ -556,6 +478,7 @@ class _NewMarketingPageState extends State<NewMarketingPage> {
                                           style: TextStyle(
                                             color: Color(0xff7A7A7A),
                                             fontSize: 20,
+                                            height: 26 / 20,
                                             fontWeight: FontWeight.w400,
                                             fontFamily: 'Suisse',
                                             letterSpacing: 0,
@@ -566,6 +489,7 @@ class _NewMarketingPageState extends State<NewMarketingPage> {
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 20,
+                                            height: 26 / 20,
                                             fontWeight: FontWeight.w400,
                                             fontFamily: 'Suisse',
                                             letterSpacing: 0,
@@ -576,6 +500,7 @@ class _NewMarketingPageState extends State<NewMarketingPage> {
                                           style: TextStyle(
                                             color: Color(0xff7A7A7A),
                                             fontSize: 20,
+                                            height: 26 / 20,
                                             fontWeight: FontWeight.w400,
                                             fontFamily: 'Suisse',
                                             letterSpacing: 0,
@@ -586,6 +511,7 @@ class _NewMarketingPageState extends State<NewMarketingPage> {
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 20,
+                                            height: 26 / 20,
                                             fontWeight: FontWeight.w400,
                                             fontFamily: 'Suisse',
                                             letterSpacing: 0,
@@ -632,6 +558,7 @@ class _NewMarketingPageState extends State<NewMarketingPage> {
                                           style: TextStyle(
                                             color: Color(0xff7A7A7A),
                                             fontSize: 20,
+                                            height: 26 / 20,
                                             fontWeight: FontWeight.w400,
                                             fontFamily: 'Suisse',
                                             letterSpacing: 0,
@@ -642,6 +569,7 @@ class _NewMarketingPageState extends State<NewMarketingPage> {
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 20,
+                                            height: 26 / 20,
                                             fontWeight: FontWeight.w400,
                                             fontFamily: 'Suisse',
                                             letterSpacing: 0,
@@ -762,7 +690,7 @@ class _NewMarketingPageState extends State<NewMarketingPage> {
                                     maxWidth: 744,
                                   ),
                                   child: SelectableText(
-                                    'Gymm. Your fintess coach, powered by AI',
+                                    'Gymm. Your fitness coach, powered by AI',
                                     style: TextStyle(
                                       fontFamily: 'Suisse',
                                       fontWeight: FontWeight.w500,
