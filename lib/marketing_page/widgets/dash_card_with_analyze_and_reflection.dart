@@ -56,7 +56,7 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 42, top: 35),
+            padding: const EdgeInsets.only(left: 40, top: 38),
             child: ConstrainedBox(
               constraints: const BoxConstraints(
                 maxWidth: 242,
