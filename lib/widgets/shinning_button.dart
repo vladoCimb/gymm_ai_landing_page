@@ -97,13 +97,13 @@ class _ShinningButtonState extends State<ShinningButton> {
                       spreadRadius: 0,
                       inset: true,
                     ),
-                    BoxShadow(
-                      color: Color.fromRGBO(66, 91, 255, 1),
-                      offset: Offset(0, 0),
-                      blurRadius: 38.77,
-                      spreadRadius: 0,
-                      inset: false,
-                    ),
+                    // BoxShadow(
+                    //   color: Color.fromRGBO(66, 91, 255, 0.8),
+                    //   offset: Offset(0, 0),
+                    //   blurRadius: 38.77,
+                    //   spreadRadius: 0,
+                    //   inset: false,
+                    // ),
                     BoxShadow(
                       color: Color.fromRGBO(255, 255, 255, 1),
                       offset: Offset(0, 1),
@@ -129,6 +129,13 @@ class _ShinningButtonState extends State<ShinningButton> {
                               fontFamily: 'Inter',
                               height: 20 / 15,
                               letterSpacing: 0,
+                              shadows: [
+                                Shadow(
+                                  color: Color.fromRGBO(255, 255, 255, 0.4),
+                                  offset: Offset(0, 1),
+                                  blurRadius: 0,
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -143,7 +150,18 @@ class _ShinningButtonState extends State<ShinningButton> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            SvgPicture.asset(widget.iconUrl),
+                            Stack(
+                              children: [
+                                Positioned(
+                                  top: 1,
+                                  child: SvgPicture.asset(
+                                    widget.iconUrl,
+                                    color: Color.fromRGBO(255, 255, 255, 0.4),
+                                  ),
+                                ),
+                                SvgPicture.asset(widget.iconUrl),
+                              ],
+                            ),
                             SizedBox(
                               width: 6,
                             ),
@@ -156,6 +174,13 @@ class _ShinningButtonState extends State<ShinningButton> {
                                 fontFamily: 'Inter',
                                 height: 20 / 15,
                                 letterSpacing: 0,
+                                shadows: [
+                                  Shadow(
+                                    color: Color.fromRGBO(255, 255, 255, 0.4),
+                                    offset: Offset(0, 1),
+                                    blurRadius: 0,
+                                  ),
+                                ],
                               ),
                             ),
                           ],

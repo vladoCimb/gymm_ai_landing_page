@@ -17,9 +17,9 @@ enum DeviceType {
 // Function to determine current device type based on screen width
 DeviceType getDeviceType(BuildContext context) {
   final width = MediaQuery.of(context).size.width;
-  if (width >= 1100) {
+  if (width >= 1200) {
     return DeviceType.desktop;
-  } else if (width >= 768) {
+  } else if (width >= 600) {
     return DeviceType.tablet;
   } else {
     return DeviceType.mobile;

@@ -21,8 +21,6 @@ class DashCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-            color: const Color.fromRGBO(255, 255, 255, 0.06), width: 1),
       ),
       child: child,
     );

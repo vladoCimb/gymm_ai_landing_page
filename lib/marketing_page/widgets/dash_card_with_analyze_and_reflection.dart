@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/dash_card.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/test_analyze_widget.dart';
+import 'package:video_player/video_player.dart';
 
 class DashCardWithAnalyzeAndReflectionText extends StatefulWidget {
   const DashCardWithAnalyzeAndReflectionText({super.key});
@@ -14,6 +15,7 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _position;
+  VideoPlayerController? _videoController;
 
   @override
   void initState() {
@@ -37,11 +39,39 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
     Future.delayed(const Duration(milliseconds: 1000), () {
       if (mounted) _controller.repeat();
     });
+
+    _initializeVideo();
+  }
+
+  void _initializeVideo() async {
+    try {
+      _videoController = VideoPlayerController.asset('assets/png/babenka.mp4');
+      await _videoController!.setVolume(0);
+      await _videoController!.initialize();
+      await _videoController!.setLooping(true);
+      _videoController!.addListener(() {
+        if (mounted) {
+          setState(() {});
+        }
+      });
+      try {
+        await _videoController!.play();
+      } catch (playError) {
+        print('Autoplay failed (this is normal on web): $playError');
+      }
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      print('Error initializing video: $e');
+      _videoController = null;
+    }
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _videoController?.dispose();
     super.dispose();
   }
 
@@ -50,7 +80,7 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
     return DashCard(
       width: 648,
       height: 407,
-      backgroundColor: const Color.fromRGBO(42, 28, 67, 0.5),
+      backgroundColor: const Color.fromRGBO(24, 15, 42, 1),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -106,10 +136,29 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.black.withOpacity(0.1),
                 ),
-                child: AnalyzeBarWithPosition(
-                  width: 215,
-                  height: 293,
-                  position: _position, // <<< share animation
+                child: Stack(
+                  children: [
+                    if (_videoController != null &&
+                        _videoController!.value.isInitialized)
+                      Positioned.fill(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: FittedBox(
+                            fit: BoxFit.cover,
+                            child: SizedBox(
+                              width: _videoController!.value.size.width,
+                              height: _videoController!.value.size.height,
+                              child: VideoPlayer(_videoController!),
+                            ),
+                          ),
+                        ),
+                      ),
+                    AnalyzeBarWithPosition(
+                      width: 215,
+                      height: 293,
+                      position: _position,
+                    ),
+                  ],
                 ),
               ),
             ),

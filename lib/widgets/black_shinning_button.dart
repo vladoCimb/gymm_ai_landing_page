@@ -1,0 +1,153 @@
+import 'package:flutter/material.dart' hide BoxShadow, BoxDecoration;
+import 'package:flutter_inset_shadow/flutter_inset_shadow.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+
+class BlackShinningButton extends StatefulWidget {
+  const BlackShinningButton({
+    super.key,
+    this.onPressed,
+    this.isMobile = false,
+    required this.text,
+    required this.iconUrl,
+  });
+
+  final VoidCallback? onPressed;
+  final bool isMobile;
+  final String text;
+  final String iconUrl;
+
+  @override
+  State<BlackShinningButton> createState() => _BlackShinningButtonState();
+}
+
+class _BlackShinningButtonState extends State<BlackShinningButton> {
+  bool _isHovered = false;
+  bool _isFocused = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(61),
+        onTap: widget.onPressed,
+        onHover: (isHovered) => setState(() => _isHovered = isHovered),
+        child: Focus(
+          onFocusChange: (hasFocus) => setState(() => _isFocused = hasFocus),
+          child: TweenAnimationBuilder<Color?>(
+            duration: const Duration(milliseconds: 200),
+            tween: ColorTween(
+              begin: const Color.fromRGBO(167, 186, 224, 0.12),
+              end: const Color.fromRGBO(167, 186, 224, 0.12),
+              // begin: const Color.fromRGBO(175, 178, 255, 1),
+              // end: (_isHovered || _isFocused)
+              //     ? const Color.fromRGBO(230, 231, 255, 1)
+              //     : const Color.fromRGBO(175, 178, 255, 1),
+            ),
+            builder: (context, firstColor, child) {
+              return Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(61),
+                  gradient: RadialGradient(
+                    center: Alignment(
+                      (45.77 * 2 / 100) - 1, // Convert % to Alignment X
+                      (83 * 2 / 100) - 1, // Convert % to Alignment Y
+                    ),
+                    radius: 0.65, // 65%
+                    colors: [
+                      firstColor ?? const Color.fromRGBO(167, 186, 224, 0.12),
+                      const Color.fromRGBO(167, 186, 224, 0.12),
+                    ],
+                    stops: const [0.0, 0.9856], // 0% and 98.56%
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromRGBO(255, 255, 255, 0.06),
+                      offset: Offset(0, 0),
+                      blurRadius: 19,
+                      spreadRadius: 0,
+                      inset: true,
+                    ),
+                    // BoxShadow(
+                    //   color: Color.fromRGBO(66, 91, 255, 0.3),
+                    //   offset: Offset(0, 0),
+                    //   blurRadius: 38.77,
+                    //   spreadRadius: 0,
+                    //   inset: false,
+                    // ),
+                    BoxShadow(
+                      color: Color.fromRGBO(255, 255, 255, 0.08),
+                      offset: Offset(0, 1),
+                      blurRadius: 0,
+                      spreadRadius: 0,
+                      inset: true,
+                    ),
+                    BoxShadow(
+                      color: Color.fromRGBO(255, 255, 255, 0.06),
+                      offset: Offset(0, 0),
+                      blurRadius: 0,
+                      spreadRadius: 1,
+                      inset: true,
+                    ),
+                  ],
+                ),
+                child: widget.isMobile
+                    ? Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            top: 15,
+                            bottom: 15,
+                          ),
+                          child: Text(
+                            widget.text,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Inter',
+                              height: 20 / 15,
+                              letterSpacing: 0,
+                            ),
+                          ),
+                        ),
+                      )
+                    : Padding(
+                        padding: EdgeInsetsGeometry.only(
+                          left: 16,
+                          right: 16,
+                          top: 11,
+                          bottom: 11,
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SvgPicture.asset(
+                              widget.iconUrl,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 6,
+                            ),
+                            Text(
+                              widget.text,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Inter',
+                                height: 20 / 15,
+                                letterSpacing: 0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}

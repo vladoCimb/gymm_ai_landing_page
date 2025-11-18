@@ -2,10 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class AiVideoPlayer extends StatefulWidget {
-  const AiVideoPlayer({super.key, required this.height, required this.width});
+  const AiVideoPlayer({
+    super.key,
+    required this.height,
+    required this.width,
+    this.onControllerReady,
+  });
 
   final double height;
   final double width;
+
+  /// Exposes the internal VideoPlayerController to the parent
+  /// once it is initialized and ready.
+  final void Function(VideoPlayerController controller)? onControllerReady;
 
   @override
   State<AiVideoPlayer> createState() => _AiVideoPlayerState();
@@ -20,7 +29,7 @@ class _AiVideoPlayerState extends State<AiVideoPlayer> {
     _initializeAIAnimation();
   }
 
-  void _initializeAIAnimation() async {
+  Future<void> _initializeAIAnimation() async {
     // Don't reinitialize if already initialized
     if (_controller != null && _controller!.value.isInitialized) {
       return;
@@ -31,6 +40,8 @@ class _AiVideoPlayerState extends State<AiVideoPlayer> {
       try {
         await _controller!.dispose();
       } catch (e) {
+        // ignore, just log
+        // ignore: avoid_print
         print('Error disposing AI animation controller: $e');
       }
       _controller = null;
@@ -42,24 +53,29 @@ class _AiVideoPlayerState extends State<AiVideoPlayer> {
       await _controller!.initialize();
       await _controller!.setLooping(true);
 
+      // Notify parent that controller is ready
+      widget.onControllerReady?.call(_controller!);
+
       // Add listener for video state changes
       _controller!.addListener(() {
         if (mounted && _controller != null) {
           setState(() {});
         }
-      }); // For web, we need to handle autoplay restrictions
+      });
+
+      // Handle autoplay (web may restrict this)
       try {
         await _controller!.play();
       } catch (playError) {
+        // ignore: avoid_print
         print('Autoplay failed (this is normal on web): $playError');
-        // On web, autoplay might fail due to browser restrictions
-        // The video will still be ready to play when user interacts
       }
 
       if (mounted) {
         setState(() {});
       }
     } catch (e) {
+      // ignore: avoid_print
       print('Error initializing AI animation: $e');
       _controller = null;
     }
@@ -71,13 +87,16 @@ class _AiVideoPlayerState extends State<AiVideoPlayer> {
       return SizedBox(
         height: widget.height,
         width: widget.width,
-        child: Center(child: CircularProgressIndicator()),
+        child: const Center(child: CircularProgressIndicator()),
       );
     }
     return SizedBox(
       height: widget.height,
       width: widget.width,
-      child: VideoPlayer(_controller!),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: VideoPlayer(_controller!),
+      ),
     );
   }
 
