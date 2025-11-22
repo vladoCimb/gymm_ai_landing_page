@@ -70,15 +70,15 @@ class _NewMarketingPageState extends State<NewMarketingPage> {
                               children: [
                                 ConstrainedBox(
                                   constraints: BoxConstraints(
-                                    maxWidth: 501,
+                                    maxWidth: 545,
                                   ),
                                   child: Text(
                                     'Your personal AI fitness coach',
                                     style: TextStyle(
                                       fontFamily: 'Suisse',
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 72.0,
-                                      height: 69.8 / 72.0,
+                                      fontSize: 82.0,
+                                      height: 69.8 / 82.0,
                                       letterSpacing: 0,
                                       color: Colors.white,
                                     ),

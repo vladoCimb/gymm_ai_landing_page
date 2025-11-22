@@ -37,9 +37,9 @@ class _DashCardWithVideoAndReflectionTextState
     //  0–3 s   → no color
     //  3–8 s   → color
     //  with 0.5 s smooth easing in and out
-    const start = 2.0;
-    const end = 10.0;
-    const fade = 0.5; // seconds
+    const start = 2.0; // was 2.0
+    const end = 8.875; // was 10.0
+    const fade = 0.5;
 
     if (seconds < start || seconds > end) {
       return 0.0;
