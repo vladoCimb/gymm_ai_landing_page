@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gymm_ai_landing_page/main.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/ai_video_player.dart';
 import 'package:video_player/video_player.dart';
 
@@ -66,23 +67,26 @@ class _DashCardWithVideoAndReflectionTextState
     final reflectionStrength = _computeReflectionStrength();
 
     return Container(
-      width: 456,
-      height: 407,
-      color: const Color.fromRGBO(3, 10, 27, 1),
+      width: isMobile(context) ? 370 : 456,
+      height: isMobile(context) ? 295 : 407,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: const Color.fromRGBO(3, 10, 27, 1),
+      ),
       padding: const EdgeInsets.symmetric(horizontal: 40).copyWith(
-        bottom: 40,
-        top: 16,
+        bottom: isMobile(context) ? 30 : 40,
+        top: isMobile(context) ? 8 : 16,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            height: 192,
-            width: 186,
+            height: isMobile(context) ? 114 : 180,
+            width: isMobile(context) ? 118 : 180,
             child: AiVideoPlayer(
-              height: 180,
-              width: 180,
+              height: isMobile(context) ? 114 : 180,
+              width: isMobile(context) ? 118 : 180,
               onControllerReady: _onVideoControllerReady,
             ),
           ),
@@ -93,7 +97,7 @@ class _DashCardWithVideoAndReflectionTextState
             ),
             child: TextWithLeftTopEllipseReflection(
               strength: reflectionStrength,
-              child: const SelectableText.rich(
+              child: SelectableText.rich(
                 TextSpan(
                   children: [
                     TextSpan(
@@ -101,10 +105,10 @@ class _DashCardWithVideoAndReflectionTextState
                           'Powered by Gymm AI, built on the most advanced models',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: isMobile(context) ? 16 : 20,
                         fontWeight: FontWeight.w400,
                         fontFamily: 'Suisse',
-                        height: 26 / 20,
+                        height: isMobile(context) ? 21 / 16 : 26 / 20,
                         letterSpacing: 0,
                       ),
                     ),
@@ -113,10 +117,10 @@ class _DashCardWithVideoAndReflectionTextState
                           '  trained to understand your fitness workouts and deliver the most useful feedback.',
                       style: TextStyle(
                         color: Color(0xff7A7A7A),
-                        fontSize: 20,
+                        fontSize: isMobile(context) ? 16 : 20,
                         fontWeight: FontWeight.w400,
                         fontFamily: 'Suisse',
-                        height: 26 / 20,
+                        height: isMobile(context) ? 21 / 16 : 26 / 20,
                         letterSpacing: 0,
                       ),
                     ),

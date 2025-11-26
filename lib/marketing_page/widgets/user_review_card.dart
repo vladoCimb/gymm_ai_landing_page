@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gymm_ai_landing_page/main.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/dash_card.dart';
 import 'package:gymm_ai_landing_page/utils/screenutil_clamp_extensions.dart';
 
@@ -31,8 +32,8 @@ class UserReviewCard extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Suisse',
                   fontWeight: FontWeight.w400,
-                  fontSize: 22,
-                  height: 22 / 22,
+                  fontSize: isMobile(context) ? 16 : 22,
+                  height: isMobile(context) ? 21 / 16 : 22 / 22,
                   letterSpacing: 0,
                   color: Colors.white,
                 ),

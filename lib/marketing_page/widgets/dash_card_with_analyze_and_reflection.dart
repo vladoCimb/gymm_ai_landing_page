@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gymm_ai_landing_page/main.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/dash_card.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/test_analyze_widget.dart';
 import 'package:video_player/video_player.dart';
@@ -78,93 +79,175 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
   @override
   Widget build(BuildContext context) {
     return DashCard(
-      width: 648,
-      height: 407,
+      width: isMobile(context) ? 370 : 648,
+      height: isMobile(context) ? 496 : 407,
       backgroundColor: const Color.fromRGBO(24, 15, 42, 1),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 40, top: 38),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                maxWidth: 242,
-              ),
-              child: TextWithReflection(
-                animation: _position,
-                child: SelectableText.rich(
-                  TextSpan(
-                    children: [
-                      const TextSpan(
-                        text: 'Gymm reviews your workout video.',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          height: 26 / 20,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'Suisse',
-                          letterSpacing: 0,
+      child: isMobile(context)
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 32, left: 32, right: 19),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxWidth: 319,
+                    ),
+                    child: TextWithReflection(
+                      animation: _position,
+                      child: SelectableText.rich(
+                        TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: 'Gymm reviews your workout video.',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                height: 21 / 20,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: 'Suisse',
+                                letterSpacing: 0,
+                              ),
+                            ),
+                            TextSpan(
+                              text:
+                                  '  Mistakes aren’t failures, they’re information. Small adjustments, repeated, become real progress.',
+                              style: TextStyle(
+                                color: const Color(0xff7A7A7A),
+                                fontSize: 16,
+                                height: 21 / 20,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: 'Suisse',
+                                letterSpacing: 0,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      TextSpan(
-                        text:
-                            '  Mistakes aren’t failures, they’re information. Small adjustments, repeated, become real progress.',
-                        style: TextStyle(
-                          color: const Color(0xff7A7A7A),
-                          fontSize: 20,
-                          height: 26 / 20,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'Suisse',
-                          letterSpacing: 0,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 57),
-              child: Container(
-                height: 293,
-                width: 200,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.black.withOpacity(0.1),
-                ),
-                child: Stack(
-                  children: [
-                    if (_videoController != null &&
-                        _videoController!.value.isInitialized)
-                      Positioned.fill(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: FittedBox(
-                            fit: BoxFit.cover,
-                            child: SizedBox(
-                              width: _videoController!.value.size.width,
-                              height: _videoController!.value.size.height,
-                              child: VideoPlayer(_videoController!),
+                SizedBox(height: 32),
+                Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    height: 293,
+                    width: 215,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.black.withOpacity(0.1),
+                    ),
+                    child: Stack(
+                      children: [
+                        if (_videoController != null &&
+                            _videoController!.value.isInitialized)
+                          Positioned.fill(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: FittedBox(
+                                fit: BoxFit.cover,
+                                child: SizedBox(
+                                  width: _videoController!.value.size.width,
+                                  height: _videoController!.value.size.height,
+                                  child: VideoPlayer(_videoController!),
+                                ),
+                              ),
                             ),
                           ),
+                        AnalyzeBarWithPosition(
+                          width: 215,
+                          height: 293,
+                          position: _position,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            )
+          : Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 40, top: 38),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxWidth: 242,
+                    ),
+                    child: TextWithReflection(
+                      animation: _position,
+                      child: SelectableText.rich(
+                        TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: 'Gymm reviews your workout video.',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                height: 26 / 20,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: 'Suisse',
+                                letterSpacing: 0,
+                              ),
+                            ),
+                            TextSpan(
+                              text:
+                                  '  Mistakes aren’t failures, they’re information. Small adjustments, repeated, become real progress.',
+                              style: TextStyle(
+                                color: const Color(0xff7A7A7A),
+                                fontSize: 20,
+                                height: 26 / 20,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: 'Suisse',
+                                letterSpacing: 0,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    AnalyzeBarWithPosition(
-                      width: 215,
-                      height: 293,
-                      position: _position,
                     ),
-                  ],
+                  ),
                 ),
-              ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 57),
+                    child: Container(
+                      height: 293,
+                      width: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.black.withOpacity(0.1),
+                      ),
+                      child: Stack(
+                        children: [
+                          if (_videoController != null &&
+                              _videoController!.value.isInitialized)
+                            Positioned.fill(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: FittedBox(
+                                  fit: BoxFit.cover,
+                                  child: SizedBox(
+                                    width: _videoController!.value.size.width,
+                                    height: _videoController!.value.size.height,
+                                    child: VideoPlayer(_videoController!),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          AnalyzeBarWithPosition(
+                            width: 215,
+                            height: 293,
+                            position: _position,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }

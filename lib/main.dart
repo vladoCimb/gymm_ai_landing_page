@@ -19,11 +19,19 @@ DeviceType getDeviceType(BuildContext context) {
   final width = MediaQuery.of(context).size.width;
   if (width >= 1200) {
     return DeviceType.desktop;
-  } else if (width >= 600) {
+  } else if (width >= 800) {
     return DeviceType.tablet;
   } else {
     return DeviceType.mobile;
   }
+}
+
+bool isMobile(BuildContext context) {
+  return getDeviceType(context) == DeviceType.mobile;
+}
+
+bool isTablet(BuildContext context) {
+  return getDeviceType(context) == DeviceType.tablet;
 }
 
 void main() async {
