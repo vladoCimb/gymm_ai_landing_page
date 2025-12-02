@@ -124,7 +124,7 @@
       user-select: text !important;
     }
 
-        /* Logo splash screen with fade animation */
+    /* Logo splash screen with fade animation */
     #splash {
       position: fixed;
       top: 0;
@@ -138,13 +138,13 @@
       justify-content: center;
       transition: opacity 0.5s ease-out;
     }
-    
+
     #logo-splash {
       width: 180px;
       height: auto;
       animation: fadeInOut 1s ease-in-out infinite;
     }
-    
+
     @keyframes fadeInOut {
       0% {
         opacity: 1;
@@ -158,13 +158,13 @@
         opacity: 1;
       }
     }
-    
+
     /* Flutter content fade-in effect */
     .flutter-content {
       opacity: 0;
       transition: opacity 0.8s ease-in;
     }
-    
+
     .flutter-content.flutter-loaded {
       opacity: 1;
     }
@@ -181,14 +181,14 @@
   <script>
     // Store the initial route for Flutter to handle
     window.initialRoute = window.location.pathname;
-    
+
     // Record when the page started loading
     const startTime = Date.now();
-    
+
     window.addEventListener('flutter-first-frame', () => {
       const elapsedTime = Date.now() - startTime;
       const minDisplayTime = 1500; // 1.5 seconds minimum
-      
+
       if (elapsedTime < minDisplayTime) {
         // If less than 1.5 seconds have passed, wait for the remaining time
         const remainingTime = minDisplayTime - elapsedTime;
@@ -200,9 +200,11 @@
             // Remove splash after fade-out completes
             setTimeout(() => {
               if (s) s.remove();
-              
+
               // Trigger Flutter content fade-in
               document.body.classList.add('flutter-loaded');
+
+              window.dispatchEvent(new Event('gymm-visible'));
             }, 500);
           }
         }, remainingTime);
@@ -214,6 +216,8 @@
           setTimeout(() => {
             if (s) s.remove();
             document.body.classList.add('flutter-loaded');
+
+            window.dispatchEvent(new Event('gymm-visible'));
           }, 500);
         }
       }

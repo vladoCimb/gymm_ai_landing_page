@@ -41,6 +41,8 @@ class _NewMarketingPageState extends State<NewMarketingPage>
   // 3. Buttons: 60% to 90%
   late Animation<double> _buttonAnimation;
 
+  html.EventListener? _visibilityListener;
+
   @override
   void initState() {
     super.initState();
@@ -66,16 +68,34 @@ class _NewMarketingPageState extends State<NewMarketingPage>
       curve: const Interval(0.6, 1.0, curve: Curves.easeOut),
     );
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(const Duration(milliseconds: 250), () {
-        _controller.forward();
+    if (kIsWeb) {
+      // 🔥 Wait until the HTML splash is *actually* gone
+      _visibilityListener = (event) {
+        _controller.forward(from: 0);
+      };
+      html.window.addEventListener('gymm-visible', _visibilityListener!);
+    } else {
+      // Non-web platforms: start after first frame
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _controller.forward(from: 0);
       });
-    });
+    }
+
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   Future.delayed(const Duration(milliseconds: 250), () {
+    //     _controller.forward();
+    //   });
+    // });
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _controller.dispose();
+    if (kIsWeb && _visibilityListener != null) {
+      html.window.removeEventListener('gymm-visible', _visibilityListener!);
+    }
+
     super.dispose();
   }
 
@@ -1630,9 +1650,56 @@ class _GetAppDialogCard extends StatelessWidget {
   }
 }
 
-// -----------------------------------------------------------------------------
-// WIDGET 1: Typewriter Effect with Blur
-// -----------------------------------------------------------------------------
+// // -----------------------------------------------------------------------------
+// // WIDGET 1: Typewriter Effect with Blur
+// // -----------------------------------------------------------------------------
+// class TypewriterBlurReveal extends StatelessWidget {
+//   final Animation<double> animation;
+//   final String text;
+//   final TextStyle style;
+
+//   const TypewriterBlurReveal({
+//     super.key,
+//     required this.animation,
+//     required this.text,
+//     required this.style,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return AnimatedBuilder(
+//       animation: animation,
+//       builder: (context, child) {
+//         // 1. Calculate how many characters to show based on animation value (0.0 to 1.0)
+//         final int charCount = (text.length * animation.value).ceil();
+//         final String visibleString =
+//             text.substring(0, charCount.clamp(0, text.length));
+
+//         // 2. Calculate Blur: Starts high (10.0), ends at 0.0
+//         // We use a curve so it unblurs quickly at the end for readability
+//         final double blurValue = (1.0 - animation.value) * 10;
+
+//         // 3. Calculate Opacity: Starts at 0, goes to 1
+//         final double opacity = animation.value.clamp(0.0, 1.0);
+
+//         return Opacity(
+//           opacity: opacity,
+//           child: ImageFiltered(
+//             imageFilter: ImageFilter.blur(
+//               sigmaX: blurValue,
+//               sigmaY: blurValue,
+//             ),
+//             child: Text(
+//               visibleString,
+//               style: style,
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
+
 class TypewriterBlurReveal extends StatelessWidget {
   final Animation<double> animation;
   final String text;
@@ -1649,17 +1716,17 @@ class TypewriterBlurReveal extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: animation,
-      builder: (context, child) {
-        // 1. Calculate how many characters to show based on animation value (0.0 to 1.0)
-        final int charCount = (text.length * animation.value).ceil();
-        final String visibleString =
-            text.substring(0, charCount.clamp(0, text.length));
+      builder: (context, _) {
+        // 1. How many characters we want "typed"
+        final int charCount =
+            (text.length * animation.value).ceil().clamp(0, text.length);
+        final String visible = text.substring(0, charCount);
+        final String hidden = text.substring(charCount);
 
-        // 2. Calculate Blur: Starts high (10.0), ends at 0.0
-        // We use a curve so it unblurs quickly at the end for readability
+        // 2. Blur value (from 10 → 0)
         final double blurValue = (1.0 - animation.value) * 10;
 
-        // 3. Calculate Opacity: Starts at 0, goes to 1
+        // 3. Opacity from 0 → 1
         final double opacity = animation.value.clamp(0.0, 1.0);
 
         return Opacity(
@@ -1669,9 +1736,26 @@ class TypewriterBlurReveal extends StatelessWidget {
               sigmaX: blurValue,
               sigmaY: blurValue,
             ),
-            child: Text(
-              visibleString,
-              style: style,
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  // Visible typed part
+                  TextSpan(
+                    text: visible,
+                    style: style,
+                  ),
+                  // Invisible but layout-reserving part
+                  TextSpan(
+                    text: hidden,
+                    style: style.copyWith(
+                      color: Colors.transparent,
+                    ),
+                  ),
+                ],
+              ),
+              // Optional: keep same settings you’d use on Text
+              textAlign: TextAlign.left,
+              softWrap: true,
             ),
           ),
         );
