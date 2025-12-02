@@ -15,7 +15,7 @@ class TopHeader extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                context.go('/roadmap');
+                context.push('/roadmap');
               },
               child: MouseRegion(
                 cursor: SystemMouseCursors.click,

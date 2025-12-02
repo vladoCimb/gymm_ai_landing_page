@@ -50,7 +50,8 @@ class _NewMarketingPageState extends State<NewMarketingPage>
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 3), // Slower for dramatic effect
+      duration:
+          const Duration(milliseconds: 2500), // Slower for dramatic effect
     );
 
     _headlineAnimation = CurvedAnimation(
@@ -1335,7 +1336,7 @@ class FooterWidget extends StatelessWidget {
         _FooterLink(
           text: 'Press kit',
           onTap: () {
-            context.go('/press_kit');
+            context.push('/press_kit');
           },
         ),
         SizedBox(height: 12),
@@ -1395,7 +1396,7 @@ class FooterWidget extends StatelessWidget {
         _FooterLink(
           text: 'Terms of service',
           onTap: () {
-            context.go('/terms_of_use');
+            context.push('/terms_of_use');
             // Navigator.push(
             //   context,
             //   PageRouteBuilder(
@@ -1411,7 +1412,7 @@ class FooterWidget extends StatelessWidget {
         _FooterLink(
           text: 'Privacy policy',
           onTap: () {
-            context.go('/privacy_policy');
+            context.push('/privacy_policy');
             // Navigator.push(
             //   context,
             //   PageRouteBuilder(
@@ -1705,64 +1706,140 @@ class TypewriterBlurReveal extends StatelessWidget {
   final String text;
   final TextStyle style;
 
+  /// Maximum blur when a character first appears.
+  final double maxBlur;
+
+  /// How long (fraction of total animation) each character spends going
+  /// from blurred → sharp after it appears.
+  final double perCharBlurFraction;
+
   const TypewriterBlurReveal({
     super.key,
     required this.animation,
     required this.text,
     required this.style,
+    this.maxBlur = 10.0,
+    this.perCharBlurFraction = 0.15,
   });
 
   @override
   Widget build(BuildContext context) {
+    if (text.isEmpty) return const SizedBox.shrink();
+
     return AnimatedBuilder(
       animation: animation,
       builder: (context, _) {
-        // 1. How many characters we want "typed"
-        final int charCount =
-            (text.length * animation.value).ceil().clamp(0, text.length);
-        final String visible = text.substring(0, charCount);
-        final String hidden = text.substring(charCount);
+        final t = animation.value.clamp(0.0, 1.0);
+        final spans = <InlineSpan>[];
+        final length = text.length;
 
-        // 2. Blur value (from 10 → 0)
-        final double blurValue = (1.0 - animation.value) * 10;
+        final baseColor = style.color ?? const Color(0xFFFFFFFF);
 
-        // 3. Opacity from 0 → 1
-        final double opacity = animation.value.clamp(0.0, 1.0);
+        for (var i = 0; i < length; i++) {
+          final char = text[i];
 
-        return Opacity(
-          opacity: opacity,
-          child: ImageFiltered(
-            imageFilter: ImageFilter.blur(
-              sigmaX: blurValue,
-              sigmaY: blurValue,
-            ),
-            child: Text.rich(
-              TextSpan(
-                children: [
-                  // Visible typed part
-                  TextSpan(
-                    text: visible,
-                    style: style,
-                  ),
-                  // Invisible but layout-reserving part
-                  TextSpan(
-                    text: hidden,
-                    style: style.copyWith(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                ],
-              ),
-              // Optional: keep same settings you’d use on Text
-              textAlign: TextAlign.left,
-              softWrap: true,
-            ),
-          ),
+          // When this character starts and ends its blur animation
+          final double appearT = i / length;
+          final double endT = (appearT + perCharBlurFraction).clamp(0.0, 1.0);
+
+          TextStyle charStyle;
+
+          if (t <= appearT) {
+            // Not yet "typed": invisible but still in layout
+            charStyle = style.copyWith(color: baseColor.withOpacity(0.0));
+          } else if (t >= endT) {
+            // Fully visible, sharp
+            charStyle = style;
+          } else {
+            // In its blur → sharp phase
+            final local = (t - appearT) / (endT - appearT);
+            final blur = maxBlur * (1.0 - local);
+
+            final paint = Paint()
+              ..color = baseColor
+              ..maskFilter = MaskFilter.blur(BlurStyle.normal, blur);
+
+            charStyle = style.copyWith(
+              // When foreground is set, color is ignored – everything is in paint
+              foreground: paint,
+            );
+          }
+
+          spans.add(TextSpan(text: char, style: charStyle));
+        }
+
+        return Text.rich(
+          TextSpan(children: spans),
+          textAlign: TextAlign.left,
+          softWrap: true,
         );
       },
     );
   }
 }
+// class TypewriterBlurReveal extends StatelessWidget {
+//   final Animation<double> animation;
+//   final String text;
+//   final TextStyle style;
+
+//   const TypewriterBlurReveal({
+//     super.key,
+//     required this.animation,
+//     required this.text,
+//     required this.style,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return AnimatedBuilder(
+//       animation: animation,
+//       builder: (context, _) {
+//         // 1. How many characters we want "typed"
+//         final int charCount =
+//             (text.length * animation.value).ceil().clamp(0, text.length);
+//         final String visible = text.substring(0, charCount);
+//         final String hidden = text.substring(charCount);
+
+//         // 2. Blur value (from 10 → 0)
+//         final double blurValue = (1.0 - animation.value) * 10;
+
+//         // 3. Opacity from 0 → 1
+//         final double opacity = animation.value.clamp(0.0, 1.0);
+
+//         return Opacity(
+//           opacity: opacity,
+//           child: ImageFiltered(
+//             imageFilter: ImageFilter.blur(
+//               sigmaX: blurValue,
+//               sigmaY: blurValue,
+//             ),
+//             child: Text.rich(
+//               TextSpan(
+//                 children: [
+//                   // Visible typed part
+//                   TextSpan(
+//                     text: visible,
+//                     style: style,
+//                   ),
+//                   // Invisible but layout-reserving part
+//                   TextSpan(
+//                     text: hidden,
+//                     style: style.copyWith(
+//                       color: Colors.transparent,
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//               // Optional: keep same settings you’d use on Text
+//               textAlign: TextAlign.left,
+//               softWrap: true,
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
 
 // -----------------------------------------------------------------------------
 // WIDGET 2: Standard Fade + Blur Reveal (For subtext and buttons)
