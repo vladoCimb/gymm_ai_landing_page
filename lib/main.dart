@@ -1,10 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gymm_ai_landing_page/marketing_page/new_marketing_page.dart';
 import 'package:gymm_ai_landing_page/pages/legal_doc_page.dart';
-import 'package:gymm_ai_landing_page/pages/marketing_page.dart';
 import 'package:gymm_ai_landing_page/pages/marketing_page1.dart';
+import 'package:gymm_ai_landing_page/pages/roadmap_page.dart';
+import 'package:gymm_ai_landing_page/pages/press_kit_page.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 
 // Enum for device types
@@ -51,34 +53,76 @@ void main() async {
     print('Firebase initialization error: $e');
   }
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  // 1. Define the Router configuration
+  final GoRouter _router = GoRouter(
+    initialLocation: '/',
+    // Add your Firebase Observer here so it tracks page changes automatically
+    observers: [
+      if (Firebase.apps.isNotEmpty)
+        FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
+    ],
+    routes: [
+      GoRoute(
+        path: '/',
+        builder: (context, state) => const LandingPage(),
+      ),
+      GoRoute(
+        path: '/marketing_page',
+        builder: (context, state) => const NewMarketingPage(),
+      ),
+      GoRoute(
+        path: '/privacy_policy',
+        builder: (context, state) => const PrivacyPolicyPage(),
+      ),
+      GoRoute(
+        path: '/terms_of_use',
+        builder: (context, state) => const TermsOfUsePage(),
+      ),
+      GoRoute(
+        path: '/roadmap',
+        builder: (context, state) => const RoadmapPage(),
+      ),
+      GoRoute(
+        path: '/press_kit',
+        builder: (context, state) => const PressKitPage(),
+      ),
+    ],
+  );
 
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(1440, 1024),
-      enableScaleText: () => true,
-      minTextAdapt: true,
-      builder: (context, child) => child!,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        navigatorObservers: [
-          if (Firebase.apps.isNotEmpty)
-            FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
-        ],
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const LandingPage(),
-          '/privacy_policy': (context) => const PrivacyPolicyPage(),
-          '/terms_of_use': (context) => const TermsOfUsePage(),
-          '/marketing_page': (context) => const NewMarketingPage(),
-        },
-      ),
-    );
+        designSize: const Size(1440, 1024),
+        enableScaleText: () => true,
+        minTextAdapt: true,
+        builder: (context, child) {
+          return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            routerConfig: _router, // Pass the configuration here
+          );
+        }
+
+        // child: MaterialApp(
+        //   debugShowCheckedModeBanner: false,
+        //   navigatorObservers: [
+        //     if (Firebase.apps.isNotEmpty)
+        //       FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
+        //   ],
+        //   initialRoute: '/',
+        //   routes: {
+        //     '/': (context) => const NewMarketingPage(),
+        //     '/privacy_policy': (context) => const PrivacyPolicyPage(),
+        //     '/terms_of_use': (context) => const TermsOfUsePage(),
+        //     '/marketing_page': (context) => const NewMarketingPage(),
+        //   },
+        // ),
+        );
   }
 }
 

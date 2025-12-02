@@ -200,6 +200,7 @@
             // Remove splash after fade-out completes
             setTimeout(() => {
               if (s) s.remove();
+              
               // Trigger Flutter content fade-in
               document.body.classList.add('flutter-loaded');
             }, 500);

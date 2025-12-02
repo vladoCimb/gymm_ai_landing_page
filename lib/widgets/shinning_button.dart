@@ -9,13 +9,13 @@ class ShinningButton extends StatefulWidget {
     this.onPressed,
     this.isMobile = false,
     required this.text,
-    required this.iconUrl,
+    this.iconUrl,
   });
 
   final VoidCallback? onPressed;
   final bool isMobile;
   final String text;
-  final String iconUrl;
+  final String? iconUrl;
 
   @override
   State<ShinningButton> createState() => _ShinningButtonState();
@@ -39,7 +39,9 @@ class _ShinningButtonState extends State<ShinningButton> {
             duration: const Duration(milliseconds: 200),
             tween: ColorTween(
               begin: Color.fromRGBO(187, 205, 242, 1),
-              end: Color.fromRGBO(187, 205, 242, 1),
+              end: (_isHovered || _isFocused)
+                  ? Color.fromRGBO(228, 235, 250, 1)
+                  : Color.fromRGBO(187, 205, 242, 1),
               // begin: const Color.fromRGBO(175, 178, 255, 1),
               // end: (_isHovered || _isFocused)
               //     ? const Color.fromRGBO(230, 231, 255, 1)
@@ -49,47 +51,20 @@ class _ShinningButtonState extends State<ShinningButton> {
               return Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(61),
-                  gradient: RadialGradient(
-                    center: Alignment(
-                      (45.77 * 2 / 100) - 1, // Convert % to Alignment X
-                      (83 * 2 / 100) - 1, // Convert % to Alignment Y
-                    ),
-                    radius: 0.65, // 65%
-                    colors: [
-                      firstColor ?? Color.fromRGBO(187, 205, 242, 1),
-                      const Color.fromRGBO(187, 205, 242, 1),
-                    ],
-                    stops: const [0.0, 0.9856], // 0% and 98.56%
-                  ),
+                  color: firstColor,
+                  // gradient: RadialGradient(
+                  //   center: Alignment(
+                  //     (45.77 * 2 / 100) - 1, // Convert % to Alignment X
+                  //     (83 * 2 / 100) - 1, // Convert % to Alignment Y
+                  //   ),
+                  //   radius: 0.65, // 65%
+                  //   colors: [
+                  //     firstColor ?? Color.fromRGBO(187, 205, 242, 1),
+                  //     const Color.fromRGBO(187, 205, 242, 1),
+                  //   ],
+                  //   stops: const [0.0, 0.9856], // 0% and 98.56%
+                  // ),
                   boxShadow: [
-                    // BoxShadow(
-                    //   color: Color.fromRGBO(255, 255, 255, 0.25),
-                    //   offset: Offset(0, 4),
-                    //   blurRadius: 20,
-                    //   spreadRadius: 0,
-                    //   inset: false,
-                    // ),
-                    // BoxShadow(
-                    //   color: Color.fromRGBO(63, 89, 255, 1),
-                    //   offset: Offset(0, 0),
-                    //   blurRadius: 15.96,
-                    //   spreadRadius: 0,
-                    //   inset: false,
-                    // ),
-                    // BoxShadow(
-                    //   color: Color.fromRGBO(66, 91, 255, 1),
-                    //   offset: Offset(0, 0),
-                    //   blurRadius: 38.77,
-                    //   spreadRadius: 0,
-                    //   inset: false,
-                    // ),
-                    // BoxShadow(
-                    //   color: Color.fromRGBO(255, 255, 255, 1),
-                    //   offset: Offset(0, -1),
-                    //   blurRadius: 4,
-                    //   spreadRadius: 0,
-                    //   inset: true,
-                    // ),
                     BoxShadow(
                       color: Color.fromRGBO(255, 255, 255, 1),
                       offset: Offset(0, 0),
@@ -97,13 +72,6 @@ class _ShinningButtonState extends State<ShinningButton> {
                       spreadRadius: 0,
                       inset: true,
                     ),
-                    // BoxShadow(
-                    //   color: Color.fromRGBO(66, 91, 255, 0.8),
-                    //   offset: Offset(0, 0),
-                    //   blurRadius: 38.77,
-                    //   spreadRadius: 0,
-                    //   inset: false,
-                    // ),
                     BoxShadow(
                       color: Color.fromRGBO(255, 255, 255, 1),
                       offset: Offset(0, 1),
@@ -150,21 +118,23 @@ class _ShinningButtonState extends State<ShinningButton> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Stack(
-                              children: [
-                                Positioned(
-                                  top: 1,
-                                  child: SvgPicture.asset(
-                                    widget.iconUrl,
-                                    color: Color.fromRGBO(255, 255, 255, 0.4),
+                            if (widget.iconUrl != null)
+                              Stack(
+                                children: [
+                                  Positioned(
+                                    top: 1,
+                                    child: SvgPicture.asset(
+                                      widget.iconUrl!,
+                                      color: Color.fromRGBO(255, 255, 255, 0.4),
+                                    ),
                                   ),
-                                ),
-                                SvgPicture.asset(widget.iconUrl),
-                              ],
-                            ),
-                            SizedBox(
-                              width: 6,
-                            ),
+                                  SvgPicture.asset(widget.iconUrl!),
+                                ],
+                              ),
+                            if (widget.iconUrl != null)
+                              SizedBox(
+                                width: 6,
+                              ),
                             Text(
                               widget.text,
                               style: TextStyle(

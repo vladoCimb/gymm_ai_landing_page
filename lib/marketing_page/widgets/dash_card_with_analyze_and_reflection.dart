@@ -81,7 +81,7 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
     return DashCard(
       width: isMobile(context) ? 370 : 648,
       height: isMobile(context) ? 496 : 407,
-      backgroundColor: const Color.fromRGBO(24, 15, 42, 1),
+      backgroundColor: const Color.fromRGBO(38, 41, 62, 0.5),
       child: isMobile(context)
           ? Column(
               mainAxisAlignment: MainAxisAlignment.start,

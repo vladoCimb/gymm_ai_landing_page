@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gymm_ai_landing_page/main.dart';
+import 'package:gymm_ai_landing_page/marketing_page/new_marketing_page.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class LegalDocPage extends StatelessWidget {
   final String title;
@@ -10,59 +13,146 @@ class LegalDocPage extends StatelessWidget {
     required this.body,
   });
 
+  /// Converts plain text with numbered headings to markdown format
+  /// Lines starting with "1. ", "2. ", etc. become markdown headings
+  static String _convertToMarkdown(String text) {
+    final lines = text.split('\n');
+    final markdownLines = <String>[];
+
+    for (int i = 0; i < lines.length; i++) {
+      final line = lines[i];
+      final isLastLine = i == lines.length - 1;
+      final nextLine = isLastLine ? null : lines[i + 1];
+
+      // Check if line starts with a number followed by a period and space (e.g., "1. ", "10. ")
+      final headingMatch = RegExp(r'^(\d+)\.\s+(.+)$').firstMatch(line);
+      if (headingMatch != null) {
+        // Convert to markdown heading
+        // Add empty line before heading if there's any previous content
+        if (i > 0) {
+          final prevLine = lines[i - 1];
+          // If previous line was not empty, ensure we have a blank line before heading
+          if (prevLine.trim().isNotEmpty) {
+            // Add empty line if last markdown line is not already empty
+            if (markdownLines.isEmpty || markdownLines.last.trim().isNotEmpty) {
+              markdownLines.add('');
+            }
+          }
+        }
+        markdownLines
+            .add('# ${headingMatch.group(1)}. ${headingMatch.group(2)}');
+      } else if (line.trim().isEmpty) {
+        // Empty line - preserve as paragraph break (double newline)
+        markdownLines.add('');
+      } else {
+        // Regular content line - check what comes next to determine break type
+        final isNextLineEmpty = nextLine == null || nextLine.trim().isEmpty;
+        final isNextLineHeading = nextLine != null &&
+            RegExp(r'^(\d+)\.\s+(.+)$').firstMatch(nextLine) != null;
+
+        // Add line with two spaces at the end for hard line break
+        // unless next line is empty (paragraph break) or a heading
+        if (!isLastLine && !isNextLineEmpty && !isNextLineHeading) {
+          markdownLines.add('$line  '); // Two spaces for hard line break
+        } else {
+          markdownLines.add(line);
+        }
+      }
+    }
+
+    return markdownLines.join('\n');
+  }
+
   @override
   Widget build(BuildContext context) {
-    final fg = Colors.white;
-    final sub = Colors.grey[300];
+    // Convert body text to markdown
+    final markdownBody = _convertToMarkdown(body);
+
+    // Create custom markdown style sheet
+    final markdownStyleSheet = MarkdownStyleSheet(
+      h1: TextStyle(
+        color: Colors.white,
+        fontSize: 18,
+        height: 21 / 18,
+        fontFamily: 'Inter',
+        fontWeight: FontWeight.w500, // Medium
+      ),
+      p: TextStyle(
+        color: Colors.white,
+        fontSize: 14,
+        height: 21 / 14,
+        fontFamily: 'Inter',
+        fontWeight: FontWeight.w300, // Regular
+      ),
+      listBullet: TextStyle(
+        color: Colors.white,
+        fontSize: 14,
+        height: 21 / 14,
+        fontFamily: 'Inter',
+        fontWeight: FontWeight.w300,
+      ),
+      a: TextStyle(
+        color: Colors.white,
+        fontSize: 14,
+        height: 21 / 14,
+        fontFamily: 'Inter',
+        fontWeight: FontWeight.w300,
+      ),
+    );
 
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: 1200,
-              minWidth: 300,
-            ),
+      body: CustomScrollView(
+        slivers: [
+          SliverPersistentHeader(
+            pinned: true,
+            floating: false,
+            delegate: BlurHeaderDelegate(),
+          ),
+          SliverToBoxAdapter(
+            child: SizedBox(height: isMobile(context) ? 30 : 80),
+          ),
+          SliverToBoxAdapter(
             child: Column(
               children: [
-                const SizedBox(height: 20),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Inter',
+                MarketingPagePaddingWiget(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      title,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: isMobile(context) ? 36 : 72,
+                        height: isMobile(context) ? 41 / 36 : 69.8 / 72,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Suisse',
+                        letterSpacing: 0,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                  textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 40),
-                // Use SelectableText so users can copy text
-                SelectableText(
-                  body,
-                  style: TextStyle(
-                    color: sub,
-                    fontSize: 16,
-                    height: 1.5,
-                    fontFamily: 'Inter',
+
+                SizedBox(height: isMobile(context) ? 30 : 60),
+                // Use MarkdownBody to render markdown with custom styling
+                MarketingPagePaddingWiget(
+                  child: Container(
+                    constraints: BoxConstraints(
+                      maxWidth: 642,
+                    ),
+                    child: SelectionArea(
+                      child: MarkdownBody(
+                        data: markdownBody,
+                        styleSheet: markdownStyleSheet,
+                      ),
+                    ),
                   ),
-                  textAlign: TextAlign.left,
                 ),
-                const SizedBox(height: 40),
+                const NewMarketingFooterWidget(),
               ],
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -102,8 +192,8 @@ class TermsOfUsePage extends StatelessWidget {
 /// --------------------
 
 const String _privacyPolicyText = '''
-
 This Privacy Policy describes how Vladmir Cimbora s.r.o., a company based in the Czech Republic (“we,” “our,” or “us”), collects, uses, and protects the personal information of users (“you” or “your”) when using our AI-powered fitness application (“App”).
+
 
 1. Information We Collect
 We may collect the following information when you use the App:
@@ -161,6 +251,7 @@ Last updated: 18.8.2025
 
 const String _termsOfUseText = '''
 These Terms of Use (“Terms”) govern your use of the AI-powered fitness application (“App”) provided by Vladmir Cimbora s.r.o., a company registered in the Czech Republic. By using the App, you agree to these Terms. If you do not agree, please do not use the App.
+
 
 1. Eligibility
 You must be at least 18 years old or have parental/guardian consent to use the App.

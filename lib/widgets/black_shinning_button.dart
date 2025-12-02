@@ -33,34 +33,24 @@ class _BlackShinningButtonState extends State<BlackShinningButton> {
         borderRadius: BorderRadius.circular(61),
         onTap: widget.onPressed,
         onHover: (isHovered) => setState(() => _isHovered = isHovered),
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        hoverColor: Colors.transparent,
         child: Focus(
           onFocusChange: (hasFocus) => setState(() => _isFocused = hasFocus),
           child: TweenAnimationBuilder<Color?>(
             duration: const Duration(milliseconds: 200),
             tween: ColorTween(
               begin: const Color.fromRGBO(167, 186, 224, 0.12),
-              end: const Color.fromRGBO(167, 186, 224, 0.12),
-              // begin: const Color.fromRGBO(175, 178, 255, 1),
-              // end: (_isHovered || _isFocused)
-              //     ? const Color.fromRGBO(230, 231, 255, 1)
-              //     : const Color.fromRGBO(175, 178, 255, 1),
+              end: (_isHovered || _isFocused)
+                  ? const Color.fromRGBO(167, 186, 224, 0.2)
+                  : const Color.fromRGBO(167, 186, 224, 0.12),
             ),
             builder: (context, firstColor, child) {
               return Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(61),
-                  gradient: RadialGradient(
-                    center: Alignment(
-                      (45.77 * 2 / 100) - 1, // Convert % to Alignment X
-                      (83 * 2 / 100) - 1, // Convert % to Alignment Y
-                    ),
-                    radius: 0.65, // 65%
-                    colors: [
-                      firstColor ?? const Color.fromRGBO(167, 186, 224, 0.12),
-                      const Color.fromRGBO(167, 186, 224, 0.12),
-                    ],
-                    stops: const [0.0, 0.9856], // 0% and 98.56%
-                  ),
+                  color: firstColor,
                   boxShadow: [
                     BoxShadow(
                       color: Color.fromRGBO(255, 255, 255, 0.06),
@@ -69,13 +59,6 @@ class _BlackShinningButtonState extends State<BlackShinningButton> {
                       spreadRadius: 0,
                       inset: true,
                     ),
-                    // BoxShadow(
-                    //   color: Color.fromRGBO(66, 91, 255, 0.3),
-                    //   offset: Offset(0, 0),
-                    //   blurRadius: 38.77,
-                    //   spreadRadius: 0,
-                    //   inset: false,
-                    // ),
                     BoxShadow(
                       color: Color.fromRGBO(255, 255, 255, 0.08),
                       offset: Offset(0, 1),
