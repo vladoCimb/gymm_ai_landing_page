@@ -71,7 +71,7 @@ class _DashCardWithVideoAndReflectionTextState
       height: isMobile(context) ? 295 : 407,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: const Color.fromRGBO(3, 10, 27, 1),
+        color: Color(0xff11151d),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 40).copyWith(
         bottom: isMobile(context) ? 30 : 40,

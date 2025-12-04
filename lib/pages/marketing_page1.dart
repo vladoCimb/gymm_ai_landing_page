@@ -327,7 +327,7 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
                 left: 28,
                 top: 22,
                 child: Image.asset(
-                  'assets/png/logo.png',
+                  'assets/png/logo_new.png',
                   width: !isMobile(context) ? 123 : 93,
                   height: !isMobile(context) ? 31 : 30,
                 ),
