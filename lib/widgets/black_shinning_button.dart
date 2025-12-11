@@ -97,7 +97,7 @@ class _BlackShinningButtonState extends State<BlackShinningButton> {
                       )
                     : Padding(
                         padding: EdgeInsetsGeometry.only(
-                          left: 16,
+                          left: 12,
                           right: 16,
                           top: 11,
                           bottom: 11,

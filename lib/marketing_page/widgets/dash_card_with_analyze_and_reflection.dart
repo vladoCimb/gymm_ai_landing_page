@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymm_ai_landing_page/main.dart';
+import 'package:gymm_ai_landing_page/marketing_page/new_marketing_page.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/dash_card.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/test_analyze_widget.dart';
 import 'package:video_player/video_player.dart';
@@ -81,7 +82,7 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
     return DashCard(
       width: isMobile(context) ? 370 : 648,
       height: isMobile(context) ? 496 : 407,
-      backgroundColor: const Color.fromRGBO(38, 41, 62, 0.5),
+      backgroundColor: dashCardBackgroundColor,
       child: isMobile(context)
           ? Column(
               mainAxisAlignment: MainAxisAlignment.start,

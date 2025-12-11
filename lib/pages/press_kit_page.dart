@@ -12,11 +12,11 @@ class PressKitPage extends StatelessWidget {
       backgroundColor: Colors.black,
       body: CustomScrollView(
         slivers: [
-          SliverPersistentHeader(
-            pinned: true,
-            floating: false,
-            delegate: BlurHeaderDelegate(),
-          ),
+          // SliverPersistentHeader(
+          //   pinned: true,
+          //   floating: false,
+          //   delegate: BlurHeaderDelegate(),
+          // ),
           SliverToBoxAdapter(
             child: SizedBox(height: isMobile(context) ? 30 : 80),
           ),

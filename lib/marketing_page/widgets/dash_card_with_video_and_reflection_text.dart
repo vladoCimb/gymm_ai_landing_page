@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymm_ai_landing_page/main.dart';
+import 'package:gymm_ai_landing_page/marketing_page/new_marketing_page.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/ai_video_player.dart';
 import 'package:video_player/video_player.dart';
 
@@ -35,12 +36,11 @@ class _DashCardWithVideoAndReflectionTextState
     final seconds = controller.value.position.inMilliseconds / 1000.0;
 
     // We want:
-    //  0–3 s   → no color
-    //  3–8 s   → color
-    //  with 0.5 s smooth easing in and out
-    const start = 2.0; // was 2.0
-    const end = 8.875; // was 10.0
-    const fade = 0.5;
+    //  0–2 s   → no gradient
+    //  2–5 s   → gradient (fade in at start, fade out at end)
+    const start = 2.0;
+    const end = 5;
+    const fade = 0.5; // Smooth fade duration
 
     if (seconds < start || seconds > end) {
       return 0.0;
@@ -49,13 +49,13 @@ class _DashCardWithVideoAndReflectionTextState
     double strength;
 
     if (seconds < start + fade) {
-      // 3.0 → 3.5: fade in 0 → 1
+      // 2.0 → 2.3: fade in 0 → 1
       strength = (seconds - start) / fade;
     } else if (seconds > end - fade) {
-      // 7.5 → 8.0: fade out 1 → 0
+      // 4.7 → 5.0: fade out 1 → 0
       strength = (end - seconds) / fade;
     } else {
-      // 3.5–7.5: fully on
+      // 2.3–4.7: fully on
       strength = 1.0;
     }
 
@@ -71,7 +71,7 @@ class _DashCardWithVideoAndReflectionTextState
       height: isMobile(context) ? 295 : 407,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Color(0xff11151d),
+        color: dashCardBackgroundColor,
       ),
       padding: const EdgeInsets.symmetric(horizontal: 40).copyWith(
         bottom: isMobile(context) ? 30 : 40,
@@ -164,8 +164,8 @@ class TextWithLeftTopEllipseReflection extends StatelessWidget {
 
             return RadialGradient(
               // LEFT + TOP (ellipse “coming” from under the video)
-              center: const Alignment(-0.5, -2),
-              radius: 1.5,
+              center: const Alignment(-0.5, -1.6),
+              radius: 0.95,
               stops: const [0.0, 0.45, 1.0],
               colors: [
                 purple.withOpacity(0.15 * strength),

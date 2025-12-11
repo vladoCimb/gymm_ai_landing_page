@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gymm_ai_landing_page/widgets/text_button.dart';
 
 class TopHeader extends StatelessWidget {
   const TopHeader({super.key});
@@ -13,23 +14,18 @@ class TopHeader extends StatelessWidget {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            GestureDetector(
-              onTap: () {
+            HoverableTextButton(
+              onPressed: () {
                 context.push('/roadmap');
               },
-              child: MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: Text(
-                  'Roadmap',
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.78),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    fontFamily: 'Inter',
-                    letterSpacing: 0,
-                    height: 29 / 14,
-                  ),
-                ),
+              text: 'Roadmap',
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.78),
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                fontFamily: 'Inter',
+                letterSpacing: 0,
+                height: 29 / 14,
               ),
             ),
             SizedBox(

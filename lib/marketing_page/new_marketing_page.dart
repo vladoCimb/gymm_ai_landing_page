@@ -16,9 +16,13 @@ import 'package:gymm_ai_landing_page/marketing_page/widgets/user_review_carousel
 import 'package:gymm_ai_landing_page/marketing_page/widgets/scroll_animated_rich_text.dart';
 import 'package:gymm_ai_landing_page/widgets/black_shinning_button.dart';
 import 'package:gymm_ai_landing_page/widgets/shinning_button.dart';
+import 'package:gymm_ai_landing_page/widgets/text_button.dart'
+    show HoverableTextButton;
 import 'package:gymm_ai_landing_page/pages/legal_doc_page.dart';
 
 const double kHeaderHeight = 70;
+
+const Color dashCardBackgroundColor = Color.fromRGBO(17, 21, 29, 1);
 
 class NewMarketingPage extends StatefulWidget {
   const NewMarketingPage({super.key});
@@ -70,11 +74,32 @@ class _NewMarketingPageState extends State<NewMarketingPage>
     );
 
     if (kIsWeb) {
-      // 🔥 Wait until the HTML splash is *actually* gone
+      // Check if splash screen already exists (first load) or is gone (reload/navigation)
+      final splashElement = html.document.getElementById('splash');
+      final isFlutterLoaded =
+          html.document.body?.classes.contains('flutter-loaded') ?? false;
+
+      // If splash is already gone or Flutter is already loaded, trigger animation immediately
+      if (splashElement == null || isFlutterLoaded) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _controller.forward(from: 0);
+        });
+      }
+
+      // Always listen for the event as a fallback (in case splash is still there)
       _visibilityListener = (event) {
         _controller.forward(from: 0);
       };
       html.window.addEventListener('gymm-visible', _visibilityListener!);
+
+      // Final fallback: if event doesn't fire within 2 seconds, trigger anyway
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Future.delayed(const Duration(seconds: 2), () {
+          if (!_controller.isAnimating && _controller.value == 0) {
+            _controller.forward(from: 0);
+          }
+        });
+      });
     } else {
       // Non-web platforms: start after first frame
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -118,165 +143,196 @@ class _NewMarketingPageState extends State<NewMarketingPage>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Column(
+                Stack(
                   children: [
-                    MarketingPagePaddingWiget(
-                      child: SelectionArea(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                    maxWidth: isMobile(context) ? 325 : 545,
-                                  ),
-                                  child: TypewriterBlurReveal(
-                                    animation: _headlineAnimation,
-                                    text: 'Your personal AI fitness coach',
-                                    style: TextStyle(
-                                      fontFamily: 'Suisse',
-                                      fontWeight: FontWeight.w500,
-                                      fontSize:
-                                          isMobile(context) ? 48.88 : 82.0,
-                                      height: isMobile(context)
-                                          ? 41.6 / 48.88
-                                          : 69.8 / 82.0,
-                                      letterSpacing: 0,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: isMobile(context) ? 24 : 32,
-                                ),
-                                ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                    maxWidth: isMobile(context) ? 344 : 379,
-                                    minWidth: 250,
-                                  ),
-                                  child: FadeBlurReveal(
-                                    animation: _subtextAnimation,
-                                    child: SelectableText.rich(
-                                      TextSpan(
-                                        children: [
-                                          TextSpan(
-                                            text: 'Record. Analyze. Improve. ',
+                    if (!isMobile(context))
+                      Positioned(
+                        right: -200,
+                        child: Image.asset(
+                          'assets/png/test_image.png',
+                          height: 1138,
+                          width: 855,
+                        ),
+                      ),
+                    Column(
+                      children: [
+                        MarketingPagePaddingWiget(
+                          child: SelectionArea(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    top: isMobile(context) ? 60 : 200),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                        maxWidth: isMobile(context) ? 325 : 545,
+                                      ),
+                                      child: TypewriterBlurReveal(
+                                        animation: _headlineAnimation,
+                                        textSegments: [
+                                          (
+                                            text: 'Your personal ',
                                             style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20.0,
-                                              fontWeight: FontWeight.w400,
                                               fontFamily: 'Suisse',
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: isMobile(context)
+                                                  ? 48.88
+                                                  : 82.0,
+                                              height: isMobile(context)
+                                                  ? 41.6 / 48.88
+                                                  : 84.8 / 82.0,
                                               letterSpacing: 0,
+                                              color: Colors.white,
                                             ),
                                           ),
-                                          TextSpan(
-                                            text:
-                                                'Record your training session and receive detailed improvement suggestions.',
+                                          (
+                                            text: 'AI fitness coach',
                                             style: TextStyle(
-                                              color: Color(0xff7A7A7A),
-                                              fontSize: 20.0,
-                                              fontWeight: FontWeight.w400,
                                               fontFamily: 'Suisse',
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: isMobile(context)
+                                                  ? 48.88
+                                                  : 82.0,
+                                              height: isMobile(context)
+                                                  ? 41.6 / 48.88
+                                                  : 69.8 / 82.0,
                                               letterSpacing: 0,
-                                              height: 26.0 / 20.0,
+                                              color: Colors.white,
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
+                                    SizedBox(
+                                      height: isMobile(context) ? 24 : 32,
+                                    ),
+                                    ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                        maxWidth: isMobile(context) ? 344 : 379,
+                                        minWidth: 250,
+                                      ),
+                                      child: FadeBlurReveal(
+                                        animation: _subtextAnimation,
+                                        child: SelectableText.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text:
+                                                    'Record. Analyze. Improve. ',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontFamily: 'Suisse',
+                                                  letterSpacing: 0,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text:
+                                                    'Record your training session and receive detailed improvement suggestions.',
+                                                style: TextStyle(
+                                                  color: Color(0xff7A7A7A),
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontFamily: 'Suisse',
+                                                  letterSpacing: 0,
+                                                  height: 26.0 / 20.0,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 33,
+                                    ),
+                                    FadeBlurReveal(
+                                      animation: _buttonAnimation,
+                                      child: DownloadButtons(),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: isMobile(context) ? 100 : 300),
+                        Container(
+                          constraints: BoxConstraints(
+                            maxWidth: isMobile(context) ? 346 : 634,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SelectableText(
+                                'Introduction',
+                                style: TextStyle(
+                                  fontFamily: 'Suisse',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  height: 41 / 16,
+                                  letterSpacing: 0,
+                                  color: Color.fromRGBO(132, 131, 148, 1),
+                                ),
+                              ),
+                              SizedBox(
+                                height: isMobile(context) ? 0 : 10,
+                              ),
+                              ScrollAnimatedRichText(
+                                scrollController: _scrollController,
+                                triggerOffset: isMobile(context) ? 140 : 200,
+                                text:
+                                    'Gymm reviews your workout video, spots what a mirror or tracker can’t, and gives you one clear cue to fix on the next rep. Mistakes aren’t failures, they’re information. Small adjustments, repeated, become real progress',
+                                style: TextStyle(
+                                  fontFamily: 'Suisse',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: isMobile(context) ? 24 : 40,
+                                  height: isMobile(context) ? 30 / 24 : 50 / 40,
+                                  letterSpacing: 0,
+                                  color: const Color(0xFF848394),
+                                ),
+                                textAlign: TextAlign.start,
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: isMobile(context) ? 100 : 200,
+                        ),
+                        MarketingPagePaddingWiget(
+                          child: Column(
+                            children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxWidth: isMobile(context) ? 346 : 495,
+                                  ),
+                                  child: SelectableText(
+                                    'The future of personal training',
+                                    style: TextStyle(
+                                      fontFamily: 'Suisse',
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: isMobile(context) ? 36 : 52.09,
+                                      height: isMobile(context)
+                                          ? 38 / 36
+                                          : 54.8 / 52.09,
+                                      letterSpacing: 0,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 33,
-                                ),
-                                FadeBlurReveal(
-                                  animation: _buttonAnimation,
-                                  child: DownloadButtons(),
-                                ),
-                              ],
-                            ),
-                            Flexible(
-                              child: Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.9,
                               ),
-                            )
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ),
+                      ],
+                    )
                   ],
-                ),
-                SizedBox(height: 100),
-                Container(
-                  constraints: BoxConstraints(
-                    maxWidth: isMobile(context) ? 346 : 634,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SelectableText(
-                        'Introduction',
-                        style: TextStyle(
-                          fontFamily: 'Suisse',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                          height: 41 / 16,
-                          letterSpacing: 0,
-                          color: Color.fromRGBO(132, 131, 148, 1),
-                        ),
-                      ),
-                      SizedBox(
-                        height: isMobile(context) ? 0 : 10,
-                      ),
-                      ScrollAnimatedRichText(
-                        scrollController: _scrollController,
-                        triggerOffset: isMobile(context) ? 140 : 200,
-                        text:
-                            'Gymm reviews your workout video, spots what a mirror or tracker can’t, and gives you one clear cue to fix on the next rep. Mistakes aren’t failures, they’re information. Small adjustments, repeated, become real progress',
-                        style: TextStyle(
-                          fontFamily: 'Suisse',
-                          fontWeight: FontWeight.w500,
-                          fontSize: isMobile(context) ? 24 : 40,
-                          height: isMobile(context) ? 30 / 24 : 50 / 40,
-                          letterSpacing: 0,
-                          color: const Color(0xFF848394),
-                        ),
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: isMobile(context) ? 100 : 200,
-                ),
-                MarketingPagePaddingWiget(
-                  child: Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxWidth: isMobile(context) ? 346 : 495,
-                          ),
-                          child: SelectableText(
-                            'The future of personal training',
-                            style: TextStyle(
-                              fontFamily: 'Suisse',
-                              fontWeight: FontWeight.w500,
-                              fontSize: isMobile(context) ? 36 : 52.09,
-                              height:
-                                  isMobile(context) ? 38 / 36 : 54.8 / 52.09,
-                              letterSpacing: 0,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
                 SizedBox(height: isMobile(context) ? 30 : 46),
                 MarketingPagePaddingWiget(
@@ -305,7 +361,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                             DashCard(
                               width: 370,
                               height: 435,
-                              backgroundColor: Color.fromRGBO(38, 41, 62, 0.5),
+                              backgroundColor: dashCardBackgroundColor,
                               child: Padding(
                                 padding: EdgeInsets.only(
                                     left: 32, top: 32, right: 45),
@@ -360,69 +416,79 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                       : Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Stack(
-                              children: [
-                                DashCard(
-                                  width: 1128,
-                                  height: 503,
-                                  backgroundColor:
-                                      Color.fromRGBO(38, 41, 62, 0.5),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.only(left: 40, top: 40),
-                                        child: ConstrainedBox(
-                                          constraints: BoxConstraints(
-                                            maxWidth: 292,
-                                          ),
-                                          child: SelectableText.rich(
-                                            TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text:
-                                                      'Gymm reviews your workout video.',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 20,
-                                                    height: 26 / 20,
-                                                    fontWeight: FontWeight.w400,
-                                                    fontFamily: 'Suisse',
-                                                    letterSpacing: 0,
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(24),
+                              child: Stack(
+                                clipBehavior: Clip.antiAlias,
+                                children: [
+                                  DashCard(
+                                    width: 1128,
+                                    height: 503,
+                                    backgroundColor: dashCardBackgroundColor,
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 40, top: 40),
+                                          child: ConstrainedBox(
+                                            constraints: BoxConstraints(
+                                              maxWidth: 292,
+                                            ),
+                                            child: SelectableText.rich(
+                                              TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text:
+                                                        'Gymm reviews your workout video.',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 20,
+                                                      height: 26 / 20,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontFamily: 'Suisse',
+                                                      letterSpacing: 0,
+                                                    ),
                                                   ),
-                                                ),
-                                                TextSpan(
-                                                  text:
-                                                      ' Mistakes aren’t failures, they’re information. Small adjustments, repeated, become real progress.',
-                                                  style: TextStyle(
-                                                    color: Color(0xff7A7A7A),
-                                                    fontSize: 20,
-                                                    height: 26 / 20,
-                                                    fontWeight: FontWeight.w400,
-                                                    fontFamily: 'Suisse',
-                                                    letterSpacing: 0,
+                                                  TextSpan(
+                                                    text:
+                                                        ' Mistakes aren’t failures, they’re information. Small adjustments, repeated, become real progress.',
+                                                    style: TextStyle(
+                                                      color: Color(0xff7A7A7A),
+                                                      fontSize: 20,
+                                                      height: 26 / 20,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontFamily: 'Suisse',
+                                                      letterSpacing: 0,
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
+                                      ],
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.only(
+                                        bottomRight: Radius.circular(24),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                Positioned(
-                                  bottom: 0,
-                                  right: 50,
-                                  child: Image.asset(
-                                    'assets/png/statistics.png',
-                                    height: 419,
-                                    width: 749,
-                                  ),
-                                )
-                              ],
+                                      child: Image.asset(
+                                        'assets/png/statistics.png',
+                                        height: 419,
+                                        width: 749,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -435,7 +501,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                             DashCard(
                               width: 370,
                               height: 152,
-                              backgroundColor: Color.fromRGBO(37, 35, 50, 0.7),
+                              backgroundColor: dashCardBackgroundColor,
                               child: Align(
                                 alignment: Alignment.bottomLeft,
                                 child: Column(
@@ -505,8 +571,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                             DashCard(
                               width: 370,
                               height: 152,
-                              backgroundColor:
-                                  const Color.fromRGBO(38, 41, 62, 0.5),
+                              backgroundColor: dashCardBackgroundColor,
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -584,8 +649,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                             DashCard(
                               width: 370,
                               height: 152,
-                              backgroundColor:
-                                  const Color.fromRGBO(38, 41, 62, 0.5),
+                              backgroundColor: dashCardBackgroundColor,
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -801,8 +865,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                             DashCard(
                               width: 360,
                               height: 263,
-                              backgroundColor:
-                                  const Color.fromRGBO(38, 41, 62, 0.5),
+                              backgroundColor: dashCardBackgroundColor,
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -888,146 +951,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                 SizedBox(height: 31),
                 MarketingPagePaddingWiget(
                     child: UserReviewsCarousel(isMobile: isMobile(context))),
-                SizedBox(height: isMobile(context) ? 74 : 200),
-                SizedBox(
-                  height: isMobile(context) ? 692 : 1024.h,
-                  width: isMobile(context) ? 1012 : 1440.w,
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Image.asset(
-                        height: isMobile(context) ? 1012 : 1024.h,
-                        width: isMobile(context) ? 692 : 1440.w,
-                        'assets/png/bottom_image.png',
-                        fit: isMobile(context)
-                            ? BoxFit.fitHeight
-                            : BoxFit.fitWidth,
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        child: IgnorePointer(
-                          child: Container(
-                            width: 1440,
-                            height: isMobile(context) ? 180 : 433,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                                transform:
-                                    GradientRotation(13.63 * math.pi / 180),
-                                colors: const [
-                                  Color(0xFF000000),
-                                  Color.fromRGBO(0, 0, 0, 0),
-                                ],
-                                stops: const [0.0872, 0.7574],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: isMobile(context) ? 30 : -50,
-                        left: 0,
-                        right: 0,
-                        child: Opacity(
-                          opacity: 0.1,
-                          child: Image.asset(
-                            'assets/png/big_logo.png',
-                            height: isMobile(context) ? 73 : 176.33.h,
-                            width: isMobile(context) ? 326 : 787.86.w,
-                          ),
-                        ),
-                      ),
-                      Positioned.fill(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 20,
-                          ).copyWith(
-                            bottom: isMobile(context) ? 150 : 0,
-                          ),
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: isMobile(context) ? 0 : 10,
-                                  ),
-                                  child: SelectableText(
-                                    'Start today',
-                                    style: TextStyle(
-                                      fontFamily: 'Suisse',
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16.09,
-                                      height: 41.8 / 16.09,
-                                      letterSpacing: 0,
-                                      color: Color.fromRGBO(132, 131, 148, 1),
-                                    ),
-                                  ),
-                                ),
-                                ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                    maxWidth: 744,
-                                  ),
-                                  child: SelectableText(
-                                    'Gymm.${isMobile(context) ? '\n' : ' '}Your fitness coach, powered by AI',
-                                    style: TextStyle(
-                                      fontFamily: 'Suisse',
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: isMobile(context) ? 36 : 72,
-                                      height: isMobile(context)
-                                          ? 41 / 36
-                                          : 69.8 / 72,
-                                      letterSpacing: 0,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: isMobile(context) ? 28 : 32),
-                                DownloadButtons()
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: isMobile(context) ? 0 : 100),
-                FooterWidget(),
-                SizedBox(height: 30),
-                MarketingPagePaddingWiget(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SelectableText(
-                        '©2025 Gymm',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'Inter',
-                          height: 21 / 14,
-                          color: Color.fromRGBO(157, 157, 157, 1),
-                        ),
-                      ),
-                      SelectableText(
-                        'Made with love in Prague',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'Inter',
-                          height: 21 / 14,
-                          color: Color.fromRGBO(157, 157, 157, 1),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
+                NewMarketingFooterWidget(),
               ],
             ),
           ),
@@ -1079,15 +1003,15 @@ class NewMarketingFooterWidget extends StatelessWidget {
                 ),
               ),
               Positioned(
-                bottom: isMobile(context) ? 30 : -50,
+                bottom: isMobile(context) ? 30 : -80,
                 left: 0,
                 right: 0,
                 child: Opacity(
                   opacity: 0.1,
                   child: Image.asset(
                     'assets/png/big_logo.png',
-                    height: isMobile(context) ? 73 : 176.33.h,
-                    width: isMobile(context) ? 326 : 787.86.w,
+                    height: isMobile(context) ? 73 : 227.33.h,
+                    width: isMobile(context) ? 326 : 1015.86.w,
                   ),
                 ),
               ),
@@ -1285,7 +1209,14 @@ class BlurHeaderDelegate extends SliverPersistentHeaderDelegate {
           height: kHeaderHeight,
           decoration: BoxDecoration(
             color: const Color.fromRGBO(0, 0, 0, 0.7),
-            boxShadow: [],
+            boxShadow: [
+              // BoxShadow(
+              //   color: Color.fromRGBO(255, 255, 255, 0.1),
+              //   blurRadius: 0,
+              //   spreadRadius: 0,
+              //   offset: Offset(0, 1),
+              // ),
+            ],
           ),
           child: Align(
             alignment: Alignment.center,
@@ -1434,6 +1365,14 @@ class FooterWidget extends StatelessWidget {
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Image.asset(
+                    'assets/png/logo_new.png',
+                    width: 86.24,
+                    height: 27.09,
+                  ),
+                  SizedBox(
+                    height: 34,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1447,13 +1386,25 @@ class FooterWidget extends StatelessWidget {
                   legalColumn,
                 ],
               )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
+            : Stack(
                 children: [
-                  companyColumn,
-                  socialColumn,
-                  legalColumn,
+                  Image.asset(
+                    'assets/png/logo_new.png',
+                    width: 86.24,
+                    height: 27.09,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        companyColumn,
+                        socialColumn,
+                        legalColumn,
+                      ],
+                    ),
+                  ),
                 ],
               ),
       ),
@@ -1472,19 +1423,14 @@ class _FooterLink extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: Text(
-          text,
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontWeight: FontWeight.w400,
-            fontSize: 14,
-            color: Color.fromRGBO(157, 157, 157, 1),
-          ),
-        ),
+    return HoverableTextButton(
+      text: text,
+      onPressed: onTap,
+      style: TextStyle(
+        fontFamily: 'Inter',
+        fontWeight: FontWeight.w400,
+        fontSize: 14,
+        color: Color.fromRGBO(157, 157, 157, 1),
       ),
     );
   }
@@ -1703,8 +1649,9 @@ class _GetAppDialogCard extends StatelessWidget {
 
 class TypewriterBlurReveal extends StatelessWidget {
   final Animation<double> animation;
-  final String text;
-  final TextStyle style;
+  final String? text;
+  final TextStyle? style;
+  final List<({String text, TextStyle style})>? textSegments;
 
   /// Maximum blur when a character first appears.
   final double maxBlur;
@@ -1716,56 +1663,75 @@ class TypewriterBlurReveal extends StatelessWidget {
   const TypewriterBlurReveal({
     super.key,
     required this.animation,
-    required this.text,
-    required this.style,
+    this.text,
+    this.style,
+    this.textSegments,
     this.maxBlur = 10.0,
     this.perCharBlurFraction = 0.15,
-  });
+  }) : assert(
+          (text != null && style != null) || textSegments != null,
+          'Either provide text+style or textSegments',
+        );
 
   @override
   Widget build(BuildContext context) {
-    if (text.isEmpty) return const SizedBox.shrink();
+    // Use textSegments if provided, otherwise use single text/style
+    final segments = textSegments ?? [(text: text!, style: style!)];
+
+    // Calculate total length for animation timing
+    final totalLength = segments.fold<int>(
+      0,
+      (sum, segment) => sum + segment.text.length,
+    );
+
+    if (totalLength == 0) return const SizedBox.shrink();
 
     return AnimatedBuilder(
       animation: animation,
       builder: (context, _) {
         final t = animation.value.clamp(0.0, 1.0);
         final spans = <InlineSpan>[];
-        final length = text.length;
+        int charIndex = 0;
 
-        final baseColor = style.color ?? const Color(0xFFFFFFFF);
+        for (final segment in segments) {
+          final segmentLength = segment.text.length;
+          final baseColor = segment.style.color ?? const Color(0xFFFFFFFF);
 
-        for (var i = 0; i < length; i++) {
-          final char = text[i];
+          for (var i = 0; i < segmentLength; i++) {
+            final char = segment.text[i];
 
-          // When this character starts and ends its blur animation
-          final double appearT = i / length;
-          final double endT = (appearT + perCharBlurFraction).clamp(0.0, 1.0);
+            // When this character starts and ends its blur animation
+            final double appearT = charIndex / totalLength;
+            final double endT = (appearT + perCharBlurFraction).clamp(0.0, 1.0);
 
-          TextStyle charStyle;
+            TextStyle charStyle;
 
-          if (t <= appearT) {
-            // Not yet "typed": invisible but still in layout
-            charStyle = style.copyWith(color: baseColor.withOpacity(0.0));
-          } else if (t >= endT) {
-            // Fully visible, sharp
-            charStyle = style;
-          } else {
-            // In its blur → sharp phase
-            final local = (t - appearT) / (endT - appearT);
-            final blur = maxBlur * (1.0 - local);
+            if (t <= appearT) {
+              // Not yet "typed": invisible but still in layout
+              charStyle = segment.style.copyWith(
+                color: baseColor.withOpacity(0.0),
+              );
+            } else if (t >= endT) {
+              // Fully visible, sharp
+              charStyle = segment.style;
+            } else {
+              // In its blur → sharp phase
+              final local = (t - appearT) / (endT - appearT);
+              final blur = maxBlur * (1.0 - local);
 
-            final paint = Paint()
-              ..color = baseColor
-              ..maskFilter = MaskFilter.blur(BlurStyle.normal, blur);
+              final paint = Paint()
+                ..color = baseColor
+                ..maskFilter = MaskFilter.blur(BlurStyle.normal, blur);
 
-            charStyle = style.copyWith(
-              // When foreground is set, color is ignored – everything is in paint
-              foreground: paint,
-            );
+              charStyle = segment.style.copyWith(
+                // When foreground is set, color is ignored – everything is in paint
+                foreground: paint,
+              );
+            }
+
+            spans.add(TextSpan(text: char, style: charStyle));
+            charIndex++;
           }
-
-          spans.add(TextSpan(text: char, style: charStyle));
         }
 
         return Text.rich(

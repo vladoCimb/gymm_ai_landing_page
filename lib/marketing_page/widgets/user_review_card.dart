@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gymm_ai_landing_page/main.dart';
+import 'package:gymm_ai_landing_page/marketing_page/new_marketing_page.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/dash_card.dart';
 import 'package:gymm_ai_landing_page/utils/screenutil_clamp_extensions.dart';
+import 'package:gymm_ai_landing_page/widgets/text_button.dart';
 
 class UserReviewCard extends StatelessWidget {
   const UserReviewCard({
@@ -22,7 +24,7 @@ class UserReviewCard extends StatelessWidget {
         DashCard(
           width: 360,
           height: 263,
-          backgroundColor: const Color.fromRGBO(28, 31, 36, 0.7),
+          backgroundColor: dashCardBackgroundColor,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 35, vertical: 30),
             child: Align(
@@ -44,8 +46,9 @@ class UserReviewCard extends StatelessWidget {
         SizedBox(height: 13),
         Padding(
           padding: EdgeInsets.only(left: 4),
-          child: SelectableText(
-            name,
+          child: HoverableTextButton(
+            onPressed: () {},
+            text: name,
             style: TextStyle(
               fontFamily: 'Suisse',
               fontWeight: FontWeight.w500,
