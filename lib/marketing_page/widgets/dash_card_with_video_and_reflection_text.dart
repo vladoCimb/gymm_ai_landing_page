@@ -67,33 +67,42 @@ class _DashCardWithVideoAndReflectionTextState
     final reflectionStrength = _computeReflectionStrength();
 
     return Container(
-      width: isMobile(context) ? 370 : 456,
-      height: isMobile(context) ? 295 : 407,
+      width: isMobile(context) ? 370 : getDesktopOrTabletSize(context, 456),
+      height: isMobile(context) ? 295 : getDesktopOrTabletSize(context, 407),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(
+            getDesktopOrTabletSize(context, 20, mobileSize: 20)),
         color: dashCardBackgroundColor,
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 40).copyWith(
-        bottom: isMobile(context) ? 30 : 40,
-        top: isMobile(context) ? 8 : 16,
+      padding: EdgeInsets.symmetric(
+              horizontal: getDesktopOrTabletSize(context, 40, mobileSize: 40))
+          .copyWith(
+        bottom: isMobile(context) ? 30 : getDesktopOrTabletSize(context, 40),
+        top: isMobile(context) ? 8 : getDesktopOrTabletSize(context, 16),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            height: isMobile(context) ? 114 : 180,
-            width: isMobile(context) ? 118 : 180,
+            height:
+                isMobile(context) ? 114 : getDesktopOrTabletSize(context, 180),
+            width:
+                isMobile(context) ? 118 : getDesktopOrTabletSize(context, 180),
             child: AiVideoPlayer(
-              height: isMobile(context) ? 114 : 180,
-              width: isMobile(context) ? 118 : 180,
+              height: isMobile(context)
+                  ? 114
+                  : getDesktopOrTabletSize(context, 180),
+              width: isMobile(context)
+                  ? 118
+                  : getDesktopOrTabletSize(context, 180),
               onControllerReady: _onVideoControllerReady,
             ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: getDesktopOrTabletSize(context, 12, mobileSize: 12)),
           ConstrainedBox(
-            constraints: const BoxConstraints(
-              maxWidth: 362,
+            constraints: BoxConstraints(
+              maxWidth: getDesktopOrTabletSize(context, 362),
             ),
             child: TextWithLeftTopEllipseReflection(
               strength: reflectionStrength,
@@ -105,10 +114,14 @@ class _DashCardWithVideoAndReflectionTextState
                           'Powered by Gymm AI, built on the most advanced models',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: isMobile(context) ? 16 : 20,
+                        fontSize: isMobile(context)
+                            ? 16
+                            : getDesktopOrTabletSize(context, 20),
                         fontWeight: FontWeight.w400,
                         fontFamily: 'Suisse',
-                        height: isMobile(context) ? 21 / 16 : 26 / 20,
+                        height: isMobile(context)
+                            ? 21 / 16
+                            : 26 / getDesktopOrTabletSize(context, 20),
                         letterSpacing: 0,
                       ),
                     ),
@@ -117,10 +130,14 @@ class _DashCardWithVideoAndReflectionTextState
                           '  trained to understand your fitness workouts and deliver the most useful feedback.',
                       style: TextStyle(
                         color: Color(0xff7A7A7A),
-                        fontSize: isMobile(context) ? 16 : 20,
+                        fontSize: isMobile(context)
+                            ? 16
+                            : getDesktopOrTabletSize(context, 20),
                         fontWeight: FontWeight.w400,
                         fontFamily: 'Suisse',
-                        height: isMobile(context) ? 21 / 16 : 26 / 20,
+                        height: isMobile(context)
+                            ? 21 / 16
+                            : 26 / getDesktopOrTabletSize(context, 20),
                         letterSpacing: 0,
                       ),
                     ),

@@ -36,6 +36,19 @@ bool isTablet(BuildContext context) {
   return getDeviceType(context) == DeviceType.tablet;
 }
 
+// Helper function to get tablet size (desktop * 0.8) or desktop size
+double getDesktopOrTabletSize(BuildContext context, double desktopSize,
+    {double? mobileSize}) {
+  final deviceType = getDeviceType(context);
+  if (deviceType == DeviceType.mobile && mobileSize != null) {
+    return mobileSize;
+  } else if (deviceType == DeviceType.tablet) {
+    return desktopSize * 0.65;
+  } else {
+    return desktopSize;
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -70,7 +83,7 @@ class MyApp extends StatelessWidget {
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) => const LandingPage(),
+        builder: (context, state) => const NewMarketingPage(),
       ),
       GoRoute(
         path: '/marketing_page',

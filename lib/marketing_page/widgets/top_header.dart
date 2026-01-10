@@ -3,7 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:gymm_ai_landing_page/widgets/text_button.dart';
 
 class TopHeader extends StatelessWidget {
-  const TopHeader({super.key});
+  const TopHeader({super.key, required this.onDownloadPressed});
+
+  final VoidCallback onDownloadPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,9 @@ class TopHeader extends StatelessWidget {
               width: 30,
             ),
             _DownloadButton(
-              onPressed: () {},
+              onPressed: () {
+                onDownloadPressed.call();
+              },
             ),
           ],
         ),
@@ -114,8 +118,8 @@ class _DownloadButtonState extends State<_DownloadButton> {
             ),
             builder: (context, backgroundColor, child) {
               final borderColor = (_isHovered || _isFocused)
-                  ? const Color.fromRGBO(255, 255, 255, 0.18)
-                  : const Color.fromRGBO(255, 255, 255, 0.12);
+                  ? const Color.fromRGBO(255, 255, 255, 0.12)
+                  : const Color.fromRGBO(255, 255, 255, 0.06);
 
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 200),

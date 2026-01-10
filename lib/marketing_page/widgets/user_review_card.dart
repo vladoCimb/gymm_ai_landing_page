@@ -34,8 +34,8 @@ class UserReviewCard extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Suisse',
                   fontWeight: FontWeight.w400,
-                  fontSize: isMobile(context) ? 16 : 22,
-                  height: isMobile(context) ? 21 / 16 : 22 / 22,
+                  fontSize: isMobile(context) ? 16 : 20,
+                  height: isMobile(context) ? 21 / 16 : 26 / 20,
                   letterSpacing: 0,
                   color: Colors.white,
                 ),

@@ -7,22 +7,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart' hide DeviceType;
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymm_ai_landing_page/main.dart';
-import 'package:gymm_ai_landing_page/marketing_page/widgets/ai_video_player.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/dash_card.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/dash_card_with_analyze_and_reflection.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/dash_card_with_video_and_reflection_text.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/top_header.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/user_review_carousel.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/scroll_animated_rich_text.dart';
+import 'package:gymm_ai_landing_page/utils/screenutil_clamp_extensions.dart';
 import 'package:gymm_ai_landing_page/widgets/black_shinning_button.dart';
 import 'package:gymm_ai_landing_page/widgets/shinning_button.dart';
 import 'package:gymm_ai_landing_page/widgets/text_button.dart'
     show HoverableTextButton;
-import 'package:gymm_ai_landing_page/pages/legal_doc_page.dart';
+import 'package:video_player/video_player.dart';
 
 const double kHeaderHeight = 70;
 
-const Color dashCardBackgroundColor = Color.fromRGBO(17, 21, 29, 1);
+const Color dashCardBackgroundColor = Color.fromRGBO(31, 32, 39, 0.5);
 
 class NewMarketingPage extends StatefulWidget {
   const NewMarketingPage({super.key});
@@ -44,8 +44,11 @@ class _NewMarketingPageState extends State<NewMarketingPage>
   late Animation<double> _subtextAnimation;
   // 3. Buttons: 60% to 90%
   late Animation<double> _buttonAnimation;
+  // 4. Video Player: 80% to 100%
+  late Animation<double> _videoPlayerAnimation;
 
   html.EventListener? _visibilityListener;
+  VideoPlayerController? _landingVideoController;
 
   @override
   void initState() {
@@ -55,22 +58,27 @@ class _NewMarketingPageState extends State<NewMarketingPage>
     _controller = AnimationController(
       vsync: this,
       duration:
-          const Duration(milliseconds: 2500), // Slower for dramatic effect
+          const Duration(milliseconds: 1200), // Slower for dramatic effect
     );
 
     _headlineAnimation = CurvedAnimation(
       parent: _controller,
-      curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
+      curve: const Interval(0.0, 0.3, curve: Curves.easeIn),
     );
 
     _subtextAnimation = CurvedAnimation(
       parent: _controller,
-      curve: const Interval(0.4, 0.8, curve: Curves.easeOut),
+      curve: const Interval(0.3, 0.6, curve: Curves.easeIn),
     );
 
     _buttonAnimation = CurvedAnimation(
       parent: _controller,
-      curve: const Interval(0.6, 1.0, curve: Curves.easeOut),
+      curve: const Interval(0.6, 1.0, curve: Curves.easeIn),
+    );
+
+    _videoPlayerAnimation = CurvedAnimation(
+      parent: _controller,
+      curve: const Interval(0.3, 1.0, curve: Curves.easeIn),
     );
 
     if (kIsWeb) {
@@ -112,12 +120,44 @@ class _NewMarketingPageState extends State<NewMarketingPage>
     //     _controller.forward();
     //   });
     // });
+
+    _initializeLandingVideo();
+  }
+
+  void _initializeLandingVideo() async {
+    try {
+      _landingVideoController =
+          VideoPlayerController.asset('assets/png/landing_video.mp4');
+      await _landingVideoController!.setVolume(0);
+      await _landingVideoController!.initialize();
+      await _landingVideoController!.setLooping(true);
+      _landingVideoController!.addListener(() {
+        if (mounted) {
+          setState(() {});
+        }
+      });
+      try {
+        await _landingVideoController!.play();
+      } catch (playError) {
+        // ignore: avoid_print
+        print(
+            'Landing video autoplay failed (this is normal on web): $playError');
+      }
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      // ignore: avoid_print
+      print('Error initializing landing video: $e');
+      _landingVideoController = null;
+    }
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
     _controller.dispose();
+    _landingVideoController?.dispose();
     if (kIsWeb && _visibilityListener != null) {
       html.window.removeEventListener('gymm-visible', _visibilityListener!);
     }
@@ -125,10 +165,39 @@ class _NewMarketingPageState extends State<NewMarketingPage>
     super.dispose();
   }
 
+  Widget _buildLandingVideoPlayer(BuildContext context) {
+    // If video controller is not initialized, return empty container
+    if (_landingVideoController == null ||
+        !_landingVideoController!.value.isInitialized) {
+      return SizedBox();
+    }
+
+    // Check if video is playing, if not, try to play it
+    if (_landingVideoController!.value.isInitialized &&
+        !_landingVideoController!.value.isPlaying) {
+      // Use a microtask to avoid calling setState during build
+      Future.microtask(() {
+        if (mounted &&
+            _landingVideoController != null &&
+            _landingVideoController!.value.isInitialized) {
+          try {
+            _landingVideoController!.play();
+          } catch (e) {
+            // ignore: avoid_print
+            print('Error auto-playing landing video: $e');
+          }
+        }
+      });
+    }
+
+    return AspectRatio(
+      aspectRatio: _landingVideoController!.value.aspectRatio,
+      child: VideoPlayer(_landingVideoController!),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final deviceType = getDeviceType(context);
-
     return Scaffold(
       backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
       body: CustomScrollView(
@@ -148,10 +217,13 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                     if (!isMobile(context))
                       Positioned(
                         right: -200,
-                        child: Image.asset(
-                          'assets/png/test_image.png',
-                          height: 1138,
-                          width: 855,
+                        child: SizedBox(
+                          width: isTablet(context) ? 1000 * 0.8 : 1000,
+                          height: MediaQuery.of(context).size.height * 1.17,
+                          child: FadeBlurReveal(
+                            animation: _videoPlayerAnimation,
+                            child: _buildLandingVideoPlayer(context),
+                          ),
                         ),
                       ),
                     Column(
@@ -162,57 +234,75 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                               alignment: Alignment.centerLeft,
                               child: Padding(
                                 padding: EdgeInsets.only(
-                                    top: isMobile(context) ? 60 : 200),
+                                  top: isMobile(context) ? 60 : 200.hc,
+                                ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     ConstrainedBox(
                                       constraints: BoxConstraints(
-                                        maxWidth: isMobile(context) ? 325 : 545,
+                                        maxWidth: isMobile(context)
+                                            ? 325
+                                            : getDesktopOrTabletSize(
+                                                context, 545),
                                       ),
-                                      child: TypewriterBlurReveal(
+                                      child: FadeBlurReveal(
                                         animation: _headlineAnimation,
-                                        textSegments: [
-                                          (
-                                            text: 'Your personal ',
-                                            style: TextStyle(
-                                              fontFamily: 'Suisse',
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: isMobile(context)
-                                                  ? 48.88
-                                                  : 82.0,
-                                              height: isMobile(context)
-                                                  ? 41.6 / 48.88
-                                                  : 84.8 / 82.0,
-                                              letterSpacing: 0,
-                                              color: Colors.white,
-                                            ),
+                                        child: SelectableText.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: 'Your personal ',
+                                                style: TextStyle(
+                                                  fontFamily: 'Suisse',
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: isMobile(context)
+                                                      ? 48.88
+                                                      : getDesktopOrTabletSize(
+                                                          context, 82.0),
+                                                  height: isMobile(context)
+                                                      ? 41.6 / 48.88
+                                                      : getDesktopOrTabletSize(
+                                                              context, 84.8) /
+                                                          getDesktopOrTabletSize(
+                                                              context, 82.0),
+                                                  letterSpacing: 0,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: 'AI fitness coach',
+                                                style: TextStyle(
+                                                  fontFamily: 'Suisse',
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: isMobile(context)
+                                                      ? 48.88
+                                                      : getDesktopOrTabletSize(
+                                                          context, 82.0),
+                                                  height: isMobile(context)
+                                                      ? 41.6 / 48.88
+                                                      : getDesktopOrTabletSize(
+                                                              context, 69.8) /
+                                                          getDesktopOrTabletSize(
+                                                              context, 82.0),
+                                                  letterSpacing: 0,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          (
-                                            text: 'AI fitness coach',
-                                            style: TextStyle(
-                                              fontFamily: 'Suisse',
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: isMobile(context)
-                                                  ? 48.88
-                                                  : 82.0,
-                                              height: isMobile(context)
-                                                  ? 41.6 / 48.88
-                                                  : 69.8 / 82.0,
-                                              letterSpacing: 0,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
                                     ),
                                     SizedBox(
-                                      height: isMobile(context) ? 24 : 32,
+                                      height: isMobile(context)
+                                          ? 24
+                                          : getDesktopOrTabletSize(context, 32),
                                     ),
                                     ConstrainedBox(
                                       constraints: BoxConstraints(
                                         maxWidth: isMobile(context) ? 344 : 379,
-                                        minWidth: 250,
+                                        minWidth: 230,
                                       ),
                                       child: FadeBlurReveal(
                                         animation: _subtextAnimation,
@@ -260,10 +350,31 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                             ),
                           ),
                         ),
-                        SizedBox(height: isMobile(context) ? 100 : 300),
+                        if (isMobile(context))
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 40,
+                            ),
+                            child: ClipRect(
+                              child: LayoutBuilder(
+                                builder: (context, constraints) {
+                                  return FractionallySizedBox(
+                                    widthFactor: 1.75,
+                                    alignment: Alignment.center,
+                                    child: _buildLandingVideoPlayer(
+                                      context,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        SizedBox(height: isMobile(context) ? 0 : 300),
                         Container(
                           constraints: BoxConstraints(
-                            maxWidth: isMobile(context) ? 346 : 634,
+                            maxWidth: isMobile(context)
+                                ? 346
+                                : getDesktopOrTabletSize(context, 634),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -280,18 +391,27 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                 ),
                               ),
                               SizedBox(
-                                height: isMobile(context) ? 0 : 10,
+                                height: isMobile(context)
+                                    ? 0
+                                    : getDesktopOrTabletSize(context, 10),
                               ),
                               ScrollAnimatedRichText(
                                 scrollController: _scrollController,
-                                triggerOffset: isMobile(context) ? 140 : 200,
+                                triggerOffset: isMobile(context)
+                                    ? 100
+                                    : getDesktopOrTabletSize(context, 200),
                                 text:
-                                    'Gymm reviews your workout video, spots what a mirror or tracker can’t, and gives you one clear cue to fix on the next rep. Mistakes aren’t failures, they’re information. Small adjustments, repeated, become real progress',
+                                    "Gymm reviews your workout video, spots what a mirror or tracker can't, and gives you one clear cue to fix on the next rep. Mistakes aren't failures, they're information. Small adjustments, repeated, become real progress",
                                 style: TextStyle(
                                   fontFamily: 'Suisse',
                                   fontWeight: FontWeight.w500,
-                                  fontSize: isMobile(context) ? 24 : 40,
-                                  height: isMobile(context) ? 30 / 24 : 50 / 40,
+                                  fontSize: isMobile(context)
+                                      ? 24
+                                      : getDesktopOrTabletSize(context, 40),
+                                  height: isMobile(context)
+                                      ? 30 / 24
+                                      : getDesktopOrTabletSize(context, 50) /
+                                          getDesktopOrTabletSize(context, 40),
                                   letterSpacing: 0,
                                   color: const Color(0xFF848394),
                                 ),
@@ -301,7 +421,9 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                           ),
                         ),
                         SizedBox(
-                          height: isMobile(context) ? 100 : 200,
+                          height: isMobile(context)
+                              ? 100
+                              : getDesktopOrTabletSize(context, 200),
                         ),
                         MarketingPagePaddingWiget(
                           child: Column(
@@ -310,17 +432,24 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                 alignment: Alignment.centerLeft,
                                 child: ConstrainedBox(
                                   constraints: BoxConstraints(
-                                    maxWidth: isMobile(context) ? 346 : 495,
+                                    maxWidth: isMobile(context)
+                                        ? 346
+                                        : getDesktopOrTabletSize(context, 495),
                                   ),
                                   child: SelectableText(
                                     'The future of personal training',
                                     style: TextStyle(
                                       fontFamily: 'Suisse',
                                       fontWeight: FontWeight.w500,
-                                      fontSize: isMobile(context) ? 36 : 52.09,
+                                      fontSize: isMobile(context)
+                                          ? 36
+                                          : getDesktopOrTabletSize(
+                                              context, 52.09),
                                       height: isMobile(context)
                                           ? 38 / 36
-                                          : 54.8 / 52.09,
+                                          : 54.8 /
+                                              getDesktopOrTabletSize(
+                                                  context, 52.09),
                                       letterSpacing: 0,
                                       color: Colors.white,
                                     ),
@@ -334,7 +463,10 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                     )
                   ],
                 ),
-                SizedBox(height: isMobile(context) ? 30 : 46),
+                SizedBox(
+                    height: isMobile(context)
+                        ? 30
+                        : getDesktopOrTabletSize(context, 46)),
                 MarketingPagePaddingWiget(
                   child: isMobile(context)
                       ? Column(
@@ -348,12 +480,15 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             DashCardWithVideoAndReflectionText(),
-                            SizedBox(width: 24),
+                            SizedBox(
+                                width: getDesktopOrTabletSize(context, 24)),
                             DashCardWithAnalyzeAndReflectionText(),
                           ],
                         ),
                 ),
-                SizedBox(height: 24),
+                SizedBox(
+                    height:
+                        getDesktopOrTabletSize(context, 24, mobileSize: 24)),
                 MarketingPagePaddingWiget(
                   child: isMobile(context)
                       ? Stack(
@@ -417,13 +552,16 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ClipRRect(
-                              borderRadius: BorderRadius.circular(24),
+                              borderRadius: BorderRadius.circular(
+                                  getDesktopOrTabletSize(context, 24)),
                               child: Stack(
                                 clipBehavior: Clip.antiAlias,
                                 children: [
                                   DashCard(
-                                    width: 1128,
-                                    height: 503,
+                                    width:
+                                        getDesktopOrTabletSize(context, 1128),
+                                    height:
+                                        getDesktopOrTabletSize(context, 503),
                                     backgroundColor: dashCardBackgroundColor,
                                     child: Row(
                                       crossAxisAlignment:
@@ -431,10 +569,14 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                       children: [
                                         Padding(
                                           padding: EdgeInsets.only(
-                                              left: 40, top: 40),
+                                              left: getDesktopOrTabletSize(
+                                                  context, 40),
+                                              top: getDesktopOrTabletSize(
+                                                  context, 40)),
                                           child: ConstrainedBox(
                                             constraints: BoxConstraints(
-                                              maxWidth: 292,
+                                              maxWidth: getDesktopOrTabletSize(
+                                                  context, 292),
                                             ),
                                             child: SelectableText.rich(
                                               TextSpan(
@@ -444,8 +586,12 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                                         'Gymm reviews your workout video.',
                                                     style: TextStyle(
                                                       color: Colors.white,
-                                                      fontSize: 20,
-                                                      height: 26 / 20,
+                                                      fontSize:
+                                                          getDesktopOrTabletSize(
+                                                              context, 20),
+                                                      height: 26 /
+                                                          getDesktopOrTabletSize(
+                                                              context, 20),
                                                       fontWeight:
                                                           FontWeight.w400,
                                                       fontFamily: 'Suisse',
@@ -454,11 +600,15 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                                   ),
                                                   TextSpan(
                                                     text:
-                                                        ' Mistakes aren’t failures, they’re information. Small adjustments, repeated, become real progress.',
+                                                        " Mistakes aren't failures, they're information. Small adjustments, repeated, become real progress.",
                                                     style: TextStyle(
                                                       color: Color(0xff7A7A7A),
-                                                      fontSize: 20,
-                                                      height: 26 / 20,
+                                                      fontSize:
+                                                          getDesktopOrTabletSize(
+                                                              context, 20),
+                                                      height: 26 /
+                                                          getDesktopOrTabletSize(
+                                                              context, 20),
                                                       fontWeight:
                                                           FontWeight.w400,
                                                       fontFamily: 'Suisse',
@@ -478,12 +628,16 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                     right: 0,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.only(
-                                        bottomRight: Radius.circular(24),
+                                        bottomRight: Radius.circular(
+                                            getDesktopOrTabletSize(
+                                                context, 24)),
                                       ),
                                       child: Image.asset(
                                         'assets/png/statistics.png',
-                                        height: 419,
-                                        width: 749,
+                                        height: getDesktopOrTabletSize(
+                                            context, 419),
+                                        width: getDesktopOrTabletSize(
+                                            context, 749),
                                       ),
                                     ),
                                   )
@@ -493,7 +647,10 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                           ],
                         ),
                 ),
-                SizedBox(height: isMobile(context) ? 16 : 24),
+                SizedBox(
+                    height: isMobile(context)
+                        ? 16
+                        : getDesktopOrTabletSize(context, 24)),
                 MarketingPagePaddingWiget(
                   child: isMobile(context)
                       ? Column(
@@ -705,10 +862,9 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             DashCard(
-                              width: 360,
-                              height: 263,
-                              backgroundColor:
-                                  const Color.fromRGBO(38, 41, 62, 0.5),
+                              width: getDesktopOrTabletSize(context, 360),
+                              height: getDesktopOrTabletSize(context, 263),
+                              backgroundColor: dashCardBackgroundColor,
                               child: Align(
                                 alignment: Alignment.bottomLeft,
                                 child: Column(
@@ -725,13 +881,17 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                       ),
                                     ),
                                     Padding(
-                                      padding:
-                                          EdgeInsets.only(bottom: 36, left: 40),
+                                      padding: EdgeInsets.only(
+                                          bottom: getDesktopOrTabletSize(
+                                              context, 36),
+                                          left: getDesktopOrTabletSize(
+                                              context, 40)),
                                       child: Align(
                                         alignment: Alignment.bottomLeft,
                                         child: ConstrainedBox(
                                           constraints: BoxConstraints(
-                                            maxWidth: 239,
+                                            maxWidth: getDesktopOrTabletSize(
+                                                context, 239),
                                           ),
                                           child: SelectableText.rich(
                                             TextSpan(
@@ -740,9 +900,13 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                                   text: 'Over ',
                                                   style: TextStyle(
                                                     color: Color(0xff7A7A7A),
-                                                    fontSize: 20,
+                                                    fontSize:
+                                                        getDesktopOrTabletSize(
+                                                            context, 20),
                                                     fontWeight: FontWeight.w400,
-                                                    height: 26 / 20,
+                                                    height: 26 /
+                                                        getDesktopOrTabletSize(
+                                                            context, 20),
                                                     fontFamily: 'Suisse',
                                                     letterSpacing: 0,
                                                   ),
@@ -751,8 +915,12 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                                   text: '400+ ',
                                                   style: TextStyle(
                                                     color: Colors.white,
-                                                    fontSize: 20,
-                                                    height: 26 / 20,
+                                                    fontSize:
+                                                        getDesktopOrTabletSize(
+                                                            context, 20),
+                                                    height: 26 /
+                                                        getDesktopOrTabletSize(
+                                                            context, 20),
                                                     fontWeight: FontWeight.w400,
                                                     fontFamily: 'Suisse',
                                                     letterSpacing: 0,
@@ -762,8 +930,12 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                                   text: 'supported exercises',
                                                   style: TextStyle(
                                                     color: Color(0xff7A7A7A),
-                                                    fontSize: 20,
-                                                    height: 26 / 20,
+                                                    fontSize:
+                                                        getDesktopOrTabletSize(
+                                                            context, 20),
+                                                    height: 26 /
+                                                        getDesktopOrTabletSize(
+                                                            context, 20),
                                                     fontWeight: FontWeight.w400,
                                                     fontFamily: 'Suisse',
                                                     letterSpacing: 0,
@@ -779,11 +951,12 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                 ),
                               ),
                             ),
-                            SizedBox(width: 24),
+                            SizedBox(
+                                width: getDesktopOrTabletSize(context, 24)),
                             DashCard(
-                              width: 360,
-                              height: 263,
-                              backgroundColor: Color.fromRGBO(36, 45, 63, 0.5),
+                              width: getDesktopOrTabletSize(context, 360),
+                              height: getDesktopOrTabletSize(context, 263),
+                              backgroundColor: dashCardBackgroundColor,
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -797,13 +970,17 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                     ),
                                   ),
                                   Padding(
-                                    padding:
-                                        EdgeInsets.only(bottom: 36, left: 40),
+                                    padding: EdgeInsets.only(
+                                        bottom:
+                                            getDesktopOrTabletSize(context, 36),
+                                        left: getDesktopOrTabletSize(
+                                            context, 40)),
                                     child: Align(
                                       alignment: Alignment.bottomLeft,
                                       child: ConstrainedBox(
                                         constraints: BoxConstraints(
-                                          maxWidth: 202,
+                                          maxWidth: getDesktopOrTabletSize(
+                                              context, 202),
                                         ),
                                         child: SelectableText.rich(
                                           TextSpan(
@@ -812,8 +989,12 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                                 text: 'Available on',
                                                 style: TextStyle(
                                                   color: Color(0xff7A7A7A),
-                                                  fontSize: 20,
-                                                  height: 26 / 20,
+                                                  fontSize:
+                                                      getDesktopOrTabletSize(
+                                                          context, 20),
+                                                  height: 26 /
+                                                      getDesktopOrTabletSize(
+                                                          context, 20),
                                                   fontWeight: FontWeight.w400,
                                                   fontFamily: 'Suisse',
                                                   letterSpacing: 0,
@@ -823,8 +1004,12 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                                 text: ' iOS',
                                                 style: TextStyle(
                                                   color: Colors.white,
-                                                  fontSize: 20,
-                                                  height: 26 / 20,
+                                                  fontSize:
+                                                      getDesktopOrTabletSize(
+                                                          context, 20),
+                                                  height: 26 /
+                                                      getDesktopOrTabletSize(
+                                                          context, 20),
                                                   fontWeight: FontWeight.w400,
                                                   fontFamily: 'Suisse',
                                                   letterSpacing: 0,
@@ -834,8 +1019,12 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                                 text: ' and ',
                                                 style: TextStyle(
                                                   color: Color(0xff7A7A7A),
-                                                  fontSize: 20,
-                                                  height: 26 / 20,
+                                                  fontSize:
+                                                      getDesktopOrTabletSize(
+                                                          context, 20),
+                                                  height: 26 /
+                                                      getDesktopOrTabletSize(
+                                                          context, 20),
                                                   fontWeight: FontWeight.w400,
                                                   fontFamily: 'Suisse',
                                                   letterSpacing: 0,
@@ -845,8 +1034,12 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                                 text: ' Android',
                                                 style: TextStyle(
                                                   color: Colors.white,
-                                                  fontSize: 20,
-                                                  height: 26 / 20,
+                                                  fontSize:
+                                                      getDesktopOrTabletSize(
+                                                          context, 20),
+                                                  height: 26 /
+                                                      getDesktopOrTabletSize(
+                                                          context, 20),
                                                   fontWeight: FontWeight.w400,
                                                   fontFamily: 'Suisse',
                                                   letterSpacing: 0,
@@ -861,10 +1054,11 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                 ],
                               ),
                             ),
-                            SizedBox(width: 24),
+                            SizedBox(
+                                width: getDesktopOrTabletSize(context, 24)),
                             DashCard(
-                              width: 360,
-                              height: 263,
+                              width: getDesktopOrTabletSize(context, 360),
+                              height: getDesktopOrTabletSize(context, 263),
                               backgroundColor: dashCardBackgroundColor,
                               child: Column(
                                 mainAxisAlignment:
@@ -879,13 +1073,17 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                     ),
                                   ),
                                   Padding(
-                                    padding:
-                                        EdgeInsets.only(bottom: 36, left: 40),
+                                    padding: EdgeInsets.only(
+                                        bottom:
+                                            getDesktopOrTabletSize(context, 36),
+                                        left: getDesktopOrTabletSize(
+                                            context, 40)),
                                     child: Align(
                                       alignment: Alignment.bottomLeft,
                                       child: ConstrainedBox(
                                         constraints: BoxConstraints(
-                                          maxWidth: 212,
+                                          maxWidth: getDesktopOrTabletSize(
+                                              context, 212),
                                         ),
                                         child: SelectableText.rich(
                                           TextSpan(
@@ -894,8 +1092,12 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                                 text: 'Your data is always ',
                                                 style: TextStyle(
                                                   color: Color(0xff7A7A7A),
-                                                  fontSize: 20,
-                                                  height: 26 / 20,
+                                                  fontSize:
+                                                      getDesktopOrTabletSize(
+                                                          context, 20),
+                                                  height: 26 /
+                                                      getDesktopOrTabletSize(
+                                                          context, 20),
                                                   fontWeight: FontWeight.w400,
                                                   fontFamily: 'Suisse',
                                                   letterSpacing: 0,
@@ -905,8 +1107,12 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                                 text: 'secure',
                                                 style: TextStyle(
                                                   color: Colors.white,
-                                                  fontSize: 20,
-                                                  height: 26 / 20,
+                                                  fontSize:
+                                                      getDesktopOrTabletSize(
+                                                          context, 20),
+                                                  height: 26 /
+                                                      getDesktopOrTabletSize(
+                                                          context, 20),
                                                   fontWeight: FontWeight.w400,
                                                   fontFamily: 'Suisse',
                                                   letterSpacing: 0,
@@ -925,22 +1131,30 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                         ),
                 ),
                 SizedBox(
-                  height: isMobile(context) ? 74 : 200,
+                  height: isMobile(context)
+                      ? 74
+                      : getDesktopOrTabletSize(context, 200),
                 ),
                 MarketingPagePaddingWiget(
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
-                        maxWidth: isMobile(context) ? 289 : 418,
+                        maxWidth: isMobile(context)
+                            ? 289
+                            : getDesktopOrTabletSize(context, 418),
                       ),
                       child: SelectableText(
                         'What our users are saying',
                         style: TextStyle(
                           fontFamily: 'Suisse',
                           fontWeight: FontWeight.w500,
-                          fontSize: isMobile(context) ? 36 : 52.09,
-                          height: isMobile(context) ? 38 / 36 : 54.8 / 52.09,
+                          fontSize: isMobile(context)
+                              ? 36
+                              : getDesktopOrTabletSize(context, 52.09),
+                          height: isMobile(context)
+                              ? 38 / 36
+                              : 54.8 / getDesktopOrTabletSize(context, 52.09),
                           letterSpacing: 0,
                           color: Colors.white,
                         ),
@@ -968,16 +1182,26 @@ class NewMarketingFooterWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: isMobile(context) ? 74 : 200),
         SizedBox(
-          height: isMobile(context) ? 692 : 1024.h,
-          width: isMobile(context) ? 1012 : 1440.w,
+            height:
+                isMobile(context) ? 74 : getDesktopOrTabletSize(context, 200)),
+        SizedBox(
+          height: isMobile(context)
+              ? 692
+              : (isTablet(context) ? 1024 * 0.8 : 1024.h),
+          width: isMobile(context)
+              ? 1012
+              : (isTablet(context) ? 1440 * 0.8 : 1440.w),
           child: Stack(
             clipBehavior: Clip.none,
             children: [
               Image.asset(
-                height: isMobile(context) ? 1012 : 1024.h,
-                width: isMobile(context) ? 692 : 1440.w,
+                height: isMobile(context)
+                    ? 1012
+                    : (isTablet(context) ? 1024 * 0.8 : 1024.h),
+                width: isMobile(context)
+                    ? 692
+                    : (isTablet(context) ? 1440 * 0.8 : 1440.w),
                 'assets/png/bottom_image.png',
                 fit: isMobile(context) ? BoxFit.fitHeight : BoxFit.fitWidth,
               ),
@@ -985,8 +1209,11 @@ class NewMarketingFooterWidget extends StatelessWidget {
                 bottom: 0,
                 child: IgnorePointer(
                   child: Container(
-                    width: 1440,
-                    height: isMobile(context) ? 180 : 433,
+                    width:
+                        getDesktopOrTabletSize(context, 1440, mobileSize: 1440),
+                    height: isMobile(context)
+                        ? 180
+                        : getDesktopOrTabletSize(context, 433),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.bottomCenter,
@@ -1003,15 +1230,21 @@ class NewMarketingFooterWidget extends StatelessWidget {
                 ),
               ),
               Positioned(
-                bottom: isMobile(context) ? 30 : -80,
+                bottom: isMobile(context)
+                    ? 30
+                    : (isTablet(context) ? -80 * 0.8 : -80),
                 left: 0,
                 right: 0,
                 child: Opacity(
                   opacity: 0.1,
                   child: Image.asset(
                     'assets/png/big_logo.png',
-                    height: isMobile(context) ? 73 : 227.33.h,
-                    width: isMobile(context) ? 326 : 1015.86.w,
+                    height: isMobile(context)
+                        ? 73
+                        : (isTablet(context) ? 227.33 * 0.8 : 227.33.h),
+                    width: isMobile(context)
+                        ? 326
+                        : (isTablet(context) ? 1015.86 * 0.8 : 1015.86.w),
                   ),
                 ),
               ),
@@ -1030,7 +1263,9 @@ class NewMarketingFooterWidget extends StatelessWidget {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(
-                            left: isMobile(context) ? 0 : 10,
+                            left: isMobile(context)
+                                ? 0
+                                : getDesktopOrTabletSize(context, 10),
                           ),
                           child: SelectableText(
                             'Start today',
@@ -1046,21 +1281,28 @@ class NewMarketingFooterWidget extends StatelessWidget {
                         ),
                         ConstrainedBox(
                           constraints: BoxConstraints(
-                            maxWidth: 744,
+                            maxWidth: getDesktopOrTabletSize(context, 744),
                           ),
                           child: SelectableText(
                             'Gymm.${isMobile(context) ? '\n' : ' '}Your fitness coach, powered by AI',
                             style: TextStyle(
                               fontFamily: 'Suisse',
                               fontWeight: FontWeight.w500,
-                              fontSize: isMobile(context) ? 36 : 72,
-                              height: isMobile(context) ? 41 / 36 : 69.8 / 72,
+                              fontSize: isMobile(context)
+                                  ? 36
+                                  : getDesktopOrTabletSize(context, 72),
+                              height: isMobile(context)
+                                  ? 41 / 36
+                                  : 69.8 / getDesktopOrTabletSize(context, 72),
                               letterSpacing: 0,
                               color: Colors.white,
                             ),
                           ),
                         ),
-                        SizedBox(height: isMobile(context) ? 28 : 32),
+                        SizedBox(
+                            height: isMobile(context)
+                                ? 28
+                                : getDesktopOrTabletSize(context, 32)),
                         DownloadButtons()
                       ],
                     ),
@@ -1070,7 +1312,9 @@ class NewMarketingFooterWidget extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: isMobile(context) ? 0 : 100),
+        SizedBox(
+            height:
+                isMobile(context) ? 0 : getDesktopOrTabletSize(context, 100)),
         FooterWidget(),
         SizedBox(height: 30),
         MarketingPagePaddingWiget(
@@ -1221,7 +1465,11 @@ class BlurHeaderDelegate extends SliverPersistentHeaderDelegate {
           child: Align(
             alignment: Alignment.center,
             child: MarketingPagePaddingWiget(
-              child: const TopHeader(),
+              child: TopHeader(
+                onDownloadPressed: () {
+                  showGetAppDialog(context);
+                },
+              ),
             ),
           ),
         ),
@@ -1260,7 +1508,7 @@ class FooterWidget extends StatelessWidget {
         _FooterLink(
           text: 'Download app',
           onTap: () {
-            // TODO: Add download app functionality
+            showGetAppDialog(context);
           },
         ),
         SizedBox(height: 12),
@@ -1447,7 +1695,9 @@ class MarketingPagePaddingWiget extends StatelessWidget {
       constraints: BoxConstraints(
         maxWidth: deviceType == DeviceType.desktop
             ? 1170 // 1130 + 40 padding
-            : MediaQuery.of(context).size.width,
+            : deviceType == DeviceType.tablet
+                ? 1170 * 0.8 // 80% of desktop
+                : MediaQuery.of(context).size.width,
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),
@@ -1582,7 +1832,11 @@ class _GetAppDialogCard extends StatelessWidget {
                         width: 180,
                         height: 180,
                         // Replace with your own QR code widget / Image.asset
-                        child: Placeholder(), // e.g. Image.memory(qrBytes)
+                        child: Image.asset(
+                          'assets/png/qr_code.png',
+                          width: 180,
+                          height: 180,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20),

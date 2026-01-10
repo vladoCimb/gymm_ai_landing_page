@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:gymm_ai_landing_page/main.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/user_review_card.dart';
 
 class UserReview {
   final String name;
   final String review;
-  const UserReview(this.name, this.review);
+  final String urlLink;
+
+  const UserReview(
+    this.name,
+    this.review,
+    this.urlLink,
+  );
 }
 
 class UserReviewsCarousel extends StatefulWidget {
@@ -21,18 +28,66 @@ class _UserReviewsCarouselState extends State<UserReviewsCarousel> {
 
   // base reviews (logical list)
   final List<UserReview> _reviews = const [
-    UserReview('Slavo', '“Great app, improved my quality of life.”'),
-    UserReview('Martin', '“Improved my fitness game!”'),
-    UserReview('Jakub', '“Best workout tracker I’ve used.”'),
-    UserReview('Lucia', '“I finally understand what I was doing wrong.”'),
-    UserReview('Peter', '“Love how fast I get feedback.”'),
-    UserReview('Jana', '“Amazing AI feedback on my posture.”'),
-    UserReview('Adam', '“Makes working out more fun.”'),
-    UserReview('Klara', '“Beautiful interface, easy to use.”'),
-    UserReview('Tom', '“Spot-on tips every time.”'),
-    UserReview('Eva', '“It feels like a real coach watching me.”'),
-    UserReview('Slavo', '“Great app, improved my quality of life.”'),
-    UserReview('Tom', '“Spot-on tips every time.”'),
+    UserReview(
+      'Simon',
+      '“Clean design and surprisingly accurate analysis.”',
+      'https://x.com/simonricoo',
+    ),
+    UserReview(
+      'Jakub',
+      '“Upload video, get feedback, improve. Simple and effective.”',
+      'https://x.com/Jakubantalik',
+    ),
+    UserReview(
+      'Vlad',
+      '“The feedback is precise and easy to understand, especially for beginners.”',
+      'https://x.com/cimbora_v',
+    ),
+    UserReview(
+      'Alex',
+      '“Finally understood why some exercises felt wrong, the feedback made it clear.”',
+      'https://x.com/a_brinza',
+    ),
+    UserReview(
+      'Tatiana',
+      '“I like that I can train alone and still get real feedback on my excercises.”',
+      'https://x.com/TatianaVybostok',
+    ),
+    UserReview(
+      'Jana',
+      '“Way more helpful than just watching myself in the mirror.”',
+      'https://x.com/cimbora_v',
+    ),
+    UserReview(
+      'Adam',
+      '“Caught smaller mistakes I’ve been repeating for years.”',
+      'https://x.com/cimbora_v',
+    ),
+    UserReview(
+      'Klara',
+      '“Simple to use and the feedback is clear.”',
+      'https://x.com/cimbora_v',
+    ),
+    UserReview(
+      'Tom',
+      '“Spot-on tips every time.”',
+      'https://x.com/cimbora_v',
+    ),
+    UserReview(
+      'Eva',
+      '“It feels like a real coach watching me.”',
+      'https://x.com/cimbora_v',
+    ),
+    UserReview(
+      'Slavo',
+      '“Simple to use and the feedback is clear.”',
+      'https://x.com/cimbora_v',
+    ),
+    UserReview(
+      'Tom',
+      '“Honestly didn’t expect it to catch that much.”',
+      'https://x.com/cimbora_v',
+    ),
   ];
 
   late final List<UserReview> _loopedReviews;
@@ -43,8 +98,11 @@ class _UserReviewsCarouselState extends State<UserReviewsCarousel> {
   double? _itemExtent; // width of a single item (card)
   bool _initializedScroll = false;
 
-  int get _visibleCount => widget.isMobile ? 1 : 3; // 3 fully visible cards
-  static const double _sidePeekFraction = 0.25; // 1/4 of card on each side
+  int _getVisibleCount(BuildContext context) => widget.isMobile
+      ? 1
+      : (isTablet(context) ? 2 : 3); // 2 for tablet, 3 for desktop
+  double get _sidePeekFraction =>
+      widget.isMobile ? 0.35 : 0.25; // 1/4 of card on each side
 
   @override
   void initState() {
@@ -133,10 +191,11 @@ class _UserReviewsCarouselState extends State<UserReviewsCarousel> {
             child: LayoutBuilder(
               builder: (context, constraints) {
                 final double viewportWidth = constraints.maxWidth;
+                final visibleCount = _getVisibleCount(context);
 
-                // 3 full + 0.25 left + 0.25 right = 3.5 cards visible
+                // 3 full + 0.25 left + 0.25 right = 3.5 cards visible (or 2 + peeks for tablet)
                 final double cardWidth =
-                    viewportWidth / (_visibleCount + 2 * _sidePeekFraction);
+                    viewportWidth / (visibleCount + 2 * _sidePeekFraction);
 
                 _itemExtent = cardWidth;
 

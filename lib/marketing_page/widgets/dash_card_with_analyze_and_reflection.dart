@@ -80,8 +80,8 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
   @override
   Widget build(BuildContext context) {
     return DashCard(
-      width: isMobile(context) ? 370 : 648,
-      height: isMobile(context) ? 496 : 407,
+      width: isMobile(context) ? 370 : getDesktopOrTabletSize(context, 648),
+      height: isMobile(context) ? 496 : getDesktopOrTabletSize(context, 407),
       backgroundColor: dashCardBackgroundColor,
       child: isMobile(context)
           ? Column(
@@ -170,22 +170,25 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 40, top: 38),
+                  padding: EdgeInsets.only(
+                      left: getDesktopOrTabletSize(context, 40),
+                      top: getDesktopOrTabletSize(context, 38)),
                   child: ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      maxWidth: 242,
+                    constraints: BoxConstraints(
+                      maxWidth: getDesktopOrTabletSize(context, 242),
                     ),
                     child: TextWithReflection(
                       animation: _position,
                       child: SelectableText.rich(
                         TextSpan(
                           children: [
-                            const TextSpan(
+                            TextSpan(
                               text: 'Gymm reviews your workout video.',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 20,
-                                height: 26 / 20,
+                                fontSize: getDesktopOrTabletSize(context, 20),
+                                height:
+                                    26 / getDesktopOrTabletSize(context, 20),
                                 fontWeight: FontWeight.w400,
                                 fontFamily: 'Suisse',
                                 letterSpacing: 0,
@@ -193,11 +196,12 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                             ),
                             TextSpan(
                               text:
-                                  '  Mistakes aren’t failures, they’re information. Small adjustments, repeated, become real progress.',
+                                  "  Mistakes aren't failures, they're information. Small adjustments, repeated, become real progress.",
                               style: TextStyle(
                                 color: const Color(0xff7A7A7A),
-                                fontSize: 20,
-                                height: 26 / 20,
+                                fontSize: getDesktopOrTabletSize(context, 20),
+                                height:
+                                    26 / getDesktopOrTabletSize(context, 20),
                                 fontWeight: FontWeight.w400,
                                 fontFamily: 'Suisse',
                                 letterSpacing: 0,
@@ -212,12 +216,14 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                 Align(
                   alignment: Alignment.center,
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 57),
+                    padding: EdgeInsets.only(
+                        right: getDesktopOrTabletSize(context, 57)),
                     child: Container(
-                      height: 293,
-                      width: 200,
+                      height: getDesktopOrTabletSize(context, 293),
+                      width: getDesktopOrTabletSize(context, 200),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(
+                            getDesktopOrTabletSize(context, 20)),
                         color: Colors.black.withOpacity(0.1),
                       ),
                       child: Stack(
@@ -226,7 +232,8 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                               _videoController!.value.isInitialized)
                             Positioned.fill(
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(
+                                    getDesktopOrTabletSize(context, 20)),
                                 child: FittedBox(
                                   fit: BoxFit.cover,
                                   child: SizedBox(
@@ -238,8 +245,8 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                               ),
                             ),
                           AnalyzeBarWithPosition(
-                            width: 215,
-                            height: 293,
+                            width: getDesktopOrTabletSize(context, 215),
+                            height: getDesktopOrTabletSize(context, 293),
                             position: _position,
                           ),
                         ],
