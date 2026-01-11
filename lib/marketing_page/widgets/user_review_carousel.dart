@@ -241,6 +241,7 @@ class _UserReviewsCarouselState extends State<UserReviewsCarousel> {
                           child: UserReviewCard(
                             name: review.name,
                             review: review.review,
+                            urlLink: review.urlLink,
                           ),
                         ),
                       );

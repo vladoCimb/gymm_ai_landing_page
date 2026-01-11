@@ -5,16 +5,19 @@ import 'package:gymm_ai_landing_page/marketing_page/new_marketing_page.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/dash_card.dart';
 import 'package:gymm_ai_landing_page/utils/screenutil_clamp_extensions.dart';
 import 'package:gymm_ai_landing_page/widgets/text_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UserReviewCard extends StatelessWidget {
   const UserReviewCard({
     super.key,
     required this.name,
     required this.review,
+    required this.urlLink,
   });
 
   final String name;
   final String review;
+  final String urlLink;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +50,9 @@ class UserReviewCard extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 4),
           child: HoverableTextButton(
-            onPressed: () {},
+            onPressed: () {
+              launchUrl(Uri.parse(urlLink));
+            },
             text: name,
             style: TextStyle(
               fontFamily: 'Suisse',
