@@ -99,15 +99,16 @@ class _BlackShinningButtonState extends State<BlackShinningButton> {
                         padding: EdgeInsetsGeometry.only(
                           left: 12,
                           right: 16,
-                          top: 11,
-                          bottom: 11,
+                          top: 14,
+                          bottom: 14,
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            SvgPicture.asset(
+                            Image.asset(
                               widget.iconUrl,
-                              color: Colors.white,
+                              width: 20,
+                              height: 20,
                             ),
                             SizedBox(
                               width: 6,

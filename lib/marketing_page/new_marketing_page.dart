@@ -1383,7 +1383,7 @@ class DownloadButtons extends StatelessWidget {
         return BlackShinningButton(
           onPressed: () {},
           text: 'Get it for Android',
-          iconUrl: 'assets/png/android.svg',
+          iconUrl: 'assets/png/android.png',
         );
       } else {
         // For other platforms on mobile, show both buttons
@@ -1399,7 +1399,7 @@ class DownloadButtons extends StatelessWidget {
             BlackShinningButton(
               onPressed: () {},
               text: 'Get it for Android',
-              iconUrl: 'assets/png/android.svg',
+              iconUrl: 'assets/png/android.png',
             )
           ],
         );
@@ -1423,8 +1423,8 @@ class DownloadButtons extends StatelessWidget {
             showGetAppDialog(context);
           },
           text: 'Get it for Android',
-          iconUrl: 'assets/png/android.svg',
-        )
+          iconUrl: 'assets/png/android.png',
+        ),
       ],
     );
   }

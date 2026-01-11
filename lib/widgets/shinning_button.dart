@@ -32,6 +32,9 @@ class _ShinningButtonState extends State<ShinningButton> {
       child: InkWell(
         borderRadius: BorderRadius.circular(61),
         onTap: widget.onPressed,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        hoverColor: Colors.transparent,
         onHover: (isHovered) => setState(() => _isHovered = isHovered),
         child: Focus(
           onFocusChange: (hasFocus) => setState(() => _isFocused = hasFocus),
