@@ -54,6 +54,11 @@ class _UserReviewsCarouselState extends State<UserReviewsCarousel> {
       'https://x.com/TatianaVybostok',
     ),
     UserReview(
+      'Slavo',
+      '“Simple to use and the feedback is clear.”',
+      'https://x.com/slavomier',
+    ),
+    UserReview(
       'Jana',
       '“Way more helpful than just watching myself in the mirror.”',
       'https://x.com/cimbora_v',
@@ -76,11 +81,6 @@ class _UserReviewsCarouselState extends State<UserReviewsCarousel> {
     UserReview(
       'Eva',
       '“It feels like a real coach watching me.”',
-      'https://x.com/cimbora_v',
-    ),
-    UserReview(
-      'Slavo',
-      '“Simple to use and the feedback is clear.”',
       'https://x.com/cimbora_v',
     ),
     UserReview(

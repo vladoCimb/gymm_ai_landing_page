@@ -83,7 +83,7 @@ class MyApp extends StatelessWidget {
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) => const NewMarketingPage(),
+        builder: (context, state) => const LandingPage(),
       ),
       GoRoute(
         path: '/marketing_page',

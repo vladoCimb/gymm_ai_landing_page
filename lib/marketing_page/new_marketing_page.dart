@@ -420,7 +420,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                     ? 100
                                     : getDesktopOrTabletSize(context, 200),
                                 text:
-                                    "Gymm reviews your workout video, spots what a mirror or tracker can't, and gives you one clear cue to fix on the next rep. Mistakes aren't failures, they're information. Small adjustments, repeated, become real progress",
+                                    "Gymm reviews your workout videos, spots what a mirror or tracker can't, and gives you clear cues what to fix on the next rep. Mistakes aren't failures, they're information. Small adjustments, repeated, become real progress",
                                 style: TextStyle(
                                   fontFamily: 'Suisse',
                                   fontWeight: FontWeight.w500,
@@ -527,8 +527,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                     TextSpan(
                                       children: [
                                         TextSpan(
-                                          text:
-                                              'Gymm reviews your workout video.',
+                                          text: 'Data that actually helps.',
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 16,
@@ -540,7 +539,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                         ),
                                         TextSpan(
                                           text:
-                                              ' Mistakes aren’t failures, they’re information. Small adjustments, repeated, become real progress.',
+                                              ' Performance scores and actionable explanations focused on real training and real results.',
                                           style: TextStyle(
                                             color: Color(0xff7A7A7A),
                                             fontSize: 16,
@@ -602,7 +601,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                                 children: [
                                                   TextSpan(
                                                     text:
-                                                        'Gymm reviews your workout video.',
+                                                        'Data that actually helps.',
                                                     style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize:
@@ -619,7 +618,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                                   ),
                                                   TextSpan(
                                                     text:
-                                                        " Mistakes aren't failures, they're information. Small adjustments, repeated, become real progress.",
+                                                        " Performance scores and actionable explanations focused on real training and real results.",
                                                     style: TextStyle(
                                                       color: Color(0xff7A7A7A),
                                                       fontSize:

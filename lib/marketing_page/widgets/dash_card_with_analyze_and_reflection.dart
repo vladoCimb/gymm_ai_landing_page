@@ -99,7 +99,7 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                         TextSpan(
                           children: [
                             const TextSpan(
-                              text: 'Gymm reviews your workout video.',
+                              text: 'Train with confidence and clarity.',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -111,7 +111,30 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                             ),
                             TextSpan(
                               text:
-                                  '  Mistakes aren’t failures, they’re information. Small adjustments, repeated, become real progress.',
+                                  '  Know why a rep felt off and what to change.',
+                              style: TextStyle(
+                                color: const Color(0xff7A7A7A),
+                                fontSize: 16,
+                                height: 21 / 20,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: 'Suisse',
+                                letterSpacing: 0,
+                              ),
+                            ),
+                            const TextSpan(
+                              text: ' Gymm ',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                height: 21 / 20,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: 'Suisse',
+                                letterSpacing: 0,
+                              ),
+                            ),
+                            TextSpan(
+                              text:
+                                  'turns uncertainty into clarity, so every set has purpose.',
                               style: TextStyle(
                                 color: const Color(0xff7A7A7A),
                                 fontSize: 16,
@@ -183,7 +206,7 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                         TextSpan(
                           children: [
                             TextSpan(
-                              text: 'Gymm reviews your workout video.',
+                              text: 'Train with confidence and clarity.',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: getDesktopOrTabletSize(context, 20),
@@ -196,7 +219,32 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                             ),
                             TextSpan(
                               text:
-                                  "  Mistakes aren't failures, they're information. Small adjustments, repeated, become real progress.",
+                                  "  Know why a rep felt off and what to change.",
+                              style: TextStyle(
+                                color: const Color(0xff7A7A7A),
+                                fontSize: getDesktopOrTabletSize(context, 20),
+                                height:
+                                    26 / getDesktopOrTabletSize(context, 20),
+                                fontWeight: FontWeight.w400,
+                                fontFamily: 'Suisse',
+                                letterSpacing: 0,
+                              ),
+                            ),
+                            TextSpan(
+                              text: ' Gymm ',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: getDesktopOrTabletSize(context, 20),
+                                height:
+                                    26 / getDesktopOrTabletSize(context, 20),
+                                fontWeight: FontWeight.w400,
+                                fontFamily: 'Suisse',
+                                letterSpacing: 0,
+                              ),
+                            ),
+                            TextSpan(
+                              text:
+                                  "turns uncertainty into clarity, so every set has purpose.",
                               style: TextStyle(
                                 color: const Color(0xff7A7A7A),
                                 fontSize: getDesktopOrTabletSize(context, 20),
