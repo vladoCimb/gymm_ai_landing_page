@@ -220,6 +220,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                     if (!isMobile(context))
                       Positioned(
                         right: -200,
+                        top: 0,
                         child: SizedBox(
                           width: isTablet(context) ? 1000 * 0.8 : 1000,
                           height: MediaQuery.of(context).size.height * 1.17,
