@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymm_ai_landing_page/marketing_page/new_marketing_page.dart';
 import 'package:gymm_ai_landing_page/pages/legal_doc_page.dart';
+import 'package:gymm_ai_landing_page/pages/marketing_page1.dart';
 import 'package:gymm_ai_landing_page/pages/roadmap_page.dart';
 import 'package:gymm_ai_landing_page/pages/press_kit_page.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -86,7 +87,7 @@ class MyApp extends StatelessWidget {
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) => const NewMarketingPage(),
+        builder: (context, state) => const LandingPage(),
       ),
       GoRoute(
         path: '/marketing_page',
