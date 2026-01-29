@@ -509,7 +509,7 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
 
     // Calculate responsive font size based on screen width
     // Start shrinking when width goes below 1280px
-    double baseFontSize = 82.09;
+    double baseFontSize = 65.09;
     double responsiveFontSize = baseFontSize;
 
     if (screenWidth < 1100) {
@@ -521,8 +521,8 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
 
     return Container(
       constraints: BoxConstraints(
-        maxWidth: screenWidth > 950 ? 470 : 250,
-        minWidth: screenWidth > 950 ? 470 : 150,
+        maxWidth: screenWidth > 950 ? 476 : 250,
+        minWidth: screenWidth > 950 ? 476 : 150,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -535,13 +535,13 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
                 fontFamily: 'Suisse',
                 fontWeight: FontWeight.w500,
                 fontSize: responsiveFontSize,
-                height: 79.81 / 82.09,
+                height: 79.81 / 75.09,
                 letterSpacing: 0,
                 color: Color.fromRGBO(255, 255, 255, 0.9),
               ),
               children: [
                 const TextSpan(
-                  text: 'Transform your fitness with ',
+                  text: 'Camera based ',
                 ),
                 WidgetSpan(
                   alignment: PlaceholderAlignment.baseline,
@@ -549,8 +549,8 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
                   child: FallingParticlesText(
                     text: 'AI',
                     textStyle: TextStyle(
-                      fontSize: 82.09,
-                      height: 79.81 / 82.09,
+                      fontSize: 75.09,
+                      height: 79.81 / 75.09,
                       fontWeight: FontWeight.w500,
                       fontFamily: 'Suisse',
                       letterSpacing: 0,
@@ -577,6 +577,9 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
                     particleCount: 15,
                     dropHeight: 80,
                   ),
+                ),
+                const TextSpan(
+                  text: ' fitness coach',
                 ),
               ],
             ),

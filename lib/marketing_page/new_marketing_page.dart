@@ -18,6 +18,7 @@ import 'package:gymm_ai_landing_page/widgets/black_shinning_button.dart';
 import 'package:gymm_ai_landing_page/widgets/shinning_button.dart';
 import 'package:gymm_ai_landing_page/widgets/text_button.dart'
     show HoverableTextButton;
+import 'package:gymm_ai_landing_page/widgets/falling_particles_text.dart';
 import 'package:video_player/video_player.dart';
 
 const double kHeaderHeight = 70;
@@ -213,6 +214,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Stack(
+                  clipBehavior: Clip.none,
                   children: [
                     if (!isMobile(context))
                       Positioned(
@@ -250,64 +252,113 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                         animation: _headlineAnimation,
                                         child: SelectableText.rich(
                                           TextSpan(
+                                            style: TextStyle(
+                                              fontFamily: 'Suisse',
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: isMobile(context)
+                                                  ? 48.88
+                                                  : getDesktopOrTabletSize(
+                                                      context, 82.0),
+                                              height: isMobile(context)
+                                                  ? 55.55 / 48.88
+                                                  : getDesktopOrTabletSize(
+                                                          context, 84.8) /
+                                                      getDesktopOrTabletSize(
+                                                          context, 82.0),
+                                              letterSpacing: 0,
+                                              color: Colors.white,
+                                            ),
                                             children: [
-                                              TextSpan(
-                                                text: 'Your personal ',
-                                                style: TextStyle(
-                                                  fontFamily: 'Suisse',
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: isMobile(context)
-                                                      ? 48.88
-                                                      : getDesktopOrTabletSize(
-                                                          context, 82.0),
-                                                  height: isMobile(context)
-                                                      ? 55.55 / 48.88
-                                                      : getDesktopOrTabletSize(
-                                                              context, 84.8) /
-                                                          getDesktopOrTabletSize(
-                                                              context, 82.0),
-                                                  letterSpacing: 0,
-                                                  color: Colors.white,
+                                              const TextSpan(
+                                                text: 'Camera based ',
+                                              ),
+                                              WidgetSpan(
+                                                alignment: PlaceholderAlignment
+                                                    .baseline,
+                                                baseline:
+                                                    TextBaseline.alphabetic,
+                                                child: FallingParticlesText(
+                                                  targetFPS: 60,
+                                                  text: 'AI',
+                                                  textStyle: TextStyle(
+                                                    fontSize: isMobile(context)
+                                                        ? 48.88
+                                                        : getDesktopOrTabletSize(
+                                                            context, 82.0),
+                                                    height: isMobile(context)
+                                                        ? 55.55 / 48.88
+                                                        : getDesktopOrTabletSize(
+                                                                context, 84.8) /
+                                                            getDesktopOrTabletSize(
+                                                                context, 82.0),
+                                                    fontWeight: FontWeight.w500,
+                                                    fontFamily: 'Suisse',
+                                                    letterSpacing: 0,
+                                                    color: Color.fromRGBO(
+                                                        198, 218, 255, 1),
+                                                    shadows: [
+                                                      Shadow(
+                                                        color: const Color
+                                                            .fromRGBO(
+                                                            63, 89, 255, 1),
+                                                        offset: Offset(0, 0),
+                                                        blurRadius: 15.96,
+                                                      ),
+                                                      Shadow(
+                                                        color: const Color
+                                                            .fromRGBO(
+                                                            66, 91, 255, 1),
+                                                        offset:
+                                                            Offset(0, 57.01),
+                                                        blurRadius: 84.37,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  particleCount: 15,
+                                                  dropHeight: 80,
                                                 ),
                                               ),
-                                              TextSpan(
-                                                text: 'AI fitness',
-                                                style: TextStyle(
-                                                  fontFamily: 'Suisse',
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: isMobile(context)
-                                                      ? 48.88
-                                                      : getDesktopOrTabletSize(
-                                                          context, 82.0),
-                                                  height: isMobile(context)
-                                                      ? 41.6 / 48.88
-                                                      : getDesktopOrTabletSize(
-                                                              context, 84.8) /
-                                                          getDesktopOrTabletSize(
-                                                              context, 82.0),
-                                                  letterSpacing: 0,
-                                                  color: Colors.white,
-                                                ),
+                                              const TextSpan(
+                                                text: ' fitness coach',
                                               ),
-                                              TextSpan(
-                                                text: ' coach',
-                                                style: TextStyle(
-                                                  fontFamily: 'Suisse',
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: isMobile(context)
-                                                      ? 48.88
-                                                      : getDesktopOrTabletSize(
-                                                          context, 82.0),
-                                                  height: isMobile(context)
-                                                      ? 41.6 / 48.88
-                                                      : getDesktopOrTabletSize(
-                                                              context, 60.0) /
-                                                          getDesktopOrTabletSize(
-                                                              context, 82.0),
-                                                  letterSpacing: 0,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
+                                              // TextSpan(
+                                              //   text: 'AI fitness',
+                                              //   style: TextStyle(
+                                              //     fontFamily: 'Suisse',
+                                              //     fontWeight: FontWeight.w500,
+                                              //     fontSize: isMobile(context)
+                                              //         ? 48.88
+                                              //         : getDesktopOrTabletSize(
+                                              //             context, 82.0),
+                                              //     height: isMobile(context)
+                                              //         ? 41.6 / 48.88
+                                              //         : getDesktopOrTabletSize(
+                                              //                 context, 84.8) /
+                                              //             getDesktopOrTabletSize(
+                                              //                 context, 82.0),
+                                              //     letterSpacing: 0,
+                                              //     color: Colors.white,
+                                              //   ),
+                                              // ),
+                                              // TextSpan(
+                                              //   text: ' coach',
+                                              //   style: TextStyle(
+                                              //     fontFamily: 'Suisse',
+                                              //     fontWeight: FontWeight.w500,
+                                              //     fontSize: isMobile(context)
+                                              //         ? 48.88
+                                              //         : getDesktopOrTabletSize(
+                                              //             context, 82.0),
+                                              //     height: isMobile(context)
+                                              //         ? 41.6 / 48.88
+                                              //         : getDesktopOrTabletSize(
+                                              //                 context, 60.0) /
+                                              //             getDesktopOrTabletSize(
+                                              //                 context, 82.0),
+                                              //     letterSpacing: 0,
+                                              //     color: Colors.white,
+                                              //   ),
+                                              // ),
                                             ],
                                           ),
                                         ),

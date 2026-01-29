@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymm_ai_landing_page/marketing_page/new_marketing_page.dart';
 import 'package:gymm_ai_landing_page/pages/legal_doc_page.dart';
-import 'package:gymm_ai_landing_page/pages/marketing_page1.dart';
 import 'package:gymm_ai_landing_page/pages/roadmap_page.dart';
 import 'package:gymm_ai_landing_page/pages/press_kit_page.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -60,8 +59,12 @@ void main() async {
           projectId: "gymmemails",
           storageBucket: "gymmemails.firebasestorage.app",
           messagingSenderId: "354600174377",
-          appId: "1:354600174377:web:00f4cf7d0808e260c12d38"),
+          appId: "1:354600174377:web:00f4cf7d0808e260c12d38",
+          measurementId: "G-GWMQ5GM6WM"),
     );
+
+    // Enable analytics collection
+    await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
   } catch (e) {
     print('Firebase initialization error: $e');
   }
@@ -83,7 +86,7 @@ class MyApp extends StatelessWidget {
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) => const LandingPage(),
+        builder: (context, state) => const NewMarketingPage(),
       ),
       GoRoute(
         path: '/marketing_page',

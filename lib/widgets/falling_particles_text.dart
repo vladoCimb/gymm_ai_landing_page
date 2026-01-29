@@ -9,6 +9,7 @@ class FallingParticlesText extends StatefulWidget {
   final TextStyle textStyle;
   final int particleCount;
   final double dropHeight;
+  final double targetFPS;
 
   const FallingParticlesText({
     super.key,
@@ -16,6 +17,7 @@ class FallingParticlesText extends StatefulWidget {
     required this.textStyle,
     this.particleCount = 15,
     this.dropHeight = 100,
+    this.targetFPS = 30.0,
   });
 
   @override
@@ -32,8 +34,7 @@ class _FallingParticlesTextState extends State<FallingParticlesText>
   late List<_Particle> _particles;
 
   // Performance optimizations
-  static const double _targetFPS = 30.0; // Limit to 30 FPS for web
-  static const double _frameInterval = 1.0 / _targetFPS;
+
   double _accumulatedTime = 0.0;
   bool _needsUpdate = false;
 
@@ -59,7 +60,7 @@ class _FallingParticlesTextState extends State<FallingParticlesText>
 
       // Accumulate time and only update at target FPS
       _accumulatedTime += clampedDt;
-      if (_accumulatedTime < _frameInterval) return;
+      if (_accumulatedTime < 1 / widget.targetFPS) return;
 
       _accumulatedTime = 0.0;
       _needsUpdate = false;
