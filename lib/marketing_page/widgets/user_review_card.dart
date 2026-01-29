@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gymm_ai_landing_page/main.dart';
 import 'package:gymm_ai_landing_page/marketing_page/new_marketing_page.dart';
@@ -34,11 +35,10 @@ class UserReviewCard extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               child: SelectableText(
                 review,
-                style: TextStyle(
-                  fontFamily: 'Suisse',
+                style: GoogleFonts.inter(
                   fontWeight: FontWeight.w400,
-                  fontSize: isMobile(context) ? 16 : 20,
-                  height: isMobile(context) ? 21 / 16 : 26 / 20,
+                  fontSize: isMobile(context) ? 16 : 18,
+                  height: isMobile(context) ? 21 / 16 : 24 / 18,
                   letterSpacing: 0,
                   color: Colors.white,
                 ),
@@ -54,8 +54,7 @@ class UserReviewCard extends StatelessWidget {
               launchUrl(Uri.parse(urlLink));
             },
             text: name,
-            style: TextStyle(
-              fontFamily: 'Suisse',
+            style: GoogleFonts.inter(
               fontWeight: FontWeight.w500,
               fontSize: 18,
               height: 24 / 18,

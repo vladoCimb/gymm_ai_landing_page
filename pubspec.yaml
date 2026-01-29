@@ -23,6 +23,7 @@ dependencies:
   ai_glow: ^0.0.2
   flutter_markdown: ^0.6.18
   go_router: ^17.0.0
+  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:

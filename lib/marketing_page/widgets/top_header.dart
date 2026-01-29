@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymm_ai_landing_page/widgets/text_button.dart';
 
@@ -21,11 +22,10 @@ class TopHeader extends StatelessWidget {
                 context.push('/roadmap');
               },
               text: 'Roadmap',
-              style: TextStyle(
+              style: GoogleFonts.inter(
                 color: Colors.white.withOpacity(0.78),
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
-                fontFamily: 'Inter',
                 letterSpacing: 0,
                 height: 29 / 14,
               ),
@@ -136,11 +136,10 @@ class _DownloadButtonState extends State<_DownloadButton> {
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                   child: Text(
                     'Download',
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                       color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
-                      fontFamily: 'Inter',
                       letterSpacing: 0,
                       height: 20 / 14,
                     ),

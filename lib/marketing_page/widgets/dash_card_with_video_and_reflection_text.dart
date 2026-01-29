@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:gymm_ai_landing_page/main.dart';
 import 'package:gymm_ai_landing_page/marketing_page/new_marketing_page.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/ai_video_player.dart';
@@ -112,32 +113,30 @@ class _DashCardWithVideoAndReflectionTextState
                     TextSpan(
                       text:
                           'Powered by Gymm AI, built on the most advanced models',
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         color: Colors.white,
                         fontSize: isMobile(context)
                             ? 16
-                            : getDesktopOrTabletSize(context, 20),
+                            : getDesktopOrTabletSize(context, 18),
                         fontWeight: FontWeight.w400,
-                        fontFamily: 'Suisse',
                         height: isMobile(context)
                             ? 21 / 16
-                            : 26 / getDesktopOrTabletSize(context, 20),
+                            : 24 / getDesktopOrTabletSize(context, 20),
                         letterSpacing: 0,
                       ),
                     ),
                     TextSpan(
                       text:
                           '  trained to understand your fitness workouts and deliver the most useful feedback.',
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         color: Color(0xff7A7A7A),
                         fontSize: isMobile(context)
                             ? 16
-                            : getDesktopOrTabletSize(context, 20),
+                            : getDesktopOrTabletSize(context, 18),
                         fontWeight: FontWeight.w400,
-                        fontFamily: 'Suisse',
                         height: isMobile(context)
                             ? 21 / 16
-                            : 26 / getDesktopOrTabletSize(context, 20),
+                            : 24 / getDesktopOrTabletSize(context, 18),
                         letterSpacing: 0,
                       ),
                     ),

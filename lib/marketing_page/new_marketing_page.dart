@@ -19,6 +19,7 @@ import 'package:gymm_ai_landing_page/widgets/shinning_button.dart';
 import 'package:gymm_ai_landing_page/widgets/text_button.dart'
     show HoverableTextButton;
 import 'package:gymm_ai_landing_page/widgets/falling_particles_text.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:video_player/video_player.dart';
 
 const double kHeaderHeight = 70;
@@ -382,24 +383,23 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                               TextSpan(
                                                 text:
                                                     'Record. Analyze. Improve. ',
-                                                style: TextStyle(
+                                                style: GoogleFonts.inter(
                                                   color: Colors.white,
-                                                  fontSize: 20.0,
+                                                  fontSize: 18.0,
+                                                  height: 26.0 / 18.0,
                                                   fontWeight: FontWeight.w400,
-                                                  fontFamily: 'Suisse',
                                                   letterSpacing: 0,
                                                 ),
                                               ),
                                               TextSpan(
                                                 text:
                                                     'Record your training session and receive detailed improvement suggestions.',
-                                                style: TextStyle(
+                                                style: GoogleFonts.inter(
                                                   color: Color(0xff7A7A7A),
-                                                  fontSize: 20.0,
+                                                  fontSize: 18.0,
                                                   fontWeight: FontWeight.w400,
-                                                  fontFamily: 'Suisse',
                                                   letterSpacing: 0,
-                                                  height: 26.0 / 20.0,
+                                                  height: 24.0 / 18.0,
                                                 ),
                                               ),
                                             ],
@@ -451,11 +451,10 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                             children: [
                               SelectableText(
                                 'Introduction',
-                                style: TextStyle(
-                                  fontFamily: 'Suisse',
+                                style: GoogleFonts.inter(
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                  height: 41 / 16,
+                                  fontSize: 18,
+                                  height: 41 / 18,
                                   letterSpacing: 0,
                                   color: Color.fromRGBO(132, 131, 148, 1),
                                 ),
@@ -579,24 +578,22 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                       children: [
                                         TextSpan(
                                           text: 'Data that actually helps.',
-                                          style: TextStyle(
+                                          style: GoogleFonts.inter(
                                             color: Colors.white,
-                                            fontSize: 16,
-                                            height: 21 / 16,
+                                            fontSize: 18,
+                                            height: 24 / 18,
                                             fontWeight: FontWeight.w400,
-                                            fontFamily: 'Suisse',
                                             letterSpacing: 0,
                                           ),
                                         ),
                                         TextSpan(
                                           text:
                                               ' Performance scores and actionable explanations focused on real training and real results.',
-                                          style: TextStyle(
+                                          style: GoogleFonts.inter(
                                             color: Color(0xff7A7A7A),
-                                            fontSize: 16,
-                                            height: 21 / 16,
+                                            fontSize: 18,
+                                            height: 24 / 18,
                                             fontWeight: FontWeight.w400,
-                                            fontFamily: 'Suisse',
                                             letterSpacing: 0,
                                           ),
                                         ),
@@ -657,30 +654,28 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                                       color: Colors.white,
                                                       fontSize:
                                                           getDesktopOrTabletSize(
-                                                              context, 20),
-                                                      height: 26 /
+                                                              context, 18),
+                                                      height: 24 /
                                                           getDesktopOrTabletSize(
-                                                              context, 20),
+                                                              context, 18),
                                                       fontWeight:
                                                           FontWeight.w400,
-                                                      fontFamily: 'Suisse',
                                                       letterSpacing: 0,
                                                     ),
                                                   ),
                                                   TextSpan(
                                                     text:
                                                         " Performance scores and actionable explanations focused on real training and real results.",
-                                                    style: TextStyle(
+                                                    style: GoogleFonts.inter(
                                                       color: Color(0xff7A7A7A),
                                                       fontSize:
                                                           getDesktopOrTabletSize(
-                                                              context, 20),
-                                                      height: 26 /
+                                                              context, 18),
+                                                      height: 24 /
                                                           getDesktopOrTabletSize(
-                                                              context, 20),
+                                                              context, 18),
                                                       fontWeight:
                                                           FontWeight.w400,
-                                                      fontFamily: 'Suisse',
                                                       letterSpacing: 0,
                                                     ),
                                                   ),
@@ -1338,11 +1333,10 @@ class NewMarketingFooterWidget extends StatelessWidget {
                           ),
                           child: SelectableText(
                             'Start today',
-                            style: TextStyle(
-                              fontFamily: 'Suisse',
+                            style: GoogleFonts.inter(
                               fontWeight: FontWeight.w500,
-                              fontSize: 16.09,
-                              height: 41.8 / 16.09,
+                              fontSize: 18,
+                              height: 41 / 18,
                               letterSpacing: 0,
                               color: Color.fromRGBO(132, 131, 148, 1),
                             ),
@@ -1350,10 +1344,10 @@ class NewMarketingFooterWidget extends StatelessWidget {
                         ),
                         ConstrainedBox(
                           constraints: BoxConstraints(
-                            maxWidth: getDesktopOrTabletSize(context, 744),
+                            maxWidth: getDesktopOrTabletSize(context, 800),
                           ),
                           child: SelectableText(
-                            'Gymm.${isMobile(context) ? '\n' : ' '}Your fitness coach, powered by AI',
+                            'Gymm.${isMobile(context) ? '\n' : ' '}Camera based AI fitness coach',
                             style: TextStyle(
                               fontFamily: 'Suisse',
                               fontWeight: FontWeight.w500,
@@ -1786,32 +1780,42 @@ void showGetAppDialog(BuildContext context) {
     transitionBuilder: (context, animation, secondaryAnimation, child) {
       final curved = CurvedAnimation(
         parent: animation,
-        curve: Curves.easeOutCubic,
-        reverseCurve: Curves.easeInCubic,
+        curve: Curves.easeOut,
+        reverseCurve: Curves.easeIn,
       );
 
       return FadeTransition(
         opacity: curved,
         child: Stack(
           children: [
-            // Background blur + dark overlay
+            // Background overlay
             Positioned.fill(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-                child: Container(
-                  color: Colors.black.withOpacity(0.6),
-                ),
+              child: Container(
+                color: Colors.black.withOpacity(0.7),
               ),
             ),
 
-            // Centered dialog card
+            // Centered dialog card with scale animation
             Center(
-              child: _GetAppDialogCard(),
+              child: ScaleTransition(
+                scale: Tween<double>(
+                  begin: 0.95,
+                  end: 1.0,
+                ).animate(
+                  CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeOut,
+                    reverseCurve: Curves.easeOut,
+                  ),
+                ),
+                child: _GetAppDialogCard(),
+              ),
             ),
           ],
         ),
       );
     },
+    transitionDuration: const Duration(milliseconds: 300),
   );
 }
 
@@ -1829,7 +1833,7 @@ class _GetAppDialogCard extends StatelessWidget {
         color: Colors.transparent,
         child: Container(
           decoration: BoxDecoration(
-            color: const Color.fromRGBO(19, 21, 31, 1),
+            color: const Color(0xFF10101B),
             borderRadius: BorderRadius.circular(32),
             boxShadow: [
               BoxShadow(

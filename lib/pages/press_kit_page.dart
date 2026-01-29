@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:gymm_ai_landing_page/main.dart';
 import 'package:gymm_ai_landing_page/marketing_page/new_marketing_page.dart';
 import 'package:gymm_ai_landing_page/widgets/shinning_button.dart';
@@ -53,12 +54,11 @@ class PressKitPage extends StatelessWidget {
                       ),
                       child: Text(
                         "Here you will find our logo and branding assets you can use.",
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           color: Color.fromRGBO(165, 165, 165, 1),
-                          fontSize: 20,
-                          height: 25 / 20,
+                          fontSize: 18,
+                          height: 24 / 20,
                           fontWeight: FontWeight.w300,
-                          fontFamily: 'Suisse',
                           letterSpacing: 0,
                         ),
                         textAlign: TextAlign.left,

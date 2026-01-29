@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HoverableTextButton extends StatefulWidget {
   final String text;
@@ -22,8 +23,7 @@ class _HoverableTextButtonState extends State<HoverableTextButton> {
 
   @override
   Widget build(BuildContext context) {
-    final defaultStyle = TextStyle(
-      fontFamily: 'Inter',
+    final defaultStyle = GoogleFonts.inter(
       fontWeight: FontWeight.w400,
       fontSize: 14,
       color: Colors.white,

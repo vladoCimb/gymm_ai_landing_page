@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:gymm_ai_landing_page/main.dart';
 import 'package:gymm_ai_landing_page/marketing_page/new_marketing_page.dart';
 
@@ -50,14 +51,13 @@ class RoadmapPage extends StatelessWidget {
                       constraints: BoxConstraints(
                         maxWidth: 379,
                       ),
-                      child: Text(
+                      child: SelectableText(
                         "Sneak peek of what we're working on and planning to release soon.",
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           color: Color.fromRGBO(165, 165, 165, 1),
-                          fontSize: 20,
-                          height: 25 / 20,
+                          fontSize: 18,
+                          height: 24 / 18,
                           fontWeight: FontWeight.w300,
-                          fontFamily: 'Suisse',
                           letterSpacing: 0,
                         ),
                         textAlign: TextAlign.left,
@@ -137,12 +137,11 @@ class _RoadmapFeature extends StatelessWidget {
           // Title
           Text(
             title,
-            style: TextStyle(
+            style: GoogleFonts.inter(
               color: Colors.white,
-              fontSize: 20,
-              height: 25 / 20,
+              fontSize: 18,
+              height: 24 / 18,
               fontWeight: FontWeight.w500,
-              fontFamily: 'Suisse',
               letterSpacing: 0,
             ),
             textAlign: TextAlign.center,
@@ -151,12 +150,11 @@ class _RoadmapFeature extends StatelessWidget {
           // Description
           Text(
             description,
-            style: TextStyle(
+            style: GoogleFonts.inter(
               color: Color.fromRGBO(165, 165, 165, 1),
               fontSize: 14,
               height: 19 / 14,
               fontWeight: FontWeight.w400,
-              fontFamily: 'Suisse',
               letterSpacing: 0,
             ),
             textAlign: TextAlign.left,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:gymm_ai_landing_page/main.dart';
 import 'package:gymm_ai_landing_page/marketing_page/new_marketing_page.dart';
 import 'package:gymm_ai_landing_page/marketing_page/widgets/dash_card.dart';
@@ -98,49 +99,45 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                       child: SelectableText.rich(
                         TextSpan(
                           children: [
-                            const TextSpan(
+                            TextSpan(
                               text: 'Train with confidence and clarity.',
-                              style: TextStyle(
+                              style: GoogleFonts.inter(
                                 color: Colors.white,
-                                fontSize: 16,
-                                height: 21 / 20,
+                                fontSize: 18,
+                                height: 24 / 18,
                                 fontWeight: FontWeight.w400,
-                                fontFamily: 'Suisse',
                                 letterSpacing: 0,
                               ),
                             ),
                             TextSpan(
                               text:
                                   '  Know why a rep felt off and what to change.',
-                              style: TextStyle(
+                              style: GoogleFonts.inter(
                                 color: const Color(0xff7A7A7A),
-                                fontSize: 16,
-                                height: 21 / 20,
+                                fontSize: 18,
+                                height: 24 / 18,
                                 fontWeight: FontWeight.w400,
-                                fontFamily: 'Suisse',
                                 letterSpacing: 0,
                               ),
                             ),
-                            const TextSpan(
+                            TextSpan(
                               text: ' Gymm ',
-                              style: TextStyle(
+                              style: GoogleFonts.inter(
                                 color: Colors.white,
-                                fontSize: 16,
-                                height: 21 / 20,
+                                fontSize: 18,
+                                height: 24 / 18,
                                 fontWeight: FontWeight.w400,
-                                fontFamily: 'Suisse',
                                 letterSpacing: 0,
                               ),
                             ),
                             TextSpan(
                               text:
                                   'turns uncertainty into clarity, so every set has purpose.',
-                              style: TextStyle(
+                              style: GoogleFonts.inter(
                                 color: const Color(0xff7A7A7A),
-                                fontSize: 16,
-                                height: 21 / 20,
+                                fontSize: 18,
+                                height: 24 / 18,
                                 fontWeight: FontWeight.w400,
-                                fontFamily: 'Suisse',
                                 letterSpacing: 0,
                               ),
                             ),
@@ -207,51 +204,47 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                           children: [
                             TextSpan(
                               text: 'Train with confidence and clarity.',
-                              style: TextStyle(
+                              style: GoogleFonts.inter(
                                 color: Colors.white,
-                                fontSize: getDesktopOrTabletSize(context, 20),
+                                fontSize: getDesktopOrTabletSize(context, 18),
                                 height:
-                                    26 / getDesktopOrTabletSize(context, 20),
+                                    24 / getDesktopOrTabletSize(context, 18),
                                 fontWeight: FontWeight.w400,
-                                fontFamily: 'Suisse',
                                 letterSpacing: 0,
                               ),
                             ),
                             TextSpan(
                               text:
                                   "  Know why a rep felt off and what to change.",
-                              style: TextStyle(
+                              style: GoogleFonts.inter(
                                 color: const Color(0xff7A7A7A),
-                                fontSize: getDesktopOrTabletSize(context, 20),
+                                fontSize: getDesktopOrTabletSize(context, 18),
                                 height:
-                                    26 / getDesktopOrTabletSize(context, 20),
+                                    24 / getDesktopOrTabletSize(context, 18),
                                 fontWeight: FontWeight.w400,
-                                fontFamily: 'Suisse',
                                 letterSpacing: 0,
                               ),
                             ),
                             TextSpan(
                               text: ' Gymm ',
-                              style: TextStyle(
+                              style: GoogleFonts.inter(
                                 color: Colors.white,
-                                fontSize: getDesktopOrTabletSize(context, 20),
+                                fontSize: getDesktopOrTabletSize(context, 18),
                                 height:
-                                    26 / getDesktopOrTabletSize(context, 20),
+                                    24 / getDesktopOrTabletSize(context, 18),
                                 fontWeight: FontWeight.w400,
-                                fontFamily: 'Suisse',
                                 letterSpacing: 0,
                               ),
                             ),
                             TextSpan(
                               text:
                                   "turns uncertainty into clarity, so every set has purpose.",
-                              style: TextStyle(
+                              style: GoogleFonts.inter(
                                 color: const Color(0xff7A7A7A),
-                                fontSize: getDesktopOrTabletSize(context, 20),
+                                fontSize: getDesktopOrTabletSize(context, 18),
                                 height:
-                                    26 / getDesktopOrTabletSize(context, 20),
+                                    24 / getDesktopOrTabletSize(context, 18),
                                 fontWeight: FontWeight.w400,
-                                fontFamily: 'Suisse',
                                 letterSpacing: 0,
                               ),
                             ),
