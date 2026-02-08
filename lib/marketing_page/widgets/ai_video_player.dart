@@ -48,7 +48,7 @@ class _AiVideoPlayerState extends State<AiVideoPlayer> {
     }
 
     try {
-      _controller = VideoPlayerController.asset('assets/png/ai_video2.mp4');
+      _controller = VideoPlayerController.asset('assets/png/ai_video.mp4');
       await _controller!.setVolume(0);
       await _controller!.initialize();
       await _controller!.setLooping(true);
