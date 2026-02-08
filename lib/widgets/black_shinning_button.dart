@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' hide BoxShadow, BoxDecoration;
 import 'package:flutter_inset_shadow/flutter_inset_shadow.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BlackShinningButton extends StatefulWidget {
   const BlackShinningButton({
@@ -84,11 +85,10 @@ class _BlackShinningButtonState extends State<BlackShinningButton> {
                           ),
                           child: Text(
                             widget.text,
-                            style: TextStyle(
+                            style: GoogleFonts.inter(
                               color: Colors.white,
                               fontSize: 15,
                               fontWeight: FontWeight.w500,
-                              fontFamily: 'Inter',
                               height: 20 / 15,
                               letterSpacing: 0,
                             ),
@@ -115,11 +115,10 @@ class _BlackShinningButtonState extends State<BlackShinningButton> {
                             ),
                             Text(
                               widget.text,
-                              style: TextStyle(
+                              style: GoogleFonts.inter(
                                 color: Colors.white,
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500,
-                                fontFamily: 'Inter',
                                 height: 20 / 15,
                                 letterSpacing: 0,
                               ),

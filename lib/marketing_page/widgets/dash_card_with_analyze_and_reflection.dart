@@ -105,7 +105,7 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                                 color: Colors.white,
                                 fontSize: 18,
                                 height: 24 / 18,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w500,
                                 letterSpacing: 0,
                               ),
                             ),
@@ -116,7 +116,7 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                                 color: const Color(0xff7A7A7A),
                                 fontSize: 18,
                                 height: 24 / 18,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w500,
                                 letterSpacing: 0,
                               ),
                             ),
@@ -126,7 +126,7 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                                 color: Colors.white,
                                 fontSize: 18,
                                 height: 24 / 18,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w500,
                                 letterSpacing: 0,
                               ),
                             ),
@@ -137,7 +137,7 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                                 color: const Color(0xff7A7A7A),
                                 fontSize: 18,
                                 height: 24 / 18,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w500,
                                 letterSpacing: 0,
                               ),
                             ),
@@ -207,9 +207,9 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                               style: GoogleFonts.inter(
                                 color: Colors.white,
                                 fontSize: getDesktopOrTabletSize(context, 18),
-                                height:
-                                    24 / getDesktopOrTabletSize(context, 18),
-                                fontWeight: FontWeight.w400,
+                                height: getDesktopOrTabletSize(context, 24) /
+                                    getDesktopOrTabletSize(context, 18),
+                                fontWeight: FontWeight.w500,
                                 letterSpacing: 0,
                               ),
                             ),
@@ -219,9 +219,9 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                               style: GoogleFonts.inter(
                                 color: const Color(0xff7A7A7A),
                                 fontSize: getDesktopOrTabletSize(context, 18),
-                                height:
-                                    24 / getDesktopOrTabletSize(context, 18),
-                                fontWeight: FontWeight.w400,
+                                height: getDesktopOrTabletSize(context, 24) /
+                                    getDesktopOrTabletSize(context, 18),
+                                fontWeight: FontWeight.w500,
                                 letterSpacing: 0,
                               ),
                             ),
@@ -230,9 +230,9 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                               style: GoogleFonts.inter(
                                 color: Colors.white,
                                 fontSize: getDesktopOrTabletSize(context, 18),
-                                height:
-                                    24 / getDesktopOrTabletSize(context, 18),
-                                fontWeight: FontWeight.w400,
+                                height: getDesktopOrTabletSize(context, 24) /
+                                    getDesktopOrTabletSize(context, 18),
+                                fontWeight: FontWeight.w500,
                                 letterSpacing: 0,
                               ),
                             ),
@@ -242,9 +242,9 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                               style: GoogleFonts.inter(
                                 color: const Color(0xff7A7A7A),
                                 fontSize: getDesktopOrTabletSize(context, 18),
-                                height:
-                                    24 / getDesktopOrTabletSize(context, 18),
-                                fontWeight: FontWeight.w400,
+                                height: getDesktopOrTabletSize(context, 24) /
+                                    getDesktopOrTabletSize(context, 18),
+                                fontWeight: FontWeight.w500,
                                 letterSpacing: 0,
                               ),
                             ),

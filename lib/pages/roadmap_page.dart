@@ -27,7 +27,7 @@ class RoadmapPage extends StatelessWidget {
                 MarketingPagePaddingWiget(
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(
+                    child: SelectableText(
                       'Roadmap',
                       style: TextStyle(
                         color: Colors.white,
@@ -57,7 +57,7 @@ class RoadmapPage extends StatelessWidget {
                           color: Color.fromRGBO(165, 165, 165, 1),
                           fontSize: 18,
                           height: 24 / 18,
-                          fontWeight: FontWeight.w300,
+                          fontWeight: FontWeight.w500,
                           letterSpacing: 0,
                         ),
                         textAlign: TextAlign.left,
@@ -135,7 +135,7 @@ class _RoadmapFeature extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Title
-          Text(
+          SelectableText(
             title,
             style: GoogleFonts.inter(
               color: Colors.white,
@@ -148,13 +148,13 @@ class _RoadmapFeature extends StatelessWidget {
           ),
           SizedBox(height: 8),
           // Description
-          Text(
+          SelectableText(
             description,
             style: GoogleFonts.inter(
               color: Color.fromRGBO(165, 165, 165, 1),
               fontSize: 14,
               height: 19 / 14,
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.w500,
               letterSpacing: 0,
             ),
             textAlign: TextAlign.left,

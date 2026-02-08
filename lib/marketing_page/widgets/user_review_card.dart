@@ -36,7 +36,7 @@ class UserReviewCard extends StatelessWidget {
               child: SelectableText(
                 review,
                 style: GoogleFonts.inter(
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w500,
                   fontSize: isMobile(context) ? 16 : 18,
                   height: isMobile(context) ? 21 / 16 : 24 / 18,
                   letterSpacing: 0,

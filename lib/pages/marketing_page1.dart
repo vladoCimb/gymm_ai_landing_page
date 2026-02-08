@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:gymm_ai_landing_page/main.dart';
 import 'package:gymm_ai_landing_page/marketing_page/new_marketing_page.dart';
 import 'package:gymm_ai_landing_page/pages/legal_doc_page.dart';
@@ -341,11 +342,10 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
                   children: [
                     Text(
                       '© Gymm AI 2025',
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         color: Color(0xff848484),
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
-                        fontFamily: 'Inter',
                         letterSpacing: 0,
                         height: 20 / 13,
                       ),

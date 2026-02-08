@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:gymm_ai_landing_page/main.dart';
 import 'package:gymm_ai_landing_page/marketing_page/new_marketing_page.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -70,32 +71,29 @@ class LegalDocPage extends StatelessWidget {
 
     // Create custom markdown style sheet
     final markdownStyleSheet = MarkdownStyleSheet(
-      h1: TextStyle(
+      h1: GoogleFonts.inter(
         color: Colors.white,
         fontSize: 18,
         height: 21 / 18,
-        fontFamily: 'Inter',
+
         fontWeight: FontWeight.w500, // Medium
       ),
-      p: TextStyle(
+      p: GoogleFonts.inter(
         color: Colors.white,
         fontSize: 14,
         height: 21 / 14,
-        fontFamily: 'Inter',
         fontWeight: FontWeight.w300, // Regular
       ),
-      listBullet: TextStyle(
+      listBullet: GoogleFonts.inter(
         color: Colors.white,
         fontSize: 14,
         height: 21 / 14,
-        fontFamily: 'Inter',
         fontWeight: FontWeight.w300,
       ),
-      a: TextStyle(
+      a: GoogleFonts.inter(
         color: Colors.white,
         fontSize: 14,
         height: 21 / 14,
-        fontFamily: 'Inter',
         fontWeight: FontWeight.w300,
       ),
     );
@@ -118,7 +116,7 @@ class LegalDocPage extends StatelessWidget {
                 MarketingPagePaddingWiget(
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(
+                    child: SelectableText(
                       title,
                       style: TextStyle(
                         color: Colors.white,

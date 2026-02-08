@@ -118,10 +118,11 @@ class _DashCardWithVideoAndReflectionTextState
                         fontSize: isMobile(context)
                             ? 16
                             : getDesktopOrTabletSize(context, 18),
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w500,
                         height: isMobile(context)
                             ? 21 / 16
-                            : 24 / getDesktopOrTabletSize(context, 20),
+                            : getDesktopOrTabletSize(context, 24) /
+                                getDesktopOrTabletSize(context, 18),
                         letterSpacing: 0,
                       ),
                     ),
@@ -133,10 +134,11 @@ class _DashCardWithVideoAndReflectionTextState
                         fontSize: isMobile(context)
                             ? 16
                             : getDesktopOrTabletSize(context, 18),
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w500,
                         height: isMobile(context)
                             ? 21 / 16
-                            : 24 / getDesktopOrTabletSize(context, 18),
+                            : getDesktopOrTabletSize(context, 24) /
+                                getDesktopOrTabletSize(context, 18),
                         letterSpacing: 0,
                       ),
                     ),

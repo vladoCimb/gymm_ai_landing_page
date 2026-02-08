@@ -25,7 +25,7 @@ class TopHeader extends StatelessWidget {
               style: GoogleFonts.inter(
                 color: Colors.white.withOpacity(0.78),
                 fontSize: 14,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.w500,
                 letterSpacing: 0,
                 height: 29 / 14,
               ),
@@ -139,7 +139,7 @@ class _DownloadButtonState extends State<_DownloadButton> {
                     style: GoogleFonts.inter(
                       color: Colors.white,
                       fontSize: 14,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w500,
                       letterSpacing: 0,
                       height: 20 / 14,
                     ),

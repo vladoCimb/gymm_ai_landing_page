@@ -58,7 +58,7 @@ class PressKitPage extends StatelessWidget {
                           color: Color.fromRGBO(165, 165, 165, 1),
                           fontSize: 18,
                           height: 24 / 20,
-                          fontWeight: FontWeight.w300,
+                          fontWeight: FontWeight.w500,
                           letterSpacing: 0,
                         ),
                         textAlign: TextAlign.left,

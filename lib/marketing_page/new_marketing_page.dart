@@ -20,6 +20,7 @@ import 'package:gymm_ai_landing_page/widgets/text_button.dart'
     show HoverableTextButton;
 import 'package:gymm_ai_landing_page/widgets/falling_particles_text.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
 const double kHeaderHeight = 70;
@@ -129,7 +130,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
   void _initializeLandingVideo() async {
     try {
       _landingVideoController =
-          VideoPlayerController.asset('assets/png/landing_video.mp4');
+          VideoPlayerController.asset('assets/png/video-website-with-bg.mp4');
       await _landingVideoController!.setVolume(0);
       await _landingVideoController!.initialize();
       await _landingVideoController!.setLooping(true);
@@ -274,52 +275,43 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                               const TextSpan(
                                                 text: 'Camera based ',
                                               ),
-                                              WidgetSpan(
-                                                alignment: PlaceholderAlignment
-                                                    .baseline,
-                                                baseline:
-                                                    TextBaseline.alphabetic,
-                                                child: FallingParticlesText(
-                                                  targetFPS: 60,
-                                                  text: 'AI',
-                                                  textStyle: TextStyle(
-                                                    fontSize: isMobile(context)
-                                                        ? 48.88
-                                                        : getDesktopOrTabletSize(
-                                                            context, 82.0),
-                                                    height: isMobile(context)
-                                                        ? 55.55 / 48.88
-                                                        : getDesktopOrTabletSize(
-                                                                context, 84.8) /
-                                                            getDesktopOrTabletSize(
-                                                                context, 82.0),
-                                                    fontWeight: FontWeight.w500,
-                                                    fontFamily: 'Suisse',
-                                                    letterSpacing: 0,
-                                                    color: Color.fromRGBO(
-                                                        198, 218, 255, 1),
-                                                    shadows: [
-                                                      Shadow(
-                                                        color: const Color
-                                                            .fromRGBO(
-                                                            63, 89, 255, 1),
-                                                        offset: Offset(0, 0),
-                                                        blurRadius: 15.96,
-                                                      ),
-                                                      Shadow(
-                                                        color: const Color
-                                                            .fromRGBO(
-                                                            66, 91, 255, 1),
-                                                        offset:
-                                                            Offset(0, 57.01),
-                                                        blurRadius: 84.37,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  particleCount: 15,
-                                                  dropHeight: 80,
+                                              TextSpan(
+                                                text: 'AI',
+                                                style: TextStyle(
+                                                  fontFamily: 'Suisse',
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: isMobile(context)
+                                                      ? 48.88
+                                                      : getDesktopOrTabletSize(
+                                                          context, 82.0),
+                                                  height: isMobile(context)
+                                                      ? 55.55 / 48.88
+                                                      : getDesktopOrTabletSize(
+                                                              context, 84.8) /
+                                                          getDesktopOrTabletSize(
+                                                              context, 82.0),
+                                                  letterSpacing: 0,
+                                                  color: Color.fromRGBO(
+                                                      198, 218, 255, 1),
+                                                  shadows: [
+                                                    Shadow(
+                                                      color:
+                                                          const Color.fromRGBO(
+                                                              63, 89, 255, 1),
+                                                      offset: Offset(0, 0),
+                                                      blurRadius: 15.96,
+                                                    ),
+                                                    Shadow(
+                                                      color:
+                                                          const Color.fromRGBO(
+                                                              66, 91, 255, 1),
+                                                      offset: Offset(0, 57.01),
+                                                      blurRadius: 84.37,
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
+
                                               const TextSpan(
                                                 text: ' fitness coach',
                                               ),
@@ -388,7 +380,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                                   color: Colors.white,
                                                   fontSize: 18.0,
                                                   height: 26.0 / 18.0,
-                                                  fontWeight: FontWeight.w400,
+                                                  fontWeight: FontWeight.w500,
                                                   letterSpacing: 0,
                                                 ),
                                               ),
@@ -398,7 +390,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                                 style: GoogleFonts.inter(
                                                   color: Color(0xff7A7A7A),
                                                   fontSize: 18.0,
-                                                  fontWeight: FontWeight.w400,
+                                                  fontWeight: FontWeight.w500,
                                                   letterSpacing: 0,
                                                   height: 24.0 / 18.0,
                                                 ),
@@ -517,7 +509,8 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                               context, 52.09),
                                       height: isMobile(context)
                                           ? 38 / 36
-                                          : 54.8 /
+                                          : getDesktopOrTabletSize(
+                                                  context, 54.8) /
                                               getDesktopOrTabletSize(
                                                   context, 52.09),
                                       letterSpacing: 0,
@@ -583,7 +576,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                             color: Colors.white,
                                             fontSize: 18,
                                             height: 24 / 18,
-                                            fontWeight: FontWeight.w400,
+                                            fontWeight: FontWeight.w500,
                                             letterSpacing: 0,
                                           ),
                                         ),
@@ -594,7 +587,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                             color: Color(0xff7A7A7A),
                                             fontSize: 18,
                                             height: 24 / 18,
-                                            fontWeight: FontWeight.w400,
+                                            fontWeight: FontWeight.w500,
                                             letterSpacing: 0,
                                           ),
                                         ),
@@ -651,16 +644,17 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                                   TextSpan(
                                                     text:
                                                         'Data that actually helps.',
-                                                    style: TextStyle(
+                                                    style: GoogleFonts.inter(
                                                       color: Colors.white,
                                                       fontSize:
                                                           getDesktopOrTabletSize(
                                                               context, 18),
-                                                      height: 24 /
+                                                      height: getDesktopOrTabletSize(
+                                                              context, 24) /
                                                           getDesktopOrTabletSize(
                                                               context, 18),
                                                       fontWeight:
-                                                          FontWeight.w400,
+                                                          FontWeight.w500,
                                                       letterSpacing: 0,
                                                     ),
                                                   ),
@@ -672,11 +666,12 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                                       fontSize:
                                                           getDesktopOrTabletSize(
                                                               context, 18),
-                                                      height: 24 /
+                                                      height: getDesktopOrTabletSize(
+                                                              context, 24) /
                                                           getDesktopOrTabletSize(
                                                               context, 18),
                                                       fontWeight:
-                                                          FontWeight.w400,
+                                                          FontWeight.w500,
                                                       letterSpacing: 0,
                                                     ),
                                                   ),
@@ -817,45 +812,41 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                           children: [
                                             TextSpan(
                                               text: 'Available on',
-                                              style: TextStyle(
+                                              style: GoogleFonts.inter(
                                                 color: Color(0xff7A7A7A),
-                                                fontSize: 16,
-                                                height: 21 / 20,
-                                                fontWeight: FontWeight.w400,
-                                                fontFamily: 'Suisse',
+                                                fontSize: 18,
+                                                height: 24 / 18,
+                                                fontWeight: FontWeight.w500,
                                                 letterSpacing: 0,
                                               ),
                                             ),
                                             TextSpan(
                                               text: ' iOS',
-                                              style: TextStyle(
+                                              style: GoogleFonts.inter(
                                                 color: Colors.white,
-                                                fontSize: 16,
-                                                height: 21 / 20,
-                                                fontWeight: FontWeight.w400,
-                                                fontFamily: 'Suisse',
+                                                fontSize: 18,
+                                                height: 24 / 18,
+                                                fontWeight: FontWeight.w500,
                                                 letterSpacing: 0,
                                               ),
                                             ),
                                             TextSpan(
                                               text: ' and ',
-                                              style: TextStyle(
+                                              style: GoogleFonts.inter(
                                                 color: Color(0xff7A7A7A),
-                                                fontSize: 16,
-                                                height: 21 / 20,
-                                                fontWeight: FontWeight.w400,
-                                                fontFamily: 'Suisse',
+                                                fontSize: 18,
+                                                height: 24 / 18,
+                                                fontWeight: FontWeight.w500,
                                                 letterSpacing: 0,
                                               ),
                                             ),
                                             TextSpan(
                                               text: ' Android',
-                                              style: TextStyle(
+                                              style: GoogleFonts.inter(
                                                 color: Colors.white,
-                                                fontSize: 16,
-                                                height: 21 / 20,
-                                                fontWeight: FontWeight.w400,
-                                                fontFamily: 'Suisse',
+                                                fontSize: 18,
+                                                height: 24 / 18,
+                                                fontWeight: FontWeight.w500,
                                                 letterSpacing: 0,
                                               ),
                                             ),
@@ -893,23 +884,21 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                           children: [
                                             TextSpan(
                                               text: 'Your data is always ',
-                                              style: TextStyle(
+                                              style: GoogleFonts.inter(
                                                 color: Color(0xff7A7A7A),
-                                                fontSize: 16,
-                                                height: 21 / 20,
-                                                fontWeight: FontWeight.w400,
-                                                fontFamily: 'Suisse',
+                                                fontSize: 18,
+                                                height: 24 / 18,
+                                                fontWeight: FontWeight.w500,
                                                 letterSpacing: 0,
                                               ),
                                             ),
                                             TextSpan(
                                               text: 'secure',
-                                              style: TextStyle(
+                                              style: GoogleFonts.inter(
                                                 color: Colors.white,
-                                                fontSize: 16,
-                                                height: 21 / 20,
-                                                fontWeight: FontWeight.w400,
-                                                fontFamily: 'Suisse',
+                                                fontSize: 18,
+                                                height: 24 / 18,
+                                                fontWeight: FontWeight.w500,
                                                 letterSpacing: 0,
                                               ),
                                             ),
@@ -963,46 +952,46 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                               children: [
                                                 TextSpan(
                                                   text: 'Over ',
-                                                  style: TextStyle(
+                                                  style: GoogleFonts.inter(
                                                     color: Color(0xff7A7A7A),
                                                     fontSize:
                                                         getDesktopOrTabletSize(
-                                                            context, 20),
-                                                    fontWeight: FontWeight.w400,
-                                                    height: 26 /
+                                                            context, 18),
+                                                    fontWeight: FontWeight.w500,
+                                                    height: getDesktopOrTabletSize(
+                                                            context, 24) /
                                                         getDesktopOrTabletSize(
-                                                            context, 20),
-                                                    fontFamily: 'Suisse',
+                                                            context, 18),
                                                     letterSpacing: 0,
                                                   ),
                                                 ),
                                                 TextSpan(
                                                   text: '400+ ',
-                                                  style: TextStyle(
+                                                  style: GoogleFonts.inter(
                                                     color: Colors.white,
                                                     fontSize:
                                                         getDesktopOrTabletSize(
-                                                            context, 20),
-                                                    height: 26 /
+                                                            context, 18),
+                                                    height: getDesktopOrTabletSize(
+                                                            context, 24) /
                                                         getDesktopOrTabletSize(
-                                                            context, 20),
-                                                    fontWeight: FontWeight.w400,
-                                                    fontFamily: 'Suisse',
+                                                            context, 18),
+                                                    fontWeight: FontWeight.w500,
                                                     letterSpacing: 0,
                                                   ),
                                                 ),
                                                 TextSpan(
                                                   text: 'supported exercises',
-                                                  style: TextStyle(
+                                                  style: GoogleFonts.inter(
                                                     color: Color(0xff7A7A7A),
                                                     fontSize:
                                                         getDesktopOrTabletSize(
-                                                            context, 20),
-                                                    height: 26 /
+                                                            context, 18),
+                                                    height: getDesktopOrTabletSize(
+                                                            context, 24) /
                                                         getDesktopOrTabletSize(
-                                                            context, 20),
-                                                    fontWeight: FontWeight.w400,
-                                                    fontFamily: 'Suisse',
+                                                            context, 18),
+                                                    fontWeight: FontWeight.w500,
                                                     letterSpacing: 0,
                                                   ),
                                                 ),
@@ -1052,61 +1041,61 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                             children: [
                                               TextSpan(
                                                 text: 'Available on',
-                                                style: TextStyle(
+                                                style: GoogleFonts.inter(
                                                   color: Color(0xff7A7A7A),
                                                   fontSize:
                                                       getDesktopOrTabletSize(
-                                                          context, 20),
-                                                  height: 26 /
+                                                          context, 18),
+                                                  height: getDesktopOrTabletSize(
+                                                          context, 24) /
                                                       getDesktopOrTabletSize(
-                                                          context, 20),
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: 'Suisse',
+                                                          context, 18),
+                                                  fontWeight: FontWeight.w500,
                                                   letterSpacing: 0,
                                                 ),
                                               ),
                                               TextSpan(
                                                 text: ' iOS',
-                                                style: TextStyle(
+                                                style: GoogleFonts.inter(
                                                   color: Colors.white,
                                                   fontSize:
                                                       getDesktopOrTabletSize(
-                                                          context, 20),
-                                                  height: 26 /
+                                                          context, 18),
+                                                  height: getDesktopOrTabletSize(
+                                                          context, 24) /
                                                       getDesktopOrTabletSize(
-                                                          context, 20),
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: 'Suisse',
+                                                          context, 18),
+                                                  fontWeight: FontWeight.w500,
                                                   letterSpacing: 0,
                                                 ),
                                               ),
                                               TextSpan(
                                                 text: ' and ',
-                                                style: TextStyle(
+                                                style: GoogleFonts.inter(
                                                   color: Color(0xff7A7A7A),
                                                   fontSize:
                                                       getDesktopOrTabletSize(
-                                                          context, 20),
-                                                  height: 26 /
+                                                          context, 18),
+                                                  height: getDesktopOrTabletSize(
+                                                          context, 24) /
                                                       getDesktopOrTabletSize(
-                                                          context, 20),
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: 'Suisse',
+                                                          context, 18),
+                                                  fontWeight: FontWeight.w500,
                                                   letterSpacing: 0,
                                                 ),
                                               ),
                                               TextSpan(
                                                 text: ' Android',
-                                                style: TextStyle(
+                                                style: GoogleFonts.inter(
                                                   color: Colors.white,
                                                   fontSize:
                                                       getDesktopOrTabletSize(
-                                                          context, 20),
-                                                  height: 26 /
+                                                          context, 18),
+                                                  height: getDesktopOrTabletSize(
+                                                          context, 24) /
                                                       getDesktopOrTabletSize(
-                                                          context, 20),
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: 'Suisse',
+                                                          context, 18),
+                                                  fontWeight: FontWeight.w500,
                                                   letterSpacing: 0,
                                                 ),
                                               ),
@@ -1155,31 +1144,31 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                             children: [
                                               TextSpan(
                                                 text: 'Your data is always ',
-                                                style: TextStyle(
+                                                style: GoogleFonts.inter(
                                                   color: Color(0xff7A7A7A),
                                                   fontSize:
                                                       getDesktopOrTabletSize(
-                                                          context, 20),
-                                                  height: 26 /
+                                                          context, 18),
+                                                  height: getDesktopOrTabletSize(
+                                                          context, 24) /
                                                       getDesktopOrTabletSize(
-                                                          context, 20),
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: 'Suisse',
+                                                          context, 18),
+                                                  fontWeight: FontWeight.w500,
                                                   letterSpacing: 0,
                                                 ),
                                               ),
                                               TextSpan(
                                                 text: 'secure',
-                                                style: TextStyle(
+                                                style: GoogleFonts.inter(
                                                   color: Colors.white,
                                                   fontSize:
                                                       getDesktopOrTabletSize(
-                                                          context, 20),
-                                                  height: 26 /
+                                                          context, 18),
+                                                  height: getDesktopOrTabletSize(
+                                                          context, 24) /
                                                       getDesktopOrTabletSize(
-                                                          context, 20),
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: 'Suisse',
+                                                          context, 18),
+                                                  fontWeight: FontWeight.w500,
                                                   letterSpacing: 0,
                                                 ),
                                               ),
@@ -1219,7 +1208,8 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                               : getDesktopOrTabletSize(context, 52.09),
                           height: isMobile(context)
                               ? 38 / 36
-                              : 54.8 / getDesktopOrTabletSize(context, 52.09),
+                              : getDesktopOrTabletSize(context, 54.8) /
+                                  getDesktopOrTabletSize(context, 52.09),
                           letterSpacing: 0,
                           color: Colors.white,
                         ),
@@ -1387,20 +1377,18 @@ class NewMarketingFooterWidget extends StatelessWidget {
             children: [
               SelectableText(
                 '©2025 Gymm',
-                style: TextStyle(
+                style: GoogleFonts.inter(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
-                  fontFamily: 'Inter',
                   height: 21 / 14,
                   color: Color.fromRGBO(157, 157, 157, 1),
                 ),
               ),
               SelectableText(
                 'Made with love in Prague',
-                style: TextStyle(
+                style: GoogleFonts.inter(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
-                  fontFamily: 'Inter',
                   height: 21 / 14,
                   color: Color.fromRGBO(157, 157, 157, 1),
                 ),
@@ -1561,8 +1549,7 @@ class FooterWidget extends StatelessWidget {
       children: [
         Text(
           'Company',
-          style: TextStyle(
-            fontFamily: 'Inter',
+          style: GoogleFonts.inter(
             fontWeight: FontWeight.w400,
             fontSize: 14,
             color: Colors.white,
@@ -1598,25 +1585,24 @@ class FooterWidget extends StatelessWidget {
       children: [
         Text(
           'Social',
-          style: TextStyle(
-            fontFamily: 'Inter',
+          style: GoogleFonts.inter(
             fontWeight: FontWeight.w500,
             fontSize: 16,
             color: Colors.white,
           ),
         ),
         SizedBox(height: 16),
-        _FooterLink(
-          text: 'X (Twitter)',
-          onTap: () {
-            // TODO: Add Twitter link
-          },
-        ),
-        SizedBox(height: 12),
+        // _FooterLink(
+        //   text: 'X (Twitter)',
+        //   onTap: () {
+        //     // TODO: Add Twitter link
+        //   },
+        // ),
+        // SizedBox(height: 12),
         _FooterLink(
           text: 'Instagram',
           onTap: () {
-            // TODO: Add Instagram link
+            launchUrl(Uri.parse('https://www.instagram.com/gymm_ai'));
           },
         ),
       ],
@@ -1628,8 +1614,7 @@ class FooterWidget extends StatelessWidget {
       children: [
         Text(
           'Legal',
-          style: TextStyle(
-            fontFamily: 'Inter',
+          style: GoogleFonts.inter(
             fontWeight: FontWeight.w500,
             fontSize: 16,
             color: Colors.white,
@@ -1738,8 +1723,7 @@ class _FooterLink extends StatelessWidget {
     return HoverableTextButton(
       text: text,
       onPressed: onTap,
-      style: TextStyle(
-        fontFamily: 'Inter',
+      style: GoogleFonts.inter(
         fontWeight: FontWeight.w400,
         fontSize: 14,
         color: Color.fromRGBO(157, 157, 157, 1),

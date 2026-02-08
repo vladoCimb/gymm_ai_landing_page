@@ -24,7 +24,7 @@ class _HoverableTextButtonState extends State<HoverableTextButton> {
   @override
   Widget build(BuildContext context) {
     final defaultStyle = GoogleFonts.inter(
-      fontWeight: FontWeight.w400,
+      fontWeight: FontWeight.w500,
       fontSize: 14,
       color: Colors.white,
     );
