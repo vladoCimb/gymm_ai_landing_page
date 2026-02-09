@@ -220,11 +220,11 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                   children: [
                     if (!isMobile(context))
                       Positioned(
-                        right: -200,
+                        right: -300,
                         top: 0,
                         child: SizedBox(
-                          width: isTablet(context) ? 1000 * 0.8 : 1000,
-                          height: MediaQuery.of(context).size.height * 1.17,
+                          width: isTablet(context) ? 1200 * 0.8 : 1200,
+                          height: 990,
                           child: FadeBlurReveal(
                             animation: _videoPlayerAnimation,
                             child: _buildLandingVideoPlayer(context),
@@ -1776,7 +1776,7 @@ void showGetAppDialog(BuildContext context) {
             // Background overlay
             Positioned.fill(
               child: Container(
-                color: Colors.black.withOpacity(0.7),
+                color: Colors.black.withOpacity(0.8),
               ),
             ),
 
@@ -1800,7 +1800,7 @@ void showGetAppDialog(BuildContext context) {
         ),
       );
     },
-    transitionDuration: const Duration(milliseconds: 300),
+    transitionDuration: const Duration(milliseconds: 250),
   );
 }
 
@@ -1818,16 +1818,8 @@ class _GetAppDialogCard extends StatelessWidget {
         color: Colors.transparent,
         child: Container(
           decoration: BoxDecoration(
-            color: const Color(0xFF10101B),
-            borderRadius: BorderRadius.circular(32),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 40,
-                spreadRadius: 0,
-                offset: const Offset(0, 20),
-                color: Colors.black.withOpacity(0.6),
-              ),
-            ],
+            color: const Color(0xff101013),
+            borderRadius: BorderRadius.circular(24),
           ),
           child: Stack(
             children: [
