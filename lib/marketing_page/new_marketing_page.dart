@@ -461,7 +461,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                 scrollController: _scrollController,
                                 triggerOffset: isMobile(context)
                                     ? 100
-                                    : getDesktopOrTabletSize(context, 200),
+                                    : getDesktopOrTabletSize(context, 150),
                                 text:
                                     "Gymm reviews your workout videos, spots what a mirror or tracker can't, and gives you clear cues what to fix on the next rep. Mistakes aren't failures, they're information. Small adjustments, repeated, become real progress",
                                 style: TextStyle(

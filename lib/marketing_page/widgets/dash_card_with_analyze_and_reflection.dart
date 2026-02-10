@@ -100,7 +100,8 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                         TextSpan(
                           children: [
                             TextSpan(
-                              text: 'Train with confidence and clarity.',
+                              text:
+                                  'Record your workout and get useful actionable feedback.',
                               style: GoogleFonts.inter(
                                 color: Colors.white,
                                 fontSize: 18,
@@ -111,28 +112,7 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                             ),
                             TextSpan(
                               text:
-                                  '  Know why a rep felt off and what to change.',
-                              style: GoogleFonts.inter(
-                                color: const Color(0xff7A7A7A),
-                                fontSize: 18,
-                                height: 24 / 18,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 0,
-                              ),
-                            ),
-                            TextSpan(
-                              text: ' Gymm ',
-                              style: GoogleFonts.inter(
-                                color: Colors.white,
-                                fontSize: 18,
-                                height: 24 / 18,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 0,
-                              ),
-                            ),
-                            TextSpan(
-                              text:
-                                  'turns uncertainty into clarity, so every set has purpose.',
+                                  '  Small adjustments, repeated, become real progress.',
                               style: GoogleFonts.inter(
                                 color: const Color(0xff7A7A7A),
                                 fontSize: 18,
@@ -203,7 +183,8 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                         TextSpan(
                           children: [
                             TextSpan(
-                              text: 'Train with confidence and clarity.',
+                              text:
+                                  'Record your workout and get useful actionable feedback.',
                               style: GoogleFonts.inter(
                                 color: Colors.white,
                                 fontSize: getDesktopOrTabletSize(context, 18),
@@ -215,30 +196,7 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
                             ),
                             TextSpan(
                               text:
-                                  "  Know why a rep felt off and what to change.",
-                              style: GoogleFonts.inter(
-                                color: const Color(0xff7A7A7A),
-                                fontSize: getDesktopOrTabletSize(context, 18),
-                                height: getDesktopOrTabletSize(context, 24) /
-                                    getDesktopOrTabletSize(context, 18),
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 0,
-                              ),
-                            ),
-                            TextSpan(
-                              text: ' Gymm ',
-                              style: GoogleFonts.inter(
-                                color: Colors.white,
-                                fontSize: getDesktopOrTabletSize(context, 18),
-                                height: getDesktopOrTabletSize(context, 24) /
-                                    getDesktopOrTabletSize(context, 18),
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 0,
-                              ),
-                            ),
-                            TextSpan(
-                              text:
-                                  "turns uncertainty into clarity, so every set has purpose.",
+                                  "  Small adjustments, repeated, become real progress.",
                               style: GoogleFonts.inter(
                                 color: const Color(0xff7A7A7A),
                                 fontSize: getDesktopOrTabletSize(context, 18),

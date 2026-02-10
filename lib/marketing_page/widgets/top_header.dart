@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymm_ai_landing_page/widgets/text_button.dart';
+import 'package:lottie/lottie.dart';
 
 class TopHeader extends StatelessWidget {
   const TopHeader({super.key, required this.onDownloadPressed});
@@ -52,8 +53,25 @@ class _LogoButton extends StatefulWidget {
   State<_LogoButton> createState() => _LogoButtonState();
 }
 
-class _LogoButtonState extends State<_LogoButton> {
+class _LogoButtonState extends State<_LogoButton>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _lottieController;
   bool _isHovered = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _lottieController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+  }
+
+  @override
+  void dispose() {
+    _lottieController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,16 +81,27 @@ class _LogoButtonState extends State<_LogoButton> {
       },
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
-        onEnter: (_) => setState(() => _isHovered = true),
-        onExit: (_) => setState(() => _isHovered = false),
+        onEnter: (_) => setState(() {
+          _isHovered = true;
+          _lottieController.forward();
+        }),
+        onExit: (_) => setState(() {
+          _isHovered = false;
+          _lottieController.reset();
+        }),
         child: AnimatedScale(
-          scale: _isHovered ? 1.1 : 1.0,
+          scale: _isHovered ? 1.05 : 1.0,
           duration: const Duration(milliseconds: 200),
           curve: Curves.easeInOut,
-          child: Image.asset(
-            'assets/png/logo_new.png',
-            width: 88.24,
-            height: 27.09,
+          child: SizedBox(
+            width: 100,
+            height: 35,
+            child: Lottie.asset(
+              'assets/png/logo_lottie.json',
+              controller: _lottieController,
+              repeat: false,
+              fit: BoxFit.contain,
+            ),
           ),
         ),
       ),

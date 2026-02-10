@@ -23,49 +23,51 @@ class _DashCardWithVideoAndReflectionTextState
 
     _videoController = controller;
 
-    _videoController!.addListener(() {
-      if (!mounted) return;
-      // Rebuild to update reflection strength as video time changes
-      setState(() {});
-    });
+    // Reflection logic - commented out
+    // _videoController!.addListener(() {
+    //   if (!mounted) return;
+    //   // Rebuild to update reflection strength as video time changes
+    //   setState(() {});
+    // });
   }
 
-  double _computeReflectionStrength() {
-    final controller = _videoController;
-    if (controller == null || !controller.value.isInitialized) return 0.0;
-
-    final seconds = controller.value.position.inMilliseconds / 1000.0;
-
-    // We want:
-    //  0–2 s   → no gradient
-    //  2–5 s   → gradient (fade in at start, fade out at end)
-    const start = 2.0;
-    const end = 5;
-    const fade = 0.5; // Smooth fade duration
-
-    if (seconds < start || seconds > end) {
-      return 0.0;
-    }
-
-    double strength;
-
-    if (seconds < start + fade) {
-      // 2.0 → 2.3: fade in 0 → 1
-      strength = (seconds - start) / fade;
-    } else if (seconds > end - fade) {
-      // 4.7 → 5.0: fade out 1 → 0
-      strength = (end - seconds) / fade;
-    } else {
-      // 2.3–4.7: fully on
-      strength = 1.0;
-    }
-
-    return strength.clamp(0.0, 1.0);
-  }
+  // Reflection logic - commented out
+  // double _computeReflectionStrength() {
+  //   final controller = _videoController;
+  //   if (controller == null || !controller.value.isInitialized) return 0.0;
+  //
+  //   final seconds = controller.value.position.inMilliseconds / 1000.0;
+  //
+  //   // We want:
+  //   //  0–2 s   → no gradient
+  //   //  2–5 s   → gradient (fade in at start, fade out at end)
+  //   const start = 2.0;
+  //   const end = 5;
+  //   const fade = 0.5; // Smooth fade duration
+  //
+  //   if (seconds < start || seconds > end) {
+  //     return 0.0;
+  //   }
+  //
+  //   double strength;
+  //
+  //   if (seconds < start + fade) {
+  //     // 2.0 → 2.3: fade in 0 → 1
+  //     strength = (seconds - start) / fade;
+  //   } else if (seconds > end - fade) {
+  //     // 4.7 → 5.0: fade out 1 → 0
+  //     strength = (end - seconds) / fade;
+  //   } else {
+  //     // 2.3–4.7: fully on
+  //     strength = 1.0;
+  //   }
+  //
+  //   return strength.clamp(0.0, 1.0);
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final reflectionStrength = _computeReflectionStrength();
+    // final reflectionStrength = _computeReflectionStrength();
 
     return Container(
       width: isMobile(context) ? 370 : getDesktopOrTabletSize(context, 456),
@@ -79,7 +81,7 @@ class _DashCardWithVideoAndReflectionTextState
               horizontal: getDesktopOrTabletSize(context, 40, mobileSize: 40))
           .copyWith(
         bottom: isMobile(context) ? 30 : getDesktopOrTabletSize(context, 40),
-        top: isMobile(context) ? 8 : getDesktopOrTabletSize(context, 16),
+        top: isMobile(context) ? 8 : getDesktopOrTabletSize(context, 40),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,45 +107,46 @@ class _DashCardWithVideoAndReflectionTextState
             constraints: BoxConstraints(
               maxWidth: getDesktopOrTabletSize(context, 362),
             ),
-            child: TextWithLeftTopEllipseReflection(
-              strength: reflectionStrength,
-              child: SelectableText.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(
-                      text:
-                          'Powered by Gymm AI, built on the most advanced models',
-                      style: GoogleFonts.inter(
-                        color: Colors.white,
-                        fontSize: isMobile(context)
-                            ? 16
-                            : getDesktopOrTabletSize(context, 18),
-                        fontWeight: FontWeight.w500,
-                        height: isMobile(context)
-                            ? 21 / 16
-                            : getDesktopOrTabletSize(context, 24) /
-                                getDesktopOrTabletSize(context, 18),
-                        letterSpacing: 0,
-                      ),
+            // TextWithLeftTopEllipseReflection (reflection) - commented out
+            // child: TextWithLeftTopEllipseReflection(
+            //   strength: reflectionStrength,
+            //   child: SelectableText.rich(
+            child: SelectableText.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text:
+                        'Powered by Gymm AI, built on the most advanced models',
+                    style: GoogleFonts.inter(
+                      color: Colors.white,
+                      fontSize: isMobile(context)
+                          ? 16
+                          : getDesktopOrTabletSize(context, 18),
+                      fontWeight: FontWeight.w500,
+                      height: isMobile(context)
+                          ? 21 / 16
+                          : getDesktopOrTabletSize(context, 24) /
+                              getDesktopOrTabletSize(context, 18),
+                      letterSpacing: 0,
                     ),
-                    TextSpan(
-                      text:
-                          '  trained to understand your fitness workouts and deliver the most useful feedback.',
-                      style: GoogleFonts.inter(
-                        color: Color(0xff7A7A7A),
-                        fontSize: isMobile(context)
-                            ? 16
-                            : getDesktopOrTabletSize(context, 18),
-                        fontWeight: FontWeight.w500,
-                        height: isMobile(context)
-                            ? 21 / 16
-                            : getDesktopOrTabletSize(context, 24) /
-                                getDesktopOrTabletSize(context, 18),
-                        letterSpacing: 0,
-                      ),
+                  ),
+                  TextSpan(
+                    text:
+                        '  trained to understand your fitness workouts and deliver the most useful feedback.',
+                    style: GoogleFonts.inter(
+                      color: Color(0xff7A7A7A),
+                      fontSize: isMobile(context)
+                          ? 16
+                          : getDesktopOrTabletSize(context, 18),
+                      fontWeight: FontWeight.w500,
+                      height: isMobile(context)
+                          ? 21 / 16
+                          : getDesktopOrTabletSize(context, 24) /
+                              getDesktopOrTabletSize(context, 18),
+                      letterSpacing: 0,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
