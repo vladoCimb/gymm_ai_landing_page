@@ -94,8 +94,8 @@ class _LogoButtonState extends State<_LogoButton>
           duration: const Duration(milliseconds: 200),
           curve: Curves.easeInOut,
           child: SizedBox(
-            width: 100,
-            height: 35,
+            width: 130,
+            height: 56,
             child: Lottie.asset(
               'assets/png/logo_lottie.json',
               controller: _lottieController,

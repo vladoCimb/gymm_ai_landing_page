@@ -99,8 +99,8 @@ class _BlackShinningButtonState extends State<BlackShinningButton> {
                         padding: EdgeInsetsGeometry.only(
                           left: 12,
                           right: 16,
-                          top: 14,
-                          bottom: 14,
+                          top: 12,
+                          bottom: 12,
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,

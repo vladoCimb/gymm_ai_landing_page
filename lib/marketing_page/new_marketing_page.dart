@@ -275,40 +275,45 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                               const TextSpan(
                                                 text: 'Camera based ',
                                               ),
-                                              TextSpan(
-                                                text: 'AI',
-                                                style: TextStyle(
-                                                  fontFamily: 'Suisse',
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: isMobile(context)
-                                                      ? 48.88
-                                                      : getDesktopOrTabletSize(
-                                                          context, 82.0),
-                                                  height: isMobile(context)
-                                                      ? 55.55 / 48.88
-                                                      : getDesktopOrTabletSize(
-                                                              context, 84.8) /
-                                                          getDesktopOrTabletSize(
-                                                              context, 82.0),
-                                                  letterSpacing: 0,
-                                                  color: Color.fromRGBO(
-                                                      198, 218, 255, 1),
-                                                  shadows: [
-                                                    Shadow(
-                                                      color:
-                                                          const Color.fromRGBO(
-                                                              63, 89, 255, 1),
-                                                      offset: Offset(0, 0),
-                                                      blurRadius: 15.96,
-                                                    ),
-                                                    Shadow(
-                                                      color:
-                                                          const Color.fromRGBO(
-                                                              66, 91, 255, 1),
-                                                      offset: Offset(0, 57.01),
-                                                      blurRadius: 84.37,
-                                                    ),
-                                                  ],
+                                              WidgetSpan(
+                                                alignment: PlaceholderAlignment
+                                                    .baseline,
+                                                baseline:
+                                                    TextBaseline.alphabetic,
+                                                child: FallingParticlesText(
+                                                  text: 'AI',
+                                                  textStyle: TextStyle(
+                                                    fontFamily: 'Suisse',
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: isMobile(context)
+                                                        ? 48.88
+                                                        : getDesktopOrTabletSize(
+                                                            context, 82.0),
+                                                    height: isMobile(context)
+                                                        ? 55.55 / 48.88
+                                                        : getDesktopOrTabletSize(
+                                                                context, 84.8) /
+                                                            getDesktopOrTabletSize(
+                                                                context, 82.0),
+                                                    letterSpacing: 0,
+                                                    color: const Color.fromRGBO(
+                                                        198, 218, 255, 1),
+                                                    shadows: const [
+                                                      Shadow(
+                                                        color: Color.fromRGBO(
+                                                            63, 89, 255, 1),
+                                                        offset: Offset(0, 0),
+                                                        blurRadius: 15.96,
+                                                      ),
+                                                      Shadow(
+                                                        color: Color.fromRGBO(
+                                                            66, 91, 255, 1),
+                                                        offset:
+                                                            Offset(0, 57.01),
+                                                        blurRadius: 84.37,
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
 
@@ -359,10 +364,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                       ),
                                     ),
                                     SizedBox(
-                                      height: isMobile(context)
-                                          ? 24
-                                          : getDesktopOrTabletSize(context, 32),
-                                    ),
+                                        height: isMobile(context) ? 24 : 20),
                                     ConstrainedBox(
                                       constraints: BoxConstraints(
                                         maxWidth: isMobile(context) ? 344 : 379,
@@ -401,7 +403,7 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                       ),
                                     ),
                                     SizedBox(
-                                      height: 33,
+                                      height: 40,
                                     ),
                                     FadeBlurReveal(
                                       animation: _buttonAnimation,

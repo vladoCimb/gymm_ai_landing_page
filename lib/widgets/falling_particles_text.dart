@@ -90,6 +90,16 @@ class _FallingParticlesTextState extends State<FallingParticlesText>
     WidgetsBinding.instance.addPostFrameCallback((_) => _measureAndInit());
   }
 
+  @override
+  void didUpdateWidget(covariant FallingParticlesText oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Re-measure when text or style changes (e.g. window resize changes fontSize)
+    if (oldWidget.text != widget.text ||
+        oldWidget.textStyle != widget.textStyle) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _measureAndInit());
+    }
+  }
+
   void _measureAndInit() {
     final painter = TextPainter(
       text: TextSpan(text: widget.text, style: widget.textStyle),
