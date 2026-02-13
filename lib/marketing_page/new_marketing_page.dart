@@ -1893,13 +1893,17 @@ class _GetAppDialogCard extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: const Color(0xFF1A1B23),
                         borderRadius: BorderRadius.circular(24),
+                        border: Border.all(
+                          color: Color.fromRGBO(255, 255, 255, 0.1),
+                          width: 1,
+                        ),
                       ),
                       child: SizedBox(
                         width: 180,
                         height: 180,
                         // Replace with your own QR code widget / Image.asset
                         child: Image.asset(
-                          'assets/png/qr_code.png',
+                          'assets/png/gymm_download_qr.png',
                           width: 180,
                           height: 180,
                         ),

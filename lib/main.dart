@@ -7,6 +7,7 @@ import 'package:gymm_ai_landing_page/pages/legal_doc_page.dart';
 import 'package:gymm_ai_landing_page/pages/marketing_page1.dart';
 import 'package:gymm_ai_landing_page/pages/roadmap_page.dart';
 import 'package:gymm_ai_landing_page/pages/press_kit_page.dart';
+import 'package:gymm_ai_landing_page/pages/store_redirect_page.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 
 // Enum for device types
@@ -104,6 +105,10 @@ class MyApp extends StatelessWidget {
       GoRoute(
         path: '/press_kit',
         builder: (context, state) => const PressKitPage(),
+      ),
+      GoRoute(
+        path: '/download',
+        builder: (context, state) => const StoreRedirectPage(),
       ),
     ],
   );
