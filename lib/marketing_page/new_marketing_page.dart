@@ -1429,13 +1429,19 @@ class DownloadButtons extends StatelessWidget {
 
       if (isIOS) {
         return ShinningButton(
-          onPressed: () {},
+          onPressed: () {
+            launchUrl(
+                Uri.parse('https://apps.apple.com/us/app/gymm/id6749570108'));
+          },
           text: 'Download for iPhone',
           iconUrl: 'assets/png/apple.svg',
         );
       } else if (isAndroid) {
         return BlackShinningButton(
-          onPressed: () {},
+          onPressed: () {
+            launchUrl(Uri.parse(
+                'https://play.google.com/store/apps/details?id=com.gymmAI.gymmAI'));
+          },
           text: 'Get it for Android',
           iconUrl: 'assets/png/android.png',
         );
@@ -1445,13 +1451,19 @@ class DownloadButtons extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ShinningButton(
-              onPressed: () {},
+              onPressed: () {
+                launchUrl(Uri.parse(
+                    'https://apps.apple.com/us/app/gymm/id6749570108'));
+              },
               text: 'Download for iPhone',
               iconUrl: 'assets/png/apple.svg',
             ),
             SizedBox(width: 18),
             BlackShinningButton(
-              onPressed: () {},
+              onPressed: () {
+                launchUrl(Uri.parse(
+                    'https://play.google.com/store/apps/details?id=com.gymmAI.gymmAI'));
+              },
               text: 'Get it for Android',
               iconUrl: 'assets/png/android.png',
             )
@@ -1466,7 +1478,8 @@ class DownloadButtons extends StatelessWidget {
       children: [
         ShinningButton(
           onPressed: () {
-            showGetAppDialog(context);
+            launchUrl(
+                Uri.parse('https://apps.apple.com/us/app/gymm/id6749570108'));
           },
           text: 'Download for iPhone',
           iconUrl: 'assets/png/apple.svg',
@@ -1474,7 +1487,8 @@ class DownloadButtons extends StatelessWidget {
         SizedBox(width: 18),
         BlackShinningButton(
           onPressed: () {
-            showGetAppDialog(context);
+            launchUrl(Uri.parse(
+                'https://play.google.com/store/apps/details?id=com.gymmAI.gymmAI'));
           },
           text: 'Get it for Android',
           iconUrl: 'assets/png/android.png',

@@ -3,6 +3,7 @@ import 'package:flutter_inset_shadow/flutter_inset_shadow.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gymm_ai_landing_page/main.dart';
 
 class ShinningButton extends StatefulWidget {
   const ShinningButton({
@@ -42,10 +43,10 @@ class _ShinningButtonState extends State<ShinningButton> {
           child: TweenAnimationBuilder<Color?>(
             duration: const Duration(milliseconds: 200),
             tween: ColorTween(
-              begin: Color.fromRGBO(187, 205, 242, 1),
+              begin: Color.fromRGBO(240, 244, 252, 1),
               end: (_isHovered || _isFocused)
-                  ? Color.fromRGBO(228, 235, 250, 1)
-                  : Color.fromRGBO(187, 205, 242, 1),
+                  ? Color.fromRGBO(255, 255, 255, 1)
+                  : Color.fromRGBO(240, 244, 252, 1),
               // begin: const Color.fromRGBO(175, 178, 255, 1),
               // end: (_isHovered || _isFocused)
               //     ? const Color.fromRGBO(230, 231, 255, 1)
@@ -69,20 +70,20 @@ class _ShinningButtonState extends State<ShinningButton> {
                   //   stops: const [0.0, 0.9856], // 0% and 98.56%
                   // ),
                   boxShadow: [
-                    BoxShadow(
-                      color: Color.fromRGBO(255, 255, 255, 1),
-                      offset: Offset(0, 0),
-                      blurRadius: 19,
-                      spreadRadius: 0,
-                      inset: true,
-                    ),
-                    BoxShadow(
-                      color: Color.fromRGBO(255, 255, 255, 1),
-                      offset: Offset(0, 1),
-                      blurRadius: 0,
-                      spreadRadius: 0,
-                      inset: true,
-                    ),
+                    // BoxShadow(
+                    //   color: Color.fromRGBO(255, 255, 255, 1),
+                    //   offset: Offset(0, 0),
+                    //   blurRadius: 19,
+                    //   spreadRadius: 0,
+                    //   inset: true,
+                    // ),
+                    // BoxShadow(
+                    //   color: Color.fromRGBO(255, 255, 255, 1),
+                    //   offset: Offset(0, 1),
+                    //   blurRadius: 0,
+                    //   spreadRadius: 0,
+                    //   inset: true,
+                    // ),
                   ],
                 ),
                 child: widget.isMobile
@@ -115,8 +116,8 @@ class _ShinningButtonState extends State<ShinningButton> {
                         padding: EdgeInsetsGeometry.only(
                           left: 12,
                           right: 16,
-                          top: 11,
-                          bottom: 11,
+                          top: isMobile(context) ? 13 : 16,
+                          bottom: isMobile(context) ? 13 : 16,
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,

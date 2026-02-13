@@ -3,6 +3,7 @@ import 'package:flutter_inset_shadow/flutter_inset_shadow.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gymm_ai_landing_page/main.dart';
 
 class BlackShinningButton extends StatefulWidget {
   const BlackShinningButton({
@@ -99,8 +100,8 @@ class _BlackShinningButtonState extends State<BlackShinningButton> {
                         padding: EdgeInsetsGeometry.only(
                           left: 12,
                           right: 16,
-                          top: 12,
-                          bottom: 12,
+                          top: isMobile(context) ? 13 : 17,
+                          bottom: isMobile(context) ? 13 : 17,
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
