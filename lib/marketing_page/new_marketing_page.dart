@@ -223,10 +223,8 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                         right: -300,
                         top: 0,
                         child: SizedBox(
-                          width: isTablet(context) ? 1000 * 0.8 : 1000,
-
-                          // isTablet(context) ? 1200 * 0.8 : 1200,
-                          height: MediaQuery.of(context).size.height * 1.17,
+                          width: isTablet(context) ? 1200 * 0.8 : 1200,
+                          height: 990,
                           child: FadeBlurReveal(
                             animation: _videoPlayerAnimation,
                             child: _buildLandingVideoPlayer(context),
@@ -277,47 +275,47 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                               const TextSpan(
                                                 text: 'Camera based ',
                                               ),
-                                              // WidgetSpan(
-                                              //   alignment: PlaceholderAlignment
-                                              //       .baseline,
-                                              //   baseline:
-                                              //       TextBaseline.alphabetic,
-                                              //   child: FallingParticlesText(
-                                              //     text: 'AI',
-                                              //     textStyle: TextStyle(
-                                              //       fontFamily: 'Suisse',
-                                              //       fontWeight: FontWeight.w500,
-                                              //       fontSize: isMobile(context)
-                                              //           ? 48.88
-                                              //           : getDesktopOrTabletSize(
-                                              //               context, 82.0),
-                                              //       height: isMobile(context)
-                                              //           ? 55.55 / 48.88
-                                              //           : getDesktopOrTabletSize(
-                                              //                   context, 84.8) /
-                                              //               getDesktopOrTabletSize(
-                                              //                   context, 82.0),
-                                              //       letterSpacing: 0,
-                                              //       color: const Color.fromRGBO(
-                                              //           198, 218, 255, 1),
-                                              //       shadows: const [
-                                              //         Shadow(
-                                              //           color: Color.fromRGBO(
-                                              //               63, 89, 255, 1),
-                                              //           offset: Offset(0, 0),
-                                              //           blurRadius: 15.96,
-                                              //         ),
-                                              //         Shadow(
-                                              //           color: Color.fromRGBO(
-                                              //               66, 91, 255, 1),
-                                              //           offset:
-                                              //               Offset(0, 57.01),
-                                              //           blurRadius: 84.37,
-                                              //         ),
-                                              //       ],
-                                              //     ),
-                                              //   ),
-                                              // ),
+                                              WidgetSpan(
+                                                alignment: PlaceholderAlignment
+                                                    .baseline,
+                                                baseline:
+                                                    TextBaseline.alphabetic,
+                                                child: FallingParticlesText(
+                                                  text: 'AI',
+                                                  textStyle: TextStyle(
+                                                    fontFamily: 'Suisse',
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: isMobile(context)
+                                                        ? 48.88
+                                                        : getDesktopOrTabletSize(
+                                                            context, 82.0),
+                                                    height: isMobile(context)
+                                                        ? 55.55 / 48.88
+                                                        : getDesktopOrTabletSize(
+                                                                context, 84.8) /
+                                                            getDesktopOrTabletSize(
+                                                                context, 82.0),
+                                                    letterSpacing: 0,
+                                                    color: const Color.fromRGBO(
+                                                        198, 218, 255, 1),
+                                                    shadows: const [
+                                                      Shadow(
+                                                        color: Color.fromRGBO(
+                                                            63, 89, 255, 1),
+                                                        offset: Offset(0, 0),
+                                                        blurRadius: 15.96,
+                                                      ),
+                                                      Shadow(
+                                                        color: Color.fromRGBO(
+                                                            66, 91, 255, 1),
+                                                        offset:
+                                                            Offset(0, 57.01),
+                                                        blurRadius: 84.37,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
 
                                               const TextSpan(
                                                 text: ' fitness coach',
@@ -1895,10 +1893,6 @@ class _GetAppDialogCard extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: const Color(0xFF1A1B23),
                         borderRadius: BorderRadius.circular(24),
-                        border: Border.all(
-                          color: Color.fromRGBO(255, 255, 255, 0.1),
-                          width: 1,
-                        ),
                       ),
                       child: SizedBox(
                         width: 180,
