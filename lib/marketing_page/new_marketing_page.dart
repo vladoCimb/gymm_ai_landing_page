@@ -1392,8 +1392,7 @@ class DownloadButtons extends StatelessWidget {
       if (isIOS) {
         return ShinningButton(
           onPressed: () {
-            launchUrl(
-                Uri.parse(kAppStoreUrl));
+            launchUrl(Uri.parse(kAppStoreUrl));
           },
           text: 'Download for iPhone',
           iconUrl: 'assets/png/apple.svg',
@@ -1401,8 +1400,7 @@ class DownloadButtons extends StatelessWidget {
       } else if (isAndroid) {
         return BlackShinningButton(
           onPressed: () {
-            launchUrl(Uri.parse(
-                kPlayStoreUrl));
+            launchUrl(Uri.parse(kPlayStoreUrl));
           },
           text: 'Get it for Android',
           iconUrl: 'assets/png/android.png',
@@ -1414,8 +1412,7 @@ class DownloadButtons extends StatelessWidget {
           children: [
             ShinningButton(
               onPressed: () {
-                launchUrl(Uri.parse(
-                    kAppStoreUrl));
+                launchUrl(Uri.parse(kAppStoreUrl));
               },
               text: 'Download for iPhone',
               iconUrl: 'assets/png/apple.svg',
@@ -1423,8 +1420,7 @@ class DownloadButtons extends StatelessWidget {
             SizedBox(width: 18),
             BlackShinningButton(
               onPressed: () {
-                launchUrl(Uri.parse(
-                    kPlayStoreUrl));
+                launchUrl(Uri.parse(kPlayStoreUrl));
               },
               text: 'Get it for Android',
               iconUrl: 'assets/png/android.png',
@@ -1440,8 +1436,7 @@ class DownloadButtons extends StatelessWidget {
       children: [
         ShinningButton(
           onPressed: () {
-            launchUrl(
-                Uri.parse(kAppStoreUrl));
+            launchUrl(Uri.parse(kAppStoreUrl));
           },
           text: 'Download for iPhone',
           iconUrl: 'assets/png/apple.svg',
@@ -1449,8 +1444,7 @@ class DownloadButtons extends StatelessWidget {
         SizedBox(width: 18),
         BlackShinningButton(
           onPressed: () {
-            launchUrl(Uri.parse(
-                kPlayStoreUrl));
+            launchUrl(Uri.parse(kPlayStoreUrl));
           },
           text: 'Get it for Android',
           iconUrl: 'assets/png/android.png',
@@ -1744,8 +1738,7 @@ void _handleDownloadPressed(BuildContext context) {
     if (isIOS) {
       launchUrl(Uri.parse(kAppStoreUrl));
     } else if (isAndroid) {
-      launchUrl(Uri.parse(
-          kPlayStoreUrl));
+      launchUrl(Uri.parse(kPlayStoreUrl));
     } else {
       showGetAppDialog(context);
     }
