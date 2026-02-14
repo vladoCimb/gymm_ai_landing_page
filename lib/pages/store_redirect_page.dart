@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:gymm_ai_landing_page/constants/app_store_urls.dart';
 
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
@@ -14,11 +15,6 @@ class StoreRedirectPage extends StatefulWidget {
 }
 
 class _StoreRedirectPageState extends State<StoreRedirectPage> {
-  static const String _appStoreUrl =
-      'https://apps.apple.com/us/app/gymm/id6749570108';
-  static const String _playStoreUrl =
-      'https://play.google.com/store/apps/details?id=com.gymmAI.gymmAI&pcampaignid=web_share';
-
   String _detectedPlatform = 'Detecting...';
   String? _redirectUrl;
 
@@ -35,10 +31,10 @@ class _StoreRedirectPageState extends State<StoreRedirectPage> {
 
     if (_isIOS(userAgent)) {
       _detectedPlatform = 'iOS';
-      _redirectUrl = _appStoreUrl;
+      _redirectUrl = kAppStoreUrl;
     } else if (_isAndroid(userAgent)) {
       _detectedPlatform = 'Android';
-      _redirectUrl = _playStoreUrl;
+      _redirectUrl = kPlayStoreUrl;
     } else {
       // Desktop or unknown — show both options
       _detectedPlatform = 'Desktop';
@@ -50,7 +46,7 @@ class _StoreRedirectPageState extends State<StoreRedirectPage> {
       Timer(const Duration(milliseconds: 500), () {
         // Replace current history entry with '/' so if the user comes back
         // to this browser tab, they land on the main landing page
-        html.window.history.replaceState(null, '', '/#/');
+        html.window.history.replaceState(null, '', '/');
         html.window.location.href = _redirectUrl!;
       });
     }
@@ -63,7 +59,8 @@ class _StoreRedirectPageState extends State<StoreRedirectPage> {
         ua.contains('ipad') ||
         ua.contains('ipod') ||
         // iPad with desktop mode reports as Macintosh but has touch
-        (ua.contains('macintosh') && (html.window.navigator.maxTouchPoints ?? 0) > 0);
+        (ua.contains('macintosh') &&
+            (html.window.navigator.maxTouchPoints ?? 0) > 0);
   }
 
   bool _isAndroid(String ua) {
@@ -126,13 +123,13 @@ class _StoreRedirectPageState extends State<StoreRedirectPage> {
                 _StoreLinkButton(
                   label: 'Download on the App Store',
                   icon: Icons.apple,
-                  url: _appStoreUrl,
+                  url: kAppStoreUrl,
                 ),
                 const SizedBox(height: 16),
                 _StoreLinkButton(
                   label: 'Get it on Google Play',
                   icon: Icons.shop,
-                  url: _playStoreUrl,
+                  url: kPlayStoreUrl,
                 ),
               ],
             ],
@@ -160,7 +157,8 @@ class _StoreLinkButton extends StatelessWidget {
       width: 300,
       height: 56,
       child: ElevatedButton.icon(
-        onPressed: () => launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication),
+        onPressed: () =>
+            launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication),
         icon: Icon(icon, size: 28),
         label: Text(label, style: const TextStyle(fontSize: 16)),
         style: ElevatedButton.styleFrom(

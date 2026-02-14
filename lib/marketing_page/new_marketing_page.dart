@@ -22,6 +22,7 @@ import 'package:gymm_ai_landing_page/widgets/falling_particles_text.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
+import 'package:gymm_ai_landing_page/constants/app_store_urls.dart';
 
 const double kHeaderHeight = 70;
 
@@ -1392,7 +1393,7 @@ class DownloadButtons extends StatelessWidget {
         return ShinningButton(
           onPressed: () {
             launchUrl(
-                Uri.parse('https://apps.apple.com/us/app/gymm/id6749570108'));
+                Uri.parse(kAppStoreUrl));
           },
           text: 'Download for iPhone',
           iconUrl: 'assets/png/apple.svg',
@@ -1401,7 +1402,7 @@ class DownloadButtons extends StatelessWidget {
         return BlackShinningButton(
           onPressed: () {
             launchUrl(Uri.parse(
-                'https://play.google.com/store/apps/details?id=com.gymmAI.gymmAI'));
+                kPlayStoreUrl));
           },
           text: 'Get it for Android',
           iconUrl: 'assets/png/android.png',
@@ -1414,7 +1415,7 @@ class DownloadButtons extends StatelessWidget {
             ShinningButton(
               onPressed: () {
                 launchUrl(Uri.parse(
-                    'https://apps.apple.com/us/app/gymm/id6749570108'));
+                    kAppStoreUrl));
               },
               text: 'Download for iPhone',
               iconUrl: 'assets/png/apple.svg',
@@ -1423,7 +1424,7 @@ class DownloadButtons extends StatelessWidget {
             BlackShinningButton(
               onPressed: () {
                 launchUrl(Uri.parse(
-                    'https://play.google.com/store/apps/details?id=com.gymmAI.gymmAI'));
+                    kPlayStoreUrl));
               },
               text: 'Get it for Android',
               iconUrl: 'assets/png/android.png',
@@ -1440,7 +1441,7 @@ class DownloadButtons extends StatelessWidget {
         ShinningButton(
           onPressed: () {
             launchUrl(
-                Uri.parse('https://apps.apple.com/us/app/gymm/id6749570108'));
+                Uri.parse(kAppStoreUrl));
           },
           text: 'Download for iPhone',
           iconUrl: 'assets/png/apple.svg',
@@ -1449,7 +1450,7 @@ class DownloadButtons extends StatelessWidget {
         BlackShinningButton(
           onPressed: () {
             launchUrl(Uri.parse(
-                'https://play.google.com/store/apps/details?id=com.gymmAI.gymmAI'));
+                kPlayStoreUrl));
           },
           text: 'Get it for Android',
           iconUrl: 'assets/png/android.png',
@@ -1496,7 +1497,7 @@ class BlurHeaderDelegate extends SliverPersistentHeaderDelegate {
             child: MarketingPagePaddingWiget(
               child: TopHeader(
                 onDownloadPressed: () {
-                  showGetAppDialog(context);
+                  _handleDownloadPressed(context);
                 },
               ),
             ),
@@ -1536,7 +1537,7 @@ class FooterWidget extends StatelessWidget {
         _FooterLink(
           text: 'Download app',
           onTap: () {
-            showGetAppDialog(context);
+            _handleDownloadPressed(context);
           },
         ),
         SizedBox(height: 12),
@@ -1729,6 +1730,27 @@ class MarketingPagePaddingWiget extends StatelessWidget {
         child: child,
       ),
     );
+  }
+}
+
+void _handleDownloadPressed(BuildContext context) {
+  if (isMobile(context) && kIsWeb) {
+    final userAgent = html.window.navigator.userAgent.toLowerCase();
+    final isIOS = userAgent.contains('iphone') ||
+        userAgent.contains('ipad') ||
+        userAgent.contains('ipod');
+    final isAndroid = userAgent.contains('android');
+
+    if (isIOS) {
+      launchUrl(Uri.parse(kAppStoreUrl));
+    } else if (isAndroid) {
+      launchUrl(Uri.parse(
+          kPlayStoreUrl));
+    } else {
+      showGetAppDialog(context);
+    }
+  } else {
+    showGetAppDialog(context);
   }
 }
 
