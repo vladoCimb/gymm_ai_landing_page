@@ -48,6 +48,9 @@ class _StoreRedirectPageState extends State<StoreRedirectPage> {
     if (_redirectUrl != null) {
       // Small delay so the user sees the page briefly, then redirect
       Timer(const Duration(milliseconds: 500), () {
+        // Replace current history entry with '/' so if the user comes back
+        // to this browser tab, they land on the main landing page
+        html.window.history.replaceState(null, '', '/#/');
         html.window.location.href = _redirectUrl!;
       });
     }

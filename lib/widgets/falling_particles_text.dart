@@ -31,7 +31,7 @@ class _FallingParticlesTextState extends State<FallingParticlesText>
   late final math.Random _random;
 
   Size? _textSize;
-  late List<_Particle> _particles;
+  List<_Particle> _particles = [];
 
   // Performance optimizations
 
@@ -56,7 +56,8 @@ class _FallingParticlesTextState extends State<FallingParticlesText>
       final double clampedDt = dt.clamp(0.001, 0.1); // Between 1ms and 100ms
       _lastTick = elapsed;
 
-      if (_textSize == null || clampedDt == 0) return;
+      // Guard: avoid accessing particles before _measureAndInit() has run
+      if (_textSize == null || _particles.isEmpty || clampedDt == 0) return;
 
       // Accumulate time and only update at target FPS
       _accumulatedTime += clampedDt;
