@@ -26,6 +26,10 @@ import 'package:gymm_ai_landing_page/constants/app_store_urls.dart';
 
 const double kHeaderHeight = 70;
 
+/// Aspect ratio of the landing hero video (matches 1200x990 used on desktop).
+/// Used to reserve space before the video is initialized and avoid layout jump.
+const double kLandingVideoAspectRatio = 1200 / 990;
+
 const Color dashCardBackgroundColor = Color.fromRGBO(31, 32, 39, 0.5);
 
 class NewMarketingPage extends StatefulWidget {
@@ -170,15 +174,22 @@ class _NewMarketingPageState extends State<NewMarketingPage>
   }
 
   Widget _buildLandingVideoPlayer(BuildContext context) {
-    // If video controller is not initialized, return empty container
-    if (_landingVideoController == null ||
-        !_landingVideoController!.value.isInitialized) {
-      return SizedBox();
+    final isInitialized = _landingVideoController != null &&
+        _landingVideoController!.value.isInitialized;
+
+    // If video controller is not initialized, reserve space with same aspect
+    // ratio to prevent layout jump when the video loads (especially on mobile).
+    if (!isInitialized) {
+      return AspectRatio(
+        aspectRatio: kLandingVideoAspectRatio,
+        child: Container(
+          color: Color.fromRGBO(0, 0, 0, 1),
+        ),
+      );
     }
 
     // Check if video is playing, if not, try to play it
-    if (_landingVideoController!.value.isInitialized &&
-        !_landingVideoController!.value.isPlaying) {
+    if (!_landingVideoController!.value.isPlaying) {
       // Use a microtask to avoid calling setState during build
       Future.microtask(() {
         if (mounted &&
