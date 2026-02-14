@@ -316,48 +316,9 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                                   ),
                                                 ),
                                               ),
-
                                               const TextSpan(
                                                 text: ' fitness coach',
                                               ),
-                                              // TextSpan(
-                                              //   text: 'AI fitness',
-                                              //   style: TextStyle(
-                                              //     fontFamily: 'Suisse',
-                                              //     fontWeight: FontWeight.w500,
-                                              //     fontSize: isMobile(context)
-                                              //         ? 48.88
-                                              //         : getDesktopOrTabletSize(
-                                              //             context, 82.0),
-                                              //     height: isMobile(context)
-                                              //         ? 41.6 / 48.88
-                                              //         : getDesktopOrTabletSize(
-                                              //                 context, 84.8) /
-                                              //             getDesktopOrTabletSize(
-                                              //                 context, 82.0),
-                                              //     letterSpacing: 0,
-                                              //     color: Colors.white,
-                                              //   ),
-                                              // ),
-                                              // TextSpan(
-                                              //   text: ' coach',
-                                              //   style: TextStyle(
-                                              //     fontFamily: 'Suisse',
-                                              //     fontWeight: FontWeight.w500,
-                                              //     fontSize: isMobile(context)
-                                              //         ? 48.88
-                                              //         : getDesktopOrTabletSize(
-                                              //             context, 82.0),
-                                              //     height: isMobile(context)
-                                              //         ? 41.6 / 48.88
-                                              //         : getDesktopOrTabletSize(
-                                              //                 context, 60.0) /
-                                              //             getDesktopOrTabletSize(
-                                              //                 context, 82.0),
-                                              //     letterSpacing: 0,
-                                              //     color: Colors.white,
-                                              //   ),
-                                              // ),
                                             ],
                                           ),
                                         ),
