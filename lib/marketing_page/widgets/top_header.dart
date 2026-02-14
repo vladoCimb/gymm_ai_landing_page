@@ -14,7 +14,7 @@ class TopHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _LogoButton(),
+        // _LogoButton(),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
