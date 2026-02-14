@@ -225,7 +225,10 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                         child: SizedBox(
                           width: isTablet(context) ? 1200 * 0.8 : 1200,
                           height: 990,
-                          child: _buildLandingVideoPlayer(context),
+                          child: FadeBlurReveal(
+                            animation: _videoPlayerAnimation,
+                            child: _buildLandingVideoPlayer(context),
+                          ),
                         ),
                       ),
                     Column(
@@ -248,71 +251,76 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                             : getDesktopOrTabletSize(
                                                 context, 545),
                                       ),
-                                      child: SelectableText.rich(
-                                        TextSpan(
-                                          style: TextStyle(
-                                            fontFamily: 'Suisse',
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: isMobile(context)
-                                                ? 48.88
-                                                : getDesktopOrTabletSize(
-                                                    context, 82.0),
-                                            height: isMobile(context)
-                                                ? 55.55 / 48.88
-                                                : getDesktopOrTabletSize(
-                                                        context, 84.8) /
-                                                    getDesktopOrTabletSize(
-                                                        context, 82.0),
-                                            letterSpacing: 0,
-                                            color: Colors.white,
-                                          ),
-                                          children: [
-                                            const TextSpan(
-                                              text: 'Camera based ',
-                                            ),
-                                            WidgetSpan(
-                                              alignment:
-                                                  PlaceholderAlignment.baseline,
-                                              baseline: TextBaseline.alphabetic,
-                                              child: FallingParticlesText(
-                                                text: 'AI',
-                                                textStyle: TextStyle(
-                                                  fontFamily: 'Suisse',
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: isMobile(context)
-                                                      ? 48.88
-                                                      : getDesktopOrTabletSize(
+                                      child: FadeBlurReveal(
+                                        animation: _headlineAnimation,
+                                        child: SelectableText.rich(
+                                          TextSpan(
+                                            style: TextStyle(
+                                              fontFamily: 'Suisse',
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: isMobile(context)
+                                                  ? 48.88
+                                                  : getDesktopOrTabletSize(
+                                                      context, 82.0),
+                                              height: isMobile(context)
+                                                  ? 55.55 / 48.88
+                                                  : getDesktopOrTabletSize(
+                                                          context, 84.8) /
+                                                      getDesktopOrTabletSize(
                                                           context, 82.0),
-                                                  height: isMobile(context)
-                                                      ? 55.55 / 48.88
-                                                      : getDesktopOrTabletSize(
-                                                              context, 84.8) /
-                                                          getDesktopOrTabletSize(
-                                                              context, 82.0),
-                                                  letterSpacing: 0,
-                                                  color: const Color.fromRGBO(
-                                                      198, 218, 255, 1),
-                                                  shadows: const [
-                                                    Shadow(
-                                                      color: Color.fromRGBO(
-                                                          63, 89, 255, 1),
-                                                      offset: Offset(0, 0),
-                                                      blurRadius: 15.96,
-                                                    ),
-                                                    Shadow(
-                                                      color: Color.fromRGBO(
-                                                          66, 91, 255, 1),
-                                                      offset: Offset(0, 57.01),
-                                                      blurRadius: 84.37,
-                                                    ),
-                                                  ],
+                                              letterSpacing: 0,
+                                              color: Colors.white,
+                                            ),
+                                            children: [
+                                              const TextSpan(
+                                                text: 'Camera based ',
+                                              ),
+                                              WidgetSpan(
+                                                alignment: PlaceholderAlignment
+                                                    .baseline,
+                                                baseline:
+                                                    TextBaseline.alphabetic,
+                                                child: FallingParticlesText(
+                                                  text: 'AI',
+                                                  textStyle: TextStyle(
+                                                    fontFamily: 'Suisse',
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: isMobile(context)
+                                                        ? 48.88
+                                                        : getDesktopOrTabletSize(
+                                                            context, 82.0),
+                                                    height: isMobile(context)
+                                                        ? 55.55 / 48.88
+                                                        : getDesktopOrTabletSize(
+                                                                context, 84.8) /
+                                                            getDesktopOrTabletSize(
+                                                                context, 82.0),
+                                                    letterSpacing: 0,
+                                                    color: const Color.fromRGBO(
+                                                        198, 218, 255, 1),
+                                                    shadows: const [
+                                                      Shadow(
+                                                        color: Color.fromRGBO(
+                                                            63, 89, 255, 1),
+                                                        offset: Offset(0, 0),
+                                                        blurRadius: 15.96,
+                                                      ),
+                                                      Shadow(
+                                                        color: Color.fromRGBO(
+                                                            66, 91, 255, 1),
+                                                        offset:
+                                                            Offset(0, 57.01),
+                                                        blurRadius: 84.37,
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            const TextSpan(
-                                              text: ' fitness coach',
-                                            ),
-                                          ],
+                                              const TextSpan(
+                                                text: ' fitness coach',
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -323,39 +331,45 @@ class _NewMarketingPageState extends State<NewMarketingPage>
                                         maxWidth: isMobile(context) ? 344 : 379,
                                         minWidth: 230,
                                       ),
-                                      child: SelectableText.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(
-                                              text:
-                                                  'Record. Analyze. Improve. ',
-                                              style: GoogleFonts.inter(
-                                                color: Colors.white,
-                                                fontSize: 18.0,
-                                                height: 26.0 / 18.0,
-                                                fontWeight: FontWeight.w500,
-                                                letterSpacing: 0,
+                                      child: FadeBlurReveal(
+                                        animation: _subtextAnimation,
+                                        child: SelectableText.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text:
+                                                    'Record. Analyze. Improve. ',
+                                                style: GoogleFonts.inter(
+                                                  color: Colors.white,
+                                                  fontSize: 18.0,
+                                                  height: 26.0 / 18.0,
+                                                  fontWeight: FontWeight.w500,
+                                                  letterSpacing: 0,
+                                                ),
                                               ),
-                                            ),
-                                            TextSpan(
-                                              text:
-                                                  'Record your training session and receive detailed improvement suggestions.',
-                                              style: GoogleFonts.inter(
-                                                color: Color(0xff7A7A7A),
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.w500,
-                                                letterSpacing: 0,
-                                                height: 24.0 / 18.0,
+                                              TextSpan(
+                                                text:
+                                                    'Record your training session and receive detailed improvement suggestions.',
+                                                style: GoogleFonts.inter(
+                                                  color: Color(0xff7A7A7A),
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.w500,
+                                                  letterSpacing: 0,
+                                                  height: 24.0 / 18.0,
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
                                     SizedBox(
                                       height: 40,
                                     ),
-                                    DownloadButtons(),
+                                    FadeBlurReveal(
+                                      animation: _buttonAnimation,
+                                      child: DownloadButtons(),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -1459,26 +1473,32 @@ class BlurHeaderDelegate extends SliverPersistentHeaderDelegate {
     bool overlapsContent,
   ) {
     return ClipRect(
-      child: Container(
-        height: kHeaderHeight,
-        decoration: BoxDecoration(
-          color: const Color.fromRGBO(0, 0, 0, 0.7),
-          boxShadow: [
-            // BoxShadow(
-            //   color: Color.fromRGBO(255, 255, 255, 0.1),
-            //   blurRadius: 0,
-            //   spreadRadius: 0,
-            //   offset: Offset(0, 1),
-            // ),
-          ],
+      child: BackdropFilter(
+        filter: ImageFilter.blur(
+          sigmaX: 20,
+          sigmaY: 20,
         ),
-        child: Align(
-          alignment: Alignment.center,
-          child: MarketingPagePaddingWiget(
-            child: TopHeader(
-              onDownloadPressed: () {
-                showGetAppDialog(context);
-              },
+        child: Container(
+          height: kHeaderHeight,
+          decoration: BoxDecoration(
+            color: const Color.fromRGBO(0, 0, 0, 0.7),
+            boxShadow: [
+              // BoxShadow(
+              //   color: Color.fromRGBO(255, 255, 255, 0.1),
+              //   blurRadius: 0,
+              //   spreadRadius: 0,
+              //   offset: Offset(0, 1),
+              // ),
+            ],
+          ),
+          child: Align(
+            alignment: Alignment.center,
+            child: MarketingPagePaddingWiget(
+              child: TopHeader(
+                onDownloadPressed: () {
+                  showGetAppDialog(context);
+                },
+              ),
             ),
           ),
         ),
