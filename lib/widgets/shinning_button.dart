@@ -114,8 +114,8 @@ class _ShinningButtonState extends State<ShinningButton> {
                       )
                     : Padding(
                         padding: EdgeInsetsGeometry.only(
-                          left: 12,
-                          right: 16,
+                          left: 18,
+                          right: 20,
                           top: isMobile(context) ? 13 : 16,
                           bottom: isMobile(context) ? 13 : 16,
                         ),

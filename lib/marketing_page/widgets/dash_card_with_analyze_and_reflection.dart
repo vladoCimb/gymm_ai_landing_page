@@ -52,11 +52,6 @@ class _AnalyzeCardState extends State<DashCardWithAnalyzeAndReflectionText>
       await _videoController!.setVolume(0);
       await _videoController!.initialize();
       await _videoController!.setLooping(true);
-      _videoController!.addListener(() {
-        if (mounted) {
-          setState(() {});
-        }
-      });
       try {
         await _videoController!.play();
       } catch (playError) {

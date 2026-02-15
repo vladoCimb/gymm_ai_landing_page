@@ -56,13 +56,6 @@ class _AiVideoPlayerState extends State<AiVideoPlayer> {
       // Notify parent that controller is ready
       widget.onControllerReady?.call(_controller!);
 
-      // Add listener for video state changes
-      _controller!.addListener(() {
-        if (mounted && _controller != null) {
-          setState(() {});
-        }
-      });
-
       // Handle autoplay (web may restrict this)
       try {
         await _controller!.play();

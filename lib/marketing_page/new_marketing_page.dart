@@ -139,11 +139,6 @@ class _NewMarketingPageState extends State<NewMarketingPage>
       await _landingVideoController!.setVolume(0);
       await _landingVideoController!.initialize();
       await _landingVideoController!.setLooping(true);
-      _landingVideoController!.addListener(() {
-        if (mounted) {
-          setState(() {});
-        }
-      });
       try {
         await _landingVideoController!.play();
       } catch (playError) {
@@ -1447,7 +1442,7 @@ class DownloadButtons extends StatelessWidget {
       children: [
         ShinningButton(
           onPressed: () {
-            launchUrl(Uri.parse(kAppStoreUrl));
+            showGetAppDialog(context);
           },
           text: 'Download for iPhone',
           iconUrl: 'assets/png/apple.svg',
@@ -1455,7 +1450,7 @@ class DownloadButtons extends StatelessWidget {
         SizedBox(width: 18),
         BlackShinningButton(
           onPressed: () {
-            launchUrl(Uri.parse(kPlayStoreUrl));
+            showGetAppDialog(context);
           },
           text: 'Get it for Android',
           iconUrl: 'assets/png/android.png',
